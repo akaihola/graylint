@@ -1,0 +1,17 @@
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "graylint"
+authors = [{name = "Antti Kaihola", email = "13725+akaihola@users.noreply.github.com"}]
+readme = "README.rst"
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: MIT License"]
+dynamic = ["version", "description"]
+
+[project.scripts]
+graylint = "graylint.__main__:main_with_error_handling"
+
+[project.urls]
+Home = "https://github.com/akaihola/graylint"
