@@ -1,62 +1,44 @@
-=================================================
- Darker – reformat and lint modified Python code
-=================================================
+==================================================
+ Graylint – show new linter errors in Python code
+==================================================
 
 |build-badge|_ |license-badge|_ |pypi-badge|_ |downloads-badge|_ |black-badge|_ |changelog-badge|_
 
-.. |build-badge| image:: https://github.com/akaihola/darker/actions/workflows/python-package.yml/badge.svg
+.. |build-badge| image:: https://github.com/akaihola/graylint/actions/workflows/python-package.yml/badge.svg
    :alt: master branch build status
-.. _build-badge: https://github.com/akaihola/darker/actions/workflows/python-package.yml?query=branch%3Amaster
+.. _build-badge: https://github.com/akaihola/graylint/actions/workflows/python-package.yml?query=branch%3Amaster
 .. |license-badge| image:: https://img.shields.io/badge/License-BSD%203--Clause-blue.svg
    :alt: BSD 3 Clause license
-.. _license-badge: https://github.com/akaihola/darker/blob/master/LICENSE.rst
-.. |pypi-badge| image:: https://img.shields.io/pypi/v/darker
+.. _license-badge: https://github.com/akaihola/graylint/blob/master/LICENSE.rst
+.. |pypi-badge| image:: https://img.shields.io/pypi/v/graylint
    :alt: Latest release on PyPI
-.. _pypi-badge: https://pypi.org/project/darker/
-.. |downloads-badge| image:: https://pepy.tech/badge/darker
+.. _pypi-badge: https://pypi.org/project/graylint/
+.. |downloads-badge| image:: https://pepy.tech/badge/graylint
    :alt: Number of downloads
-.. _downloads-badge: https://pepy.tech/project/darker
+.. _downloads-badge: https://pepy.tech/project/graylint
 .. |black-badge| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :alt: Source code formatted using Black
 .. _black-badge: https://github.com/psf/black
 .. |changelog-badge| image:: https://img.shields.io/badge/-change%20log-purple
    :alt: Change log
-.. _changelog-badge: https://github.com/akaihola/darker/blob/master/CHANGES.rst
-.. |next-milestone| image:: https://img.shields.io/github/milestones/progress/akaihola/darker/21?color=red&label=release%201.8.0
+.. _changelog-badge: https://github.com/akaihola/graylint/blob/master/CHANGES.rst
+.. |next-milestone| image:: https://img.shields.io/github/milestones/progress/akaihola/graylint/21?color=red&label=release%201.8.0
    :alt: Next milestone
-.. _next-milestone: https://github.com/akaihola/darker/milestone/21
+.. _next-milestone: https://github.com/akaihola/graylint/milestone/21
 
 
 What?
 =====
 
-This utility reformats and checks Python source code files.
-However, when run in a Git repository, it compares an old revision of the source tree
-to a newer revision (or the working tree). It then
+This utility runs linters on Python source code files.
+However, when run in a Git repository, it runs the linters both in an old and a newer
+revision of the source tree. It then only reports those linting messages which appeared
+after the modifications to the source code files between those revisions.
 
-- only applies reformatting in regions which have changed in the Git working tree
-  between the two revisions, and
-- only reports those linting messages which appeared after the modifications to the
-  source code files.
-
-The reformatters supported are:
-
-- Black_ for code reformatting
-- isort_ for sorting imports
-- flynt_ for turning old-style format strings to f-strings
-
-See `Using linters`_ below for the list of supported linters.
-
-To easily run Darker as a Pytest_ plugin, see pytest-darker_.
-
-To integrate Darker with your IDE or with pre-commit_,
+To integrate Graylint with your IDE or with pre-commit_,
 see the relevant sections below in this document.
 
-.. _Black: https://github.com/python/black
-.. _isort: https://github.com/timothycrosley/isort
-.. _flynt: https://github.com/ikamensh/flynt
 .. _Pytest: https://docs.pytest.org/
-.. _pytest-darker: https://pypi.org/project/pytest-darker/
 
 +------------------------------------------------+--------------------------------+
 | |you-can-help|                                 | |support|                      |
@@ -67,112 +49,64 @@ see the relevant sections below in this document.
 | look at one of them and shoot us a comment!    | to ask for help and advice!    |
 +------------------------------------------------+--------------------------------+
 
-*New in version 1.4.0:* Darker can be used in plain directories, not only Git repositories.
-
 .. |you-can-help| image:: https://img.shields.io/badge/-You%20can%20help-green?style=for-the-badge
    :alt: You can help
 .. |support| image:: https://img.shields.io/badge/-Support-green?style=for-the-badge
    :alt: Support
-.. _#151: https://github.com/akaihola/darker/issues/151
-.. _community support channel: https://github.com/akaihola/darker/discussions
+.. _community support channel: https://github.com/akaihola/graylint/discussions
 
 
 Why?
 ====
 
-You want to start unifying code style in your project using Black_.
-Maybe you also like to standardize on how to order your imports,
-or do static type checking or other static analysis for your code.
+You want to lint your code with more or less strict linter rules.
+Your code base is known to violate some of those linter rules.
 
-However, instead of formatting the whole code base in one giant commit,
-you'd like to only change formatting when you're touching the code for other reasons.
+When running the linters, you only want to see the new violations which have appeared
+e.g. in your open feature branch, compared to the branch point from the main branch.
 
 This can also be useful
 when contributing to upstream codebases that are not under your complete control.
 
-Partial formatting is not supported by Black_ itself,
-for various good reasons, and so far there hasn't been a plan to implemented it either
-(`134`__, `142`__, `245`__, `370`__, `511`__, `830`__).
-However, in September 2021 Black developers started to hint towards adding this feature
-after all (`1352`__). This might at least simplify Darker's algorithm substantially.
-
-__ https://github.com/psf/black/issues/134
-__ https://github.com/psf/black/issues/142
-__ https://github.com/psf/black/issues/245
-__ https://github.com/psf/black/issues/370
-__ https://github.com/psf/black/issues/511
-__ https://github.com/psf/black/issues/830
-__ https://github.com/psf/black/issues/1352
-
-But for the time being, this is where ``darker`` enters the stage.
-This tool is for those who want to do partial formatting right now.
-
 Note that this tool is meant for special situations
 when dealing with existing code bases.
-You should just use Black_ and isort_ as is when starting a project from scratch.
+You should just aim to conform 100% with linter rules
+when starting a project from scratch.
 
-You may also want to still consider whether reformatting the whole code base in one
-commit would make sense in your particular case. You can ignore a reformatting commit
-in ``git blame`` using the `blame.ignoreRevsFile`_ config option or ``--ignore-rev`` on
-the command line. For a deeper dive into this topic, see `Avoiding ruining git blame`_
-in Black documentation, or the article
-`Why does Black insist on reformatting my entire project?`_ from `Łukasz Langa`_
-(`@ambv`_, the creator of Black). Here's an excerpt:
-
-    "When you make this single reformatting commit, everything that comes after is
-    **semantic changes** so your commit history is clean in the sense that it actually
-    shows what changed in terms of meaning, not style. There are tools like darker that
-    allow you to only reformat lines that were touched since the last commit. However,
-    by doing that you forever expose yourself to commits that are a mix of semantic
-    changes with stylistic changes, making it much harder to see what changed."
-
-.. _blame.ignoreRevsFile: https://git-scm.com/docs/git-blame/en#Documentation/git-blame.txt---ignore-revs-fileltfilegt
-.. _Avoiding ruining git blame: https://black.readthedocs.io/en/stable/guides/introducing_black_to_your_project.html#avoiding-ruining-git-blame
-.. _Why does Black insist on reformatting my entire project?: https://lukasz.langa.pl/36380f86-6d28-4a55-962e-91c2c959db7a/
-.. _Łukasz Langa: https://lukasz.langa.pl/
-.. _@ambv: https://github.com/ambv
 
 How?
 ====
 
 To install or upgrade, use::
 
-  pip install --upgrade darker~=1.7.3
+  pip install --upgrade graylint~=0.0.1
 
 Or, if you're using Conda_ for package management::
 
-  conda install -c conda-forge darker~=1.7.3 isort
-  conda update -c conda-forge darker
+  conda install -c conda-forge graylint~=0.0.1
+  conda update -c conda-forge graylint
 
 ..
 
     **Note:** It is recommended to use the '``~=``' "`compatible release`_" version
-    specifier for Darker. See `Guarding against Black compatibility breakage`_ for more
-    information.
+    specifier for Graylint. See `Guarding against linter compatibility breakage`_ for
+    more information.
 
-The ``darker <myfile.py>`` or ``darker <directory>`` command
+As an example,
+the ``graylint --lint pylint <myfile.py>``
+or ``graylint --lint pylint <directory>`` command
 reads the original file(s),
-formats them using Black_,
-combines original and formatted regions based on edits,
-and writes back over the original file(s).
+runs Pylint on them in the original state of the current commit,
+then runs Pylint again on the working tree,
+and finally filters out the messages which appeared in both runs.
 
 Alternatively, you can invoke the module directly through the ``python`` executable,
 which may be preferable depending on your setup.
-Use ``python -m darker`` instead of ``darker`` in that case.
+Use ``python -m graylint`` instead of ``graylint`` in that case.
 
-By default, ``darker`` just runs Black_ to reformat the code.
-You can enable additional features with command line options:
-
-- ``-i`` / ``--isort``: Reorder imports using isort_. Note that isort_ must be
-  run in the same Python environment as the packages to process, as it imports
-  your modules to determine whether they are first or third party modules.
-- ``-f`` / ``--flynt``: Also convert string formatting to use f-strings using the
-  ``flynt`` package
-- ``-L <linter>`` / ``--lint <linter>``: Run a supported linter (see `Using linters`_)
-
-*New in version 1.1.0:* The ``-L`` / ``--lint`` option.
-*New in version 1.2.2:* Package available in conda-forge_.
-*New in version 1.7.0:* The ``-f`` / ``--flynt`` option
+By default, ``graylint`` doesn't run any linters.
+You can enable indiviual linters with the
+``-L <linter>`` / ``--lint <linter>`` command line options:
 
 .. _Conda: https://conda.io/
 .. _conda-forge: https://conda-forge.org/
@@ -181,7 +115,7 @@ You can enable additional features with command line options:
 Example
 =======
 
-This example walks you through a minimal practical use case for Darker.
+This example walks you through a minimal practical use case for Graylint.
 
 First, create an empty Git repository:
 
@@ -192,13 +126,25 @@ First, create an empty Git repository:
    $ git init
    Initialized empty Git repository in /tmp/test/.git/
 
-In the root of that directory, create the ill-formatted Python file ``our_file.py``:
+In the root of that directory, create the Python file ``our_file.py``
+which violates one Pylint rule:
 
 .. code-block:: python
 
-   if True: print('hi')
-   print()
-   if False: print('there')
+   first_name = input("Enter your first name: ")
+   if first_name == "Guido":
+       print("I know you")
+   else:
+       print("Nice to meet you")
+
+.. code-block:: shell
+
+   $ pylint our_file.py
+   ************* Module our_file
+   our_file.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+
+   ------------------------------------------------------------------
+   Your code has been rated at 7.50/10 (previous run: 7.50/10, +0.00)
 
 Commit that file:
 
@@ -210,108 +156,57 @@ Commit that file:
     1 file changed, 3 insertions(+)
     create mode 100644 our_file.py
 
-Now modify the first line in that file:
+Now modify the fourth line in that file:
 
 .. code-block:: python
 
-   if True: print('CHANGED TEXT')
-   print()
-   if False: print('there')
-
-You can ask Darker to show the diff for minimal reformatting
-which makes edited lines conform to Black rules:
-
-.. code-block:: diff
-
-   $ darker --diff our_file.py
-   --- our_file.py
-   +++ our_file.py
-   @@ -1,3 +1,4 @@
-   -if True: print('CHANGED TEXT')
-   +if True:
-   +    print("CHANGED TEXT")
-   print()
-   if False: print('there')
-
-Alternatively, Darker can output the full reformatted file
-(works only when a single Python file is provided on the command line):
+   first_name = input("Enter your first name: ")
+   if first_name == "Guido":
+       print("I know you")
+   elif True:
+       print("Nice to meet you")
 
 .. code-block:: shell
 
-   $ darker --stdout our_file.py
+   $ pylint our_file.py
+   ************* Module our_file
+   our_file.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+   our_file.py:4:5: W0125: Using a conditional statement with a constant value (using-constant-test)
 
-.. code-block:: python
+   ------------------------------------------------------------------
+   Your code has been rated at 6.00/10 (previous run: 7.50/10, -1.50)
 
-   if True:
-       print("CHANGED TEXT")
-   print()
-   if False: print('there')
-
-If you omit the ``--diff`` and ``--stdout`` options,
-Darker replaces the files listed on the command line
-with partially reformatted ones as shown above:
+You can ask Graylint to show only the newly appeared linting violations:
 
 .. code-block:: shell
 
-   $ darker our_file.py
+   $ graylint --lint pylint our_file.py
+   our_file.py:4:5: W0125: Using a conditional statement with a constant value (using-constant-test) [pylint]
 
-Now the contents of ``our_file.py`` will have changed.
-Note that the original ``print()`` and ``if False: ...`` lines have not been reformatted
-since they had not been edited!
-
-.. code-block:: python
-
-   if True:
-       print("CHANGED TEXT")
-   print()
-   if False: print('there')
-
-You can also ask Darker to reformat edited lines in all Python files in the repository:
+You can also ask Graylint to run linters on all Python files in the repository:
 
 .. code-block:: shell
 
-   $ darker .
+   $ graylint --lint pylint .
 
 Or, if you want to compare to another branch (or, in fact, any commit)
 instead of the last commit:
 
 .. code-block:: shell
 
-   $ darker --revision master .
+   $ graylint --lint pylint --revision main .
 
 
-Customizing ``darker``, Black_, isort_, flynt_ and linter behavior
-==================================================================
-
-``darker`` invokes Black_ and isort_ internals directly instead of running their
-binaries, so it needs to read and pass configuration options to them explicitly.
-Project-specific default options for ``darker`` itself, Black_ and isort_ are read from
-the project's ``pyproject.toml`` file in the repository root. isort_ does also look for
-a few other places for configuration.
+Customizing ``graylint`` and linter behavior
+============================================
 
 Mypy_, Pylint_, Flake8_ and other compatible linters are invoked as
-subprocesses by ``darker``, so normal configuration mechanisms apply for each of those
+subprocesses by ``graylint``, so normal configuration mechanisms apply for each of those
 tools. Linters can also be configured on the command line, for example::
 
-    darker -L "mypy --strict" .
-    darker --lint "pylint --errors-only" .
+    graylint -L "mypy --strict" .
+    graylint --lint "pylint --errors-only" .
   
-flynt_ (option ``-f`` / ``--flynt``) is also invoked as a subprocess, but passing
-command line options to it is currently not supported. Configuration files need to be
-used instead.
-
-Darker does honor exclusion options in Black configuration files when recursing
-directories, but the exclusions are only applied to Black reformatting. Isort and
-linters are still run on excluded files. Also, individual files explicitly listed on the
-command line are still reformatted even if they match exclusion patterns.
-
-For more details, see:
-
-- `Black documentation about pyproject.toml`_
-- `isort documentation about config files`_
-- `public GitHub repositories which install and run Darker`_
-- `flynt documentation about configuration files`_
-
 The following `command line arguments`_ can also be used to modify the defaults:
 
 -r REV, --revision REV
@@ -319,38 +214,17 @@ The following `command line arguments`_ can also be used to modify the defaults:
        latest commit to the working tree. Tags, branch names, commit hashes, and other
        expressions like ``HEAD~5`` work here. Also a range like ``main...HEAD`` or
        ``main...`` can be used to compare the best common ancestor. With the magic value
-       ``:PRE-COMMIT:``, Darker works in pre-commit compatible mode. Darker expects the
-       revision range from the ``PRE_COMMIT_FROM_REF`` and ``PRE_COMMIT_TO_REF``
-       environment variables. If those are not found, Darker works against ``HEAD``.
+       ``:PRE-COMMIT:``, Graylint works in pre-commit compatible mode. Graylint expects
+       the revision range from the ``PRE_COMMIT_FROM_REF`` and ``PRE_COMMIT_TO_REF``
+       environment variables. If those are not found, Graylint works against ``HEAD``.
        Also see ``--stdin-filename=`` for the ``:STDIN:`` special value.
---diff
-       Don't write the files back, just output a diff for each file on stdout. Highlight
-       syntax if on a terminal and the ``pygments`` package is available, or if enabled
-       by configuration.
--d, --stdout
-       Force complete reformatted output to stdout, instead of in-place. Only valid if
-       there's just one file to reformat. Highlight syntax if on a terminal and the
-       ``pygments`` package is available, or if enabled by configuration.
 --stdin-filename PATH
-       The path to the file when passing it through stdin. Useful so Darker can find the
-       previous version from Git. Only valid with ``--revision=<rev1>..:STDIN:``
+       The path to the file when passing it through stdin. Useful so Graylint can find
+       the previous version from Git. Only valid with ``--revision=<rev1>..:STDIN:``
        (``HEAD..:STDIN:`` being the default if ``--stdin-filename`` is enabled).
---check
-       Don't write the files back, just return the status. Return code 0 means nothing
-       would change. Return code 1 means some files would be reformatted.
--f, --flynt
-       Also convert string formatting to use f-strings using the ``flynt`` package
--i, --isort
-       Also sort imports using the ``isort`` package
--L CMD, --lint CMD
-       Also run a linter on changed files. ``CMD`` can be a name or path of the linter
-       binary, or a full quoted command line with the command and options. Linters read
-       their configuration as normally, and aren't affected by ``-c`` / ``--config``.
-       Linter output is syntax highlighted when the ``pygments`` package is available if
-       run on a terminal and or enabled by explicitly (see ``--color``).
 -c PATH, --config PATH
-       Ask ``black`` and ``isort`` to read configuration from ``PATH``. Note that other
-       tools like flynt, Mypy, Pylint and Flake8 won't use this configuration file.
+       Read Graylint configuration from ``PATH``. Note that linters run by Graylint
+       won't read this configuration file.
 -v, --verbose
        Show steps taken and summarize modifications
 -q, --quiet
@@ -361,269 +235,46 @@ The following `command line arguments`_ can also be used to modify the defaults:
 --no-color
        Disable syntax highlighting even for terminal output. Overrides the environment
        variable PY_COLORS=1
--S, --skip-string-normalization
-       Don't normalize string quotes or prefixes
---no-skip-string-normalization
-       Normalize string quotes or prefixes. This can be used to override
-       ``skip_string_normalization = true`` from a configuration file.
---skip-magic-trailing-comma
-       Skip adding trailing commas to expressions that are split by comma where each
-       element is on its own line. This includes function signatures. This can be used
-       to override ``skip_magic_trailing_comma = true`` from a configuration file.
--l LENGTH, --line-length LENGTH
-       How many characters per line to allow [default: 88]
--t VERSION, --target-version VERSION
-       [py33|py34|py35|py36|py37|py38|py39|py310|py311|py312] Python versions that
-       should be supported by Black's output. [default: per-file auto-detection]
 -W WORKERS, --workers WORKERS
        How many parallel workers to allow, or ``0`` for one per core [default: 1]
+-L CMD, --lint CMD
+       Run a linter on changed files. ``CMD`` can be a name or path of the linter
+       binary, or a full quoted command line with the command and options. Linters read
+       their configuration as normally, and aren't affected by ``-c`` / ``--config``.
+       Linter output is syntax highlighted when the ``pygments`` package is available if
+       run on a terminal and or enabled by explicitly (see ``--color``).
 
 To change default values for these options for a given project,
-add a ``[tool.darker]`` or ``[tool.black]`` section to ``pyproject.toml`` in the
+add a ``[tool.graylint]`` section to ``pyproject.toml`` in the
 project's root directory, or to a different TOML file specified using the ``-c`` /
 ``--config`` option. For example:
 
 .. code-block:: toml
 
-   [tool.darker]
+   [tool.graylint]
    src = [
        "src/mypackage",
    ]
    revision = "master"
-   diff = true
-   check = true
-   isort = true
-   flynt = true
    lint = [
        "pylint",
    ]
-   line-length = 80                  # Passed to isort and Black, override their config
    log_level = "INFO"
 
-   [tool.black]
-   line-length = 88                  # Overridden by [tool.darker] above
-   skip-magic-trailing-comma = false
-   skip-string-normalization = false
-   target-version = ['py311']
-   exclude = "test_*\.py"
-   extend_exclude = "/generated/"
-   force_exclude = ".*\.pyi"
-
-   [tool.isort]
-   profile = "black"
-   known_third_party = ["pytest"]
-   line_length = 88                  # Overridden by [tool.darker] above
-
-While isort_ reads all of its options from the configuration file, Black_ only honors
-the ones listed above when called by ``darker``. Other tools are invoked as
-subprocesses and use their configuration mechanisms unmodified.
-
-Be careful to not use options which generate output which is unexpected for
-other tools. For example, VSCode only expects the reformat diff, so
-``lint = [ ... ]`` can't be used with it.
-
-*New in version 1.0.0:*
-
-- The ``-c``, ``-S`` and ``-l`` command line options.
-- isort_ is configured with ``-c`` and ``-l``, too.
-
-*New in version 1.1.0:* The command line options
-
-- ``-r`` / ``--revision``
-- ``--diff``
-- ``--check``
-- ``--no-skip-string-normalization``
-- ``-L`` / ``--lint``
-
-*New in version 1.2.0:* Support for
-
-- commit ranges in ``-r`` / ``--revision``.
-- a ``[tool.darker]`` section in ``pyproject.toml``.
-
-*New in version 1.2.2:* Support for ``-r :PRE-COMMIT:`` / ``--revision=:PRE_COMMIT:``
-
-*New in version 1.3.0:* The ``--skip-magic-trailing-comma`` and ``-d`` / ``--stdout``
-command line options
-
-*New in version 1.5.0:* The ``-W`` / ``--workers``, ``--color`` and ``--no-color``
-command line options
-
-*New in version 1.7.0:* The ``-t`` / ``--target-version`` command line option
-
-*New in version 1.7.0:* The ``-f`` / ``--flynt`` command line option
-
-.. _Black documentation about pyproject.toml: https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html#configuration-via-a-file
-.. _isort documentation about config files: https://timothycrosley.github.io/isort/docs/configuration/config_files/
-.. _public GitHub repositories which install and run Darker: https://github.com/search?q=%2Fpip+install+.*darker%2F+path%3A%2F%5E.github%5C%2Fworkflows%5C%2F.*%2F&type=code
-.. _flynt documentation about configuration files: https://github.com/ikamensh/flynt#configuration-files
-.. _command line arguments: https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html#command-line-options
 
 Editor integration
 ==================
 
-Many editors have plugins or recipes for integrating Black_.
-You may be able to adapt them to be used with ``darker``.
-See `editor integration`__ in the Black_ documentation.
+Many editors have plugins or recipes for running linters.
+You may be able to adapt them to be used with ``graylint``.
+Currently we have no specific instructions for any editor,
+but we welcome contributions to this document.
 
-__ https://github.com/psf/black/#editor-integration
-
-PyCharm/IntelliJ IDEA
----------------------
-
-1. Install ``darker``::
-
-     $ pip install darker
-
-2. Locate your ``darker`` installation folder.
-
-   On macOS / Linux / BSD::
-
-     $ which darker
-     /usr/local/bin/darker  # possible location
-
-   On Windows::
-
-     $ where darker
-     %LocalAppData%\Programs\Python\Python36-32\Scripts\darker.exe  # possible location
-
-3. Open External tools in PyCharm/IntelliJ IDEA
-
-   - On macOS: ``PyCharm -> Preferences -> Tools -> External Tools``
-   - On Windows / Linux / BSD: ``File -> Settings -> Tools -> External Tools``
-
-4. Click the ``+`` icon to add a new external tool with the following values:
-
-   - Name: Darker
-   - Description: Use Black to auto-format regions changed since the last git commit.
-   - Program: <install_location_from_step_2>
-   - Arguments: ``"$FilePath$"``
-
-   If you need any extra command line arguments
-   like the ones which change Black behavior,
-   you can add them to the ``Arguments`` field, e.g.::
-
-       --config /home/myself/black.cfg "$FilePath$"
-
-5. You can now format the currently opened file by selecting ``Tools -> External Tools -> Darker``
-   or right clicking on a file and selecting ``External Tools -> Darker``
-
-6. Optionally, set up a keyboard shortcut at
-   ``Preferences or Settings -> Keymap -> External Tools -> External Tools - Darker``
-
-7. Optionally, run ``darker`` on every file save:
-
-   1. Make sure you have the `File Watcher`__ plugin installed.
-   2. Go to ``Preferences or Settings -> Tools -> File Watchers`` and click ``+`` to add
-      a new watcher:
-
-      - Name: Darker
-      - File type: Python
-      - Scope: Project Files
-      - Program: <install_location_from_step_2>
-      - Arguments: ``$FilePath$``
-      - Output paths to refresh: ``$FilePath$``
-      - Working directory: ``$ProjectFileDir$``
-
-   3. Uncheck "Auto-save edited files to trigger the watcher"
-
-__ https://plugins.jetbrains.com/plugin/7177-file-watchers
-
-
-Visual Studio Code
-------------------
-
-1. Install ``darker``::
-
-     $ pip install darker
-
-2. Locate your ``darker`` installation folder.
-
-   On macOS / Linux / BSD::
-
-     $ which darker
-     /usr/local/bin/darker  # possible location
-
-   On Windows::
-
-     $ where darker
-     %LocalAppData%\Programs\Python\Python36-32\Scripts\darker.exe  # possible location
-
-3. Add these configuration options to VS code, ``Cmd-Shift-P``, ``Open Settings (JSON)``::
-
-    "python.formatting.provider": "black",
-    "python.formatting.blackPath": "<install_location_from_step_2>",
-    "python.formatting.blackArgs": [],
-
-VSCode will always add ``--diff --quiet`` as arguments to Darker,
-but you can also pass additional arguments in the ``blackArgs`` option
-(e.g. ``["--isort", "--revision=master..."]``).
-Be sure to *not* enable any linters here or in ``pyproject.toml``
-since VSCode won't be able to understand output from them.
-
-Note that VSCode first copies the file to reformat into a temporary
-``<filename>.py.<hash>.tmp`` file, then calls Black (or Darker in this case) on that
-file, and brings the changes in the modified files back into the editor.
-Darker is aware of this behavior, and will correctly compare ``.py.<hash>.tmp`` files
-to corresponding ``.py`` files from earlier repository revisions.
-
-
-Vim
----
-
-Unlike Black_ and many other formatters, ``darker`` needs access to the Git history.
-Therefore it does not work properly with classical auto reformat plugins.
-
-You can though ask vim to run ``darker`` on file save with the following in your
-``.vimrc``:
-
-.. code-block:: vim
-
-   set autoread
-   autocmd BufWritePost *.py silent :!darker %
-
-- ``BufWritePost`` to run ``darker`` *once the file has been saved*,
-- ``silent`` to not ask for confirmation each time,
-- ``:!`` to run an external command,
-- ``%`` for current file name.
-
-Vim should automatically reload the file.
-
-Emacs
------
-
-You can integrate with Emacs using Steve Purcell's `emacs-reformatter`__ library.
-
-Using `use-package`__:
-
-.. code-block:: emacs-lisp
-
-    (use-package reformatter
-      :hook ((python-mode . darker-reformat-on-save-mode))
-      :config
-      (reformatter-define darker-reformat
-        :program "darker"
-        :stdin nil
-        :stdout nil
-        :args (list "-q" input-file))
-
-
-This will automatically reformat the buffer on save.
-
-You have multiple functions available to launch it manually:
-
-- darker-reformat
-- darker-reformat-region
-- darker-reformat-buffer
-
-__ https://github.com/purcell/emacs-reformatter
-__ https://github.com/jwiegley/use-package
 
 Using as a pre-commit hook
 ==========================
 
-*New in version 1.2.1*
-
-To use Darker locally as a Git pre-commit hook for a Python project,
+To use Graylint locally as a Git pre-commit hook for a Python project,
 do the following:
 
 1. Install pre-commit_ in your environment
@@ -637,10 +288,10 @@ do the following:
 
    .. code-block:: yaml
 
-      - repo: https://github.com/akaihola/darker
-        rev: 1.7.3
+      - repo: https://github.com/akaihola/graylint
+        rev: 0.0.1
         hooks:
-          - id: darker
+          - id: graylint
 
 4. install the Git hook scripts and update to the newest version::
 
@@ -648,18 +299,18 @@ do the following:
        pre-commit autoupdate
 
 When auto-updating, care is being taken to protect you from possible incompatibilities
-introduced by Black updates. See `Guarding against Black compatibility breakage`_ for
+introduced by linter updates. See `Guarding against linter compatibility breakage`_ for
 more information.
 
-If you'd prefer to not update but keep a stable pre-commit setup, you can pin Black and
-other reformatter/linter tools you use to known compatible versions, for example:
+If you'd prefer to not update but keep a stable pre-commit setup, you can pin linters
+you use to known compatible versions, for example:
 
 .. code-block:: yaml
 
-   - repo: https://github.com/akaihola/darker
-     rev: 1.7.3
+   - repo: https://github.com/akaihola/graylint
+     rev: 0.0.1
      hooks:
-       - id: darker
+       - id: graylint
          args:
            - --isort
            - --lint
@@ -669,8 +320,6 @@ other reformatter/linter tools you use to known compatible versions, for example
            - --lint
            - pylint
          additional_dependencies:
-           - black==22.12.0
-           - isort==5.11.4
            - mypy==0.990
            - flake8==5.0.4
            - pylint==2.15.5
@@ -682,42 +331,41 @@ other reformatter/linter tools you use to known compatible versions, for example
 Using arguments
 ---------------
 
-You can provide arguments, such as enabling isort, by specifying ``args``.
-Note the inclusion of the isort Python package under ``additional_dependencies``:
+You can provide arguments, such as choosing linters, by specifying ``args``.
+Note the inclusion of the ``ruff`` Python package under ``additional_dependencies``:
 
 .. code-block:: yaml
 
-   - repo: https://github.com/akaihola/darker
-     rev: 1.7.3
+   - repo: https://github.com/akaihola/graylint
+     rev: 0.0.1
      hooks:
-       - id: darker
-         args: [--isort]
+       - id: graylint
+         args: [--lint "ruff check"]
          additional_dependencies:
-           - isort~=5.9
+           - ruff~=0.3.2
 
 
 GitHub Actions integration
 ==========================
 
-You can use Darker within a GitHub Actions workflow
+You can use Graylint within a GitHub Actions workflow
 without setting your own Python environment.
-Great for enforcing that modifications and additions to your code
-match the Black_ code style.
+Great for enforcing that no linter regressions are introduced.
 
 Compatibility
 -------------
 
 This action is known to support all GitHub-hosted runner OSes. In addition, only
-published versions of Darker are supported (i.e. whatever is available on PyPI).
-You can `search workflows in public GitHub repositories`_ to see how Darker is being
+published versions of Graylint are supported (i.e. whatever is available on PyPI).
+You can `search workflows in public GitHub repositories`_ to see how Graylint is being
 used.
 
-.. _search workflows in public GitHub repositories: https://github.com/search?q=%22uses%3A+akaihola%2Fdarker%22+path%3A%2F%5E.github%5C%2Fworkflows%5C%2F.*%2F&type=code
+.. _search workflows in public GitHub repositories: https://github.com/search?q=%22uses%3A+akaihola%2Fgraylint%22+path%3A%2F%5E.github%5C%2Fworkflows%5C%2F.*%2F&type=code
 
 Usage
 -----
 
-Create a file named ``.github/workflows/darker.yml`` inside your repository with:
+Create a file named ``.github/workflows/graylint.yml`` inside your repository with:
 
 .. code-block:: yaml
 
@@ -733,52 +381,42 @@ Create a file named ``.github/workflows/darker.yml`` inside your repository with
            with:
              fetch-depth: 0 
          - uses: actions/setup-python@v5
-         - uses: akaihola/darker@1.7.3
+         - uses: akaihola/graylint@0.0.1
            with:
-             options: "--check --diff --isort --color"
+             options: "-v"
              src: "./src"
-             version: "~=1.7.3"
+             version: "~=0.0.1"
              lint: "flake8,pylint==2.13.1"
 
 There needs to be a working Python environment, set up using ``actions/setup-python``
-in the above example. Darker will be installed in an isolated virtualenv to prevent
+in the above example. Graylint will be installed in an isolated virtualenv to prevent
 conflicts with other workflows.
 
-``"uses:"`` specifies which Darker release to get the GitHub Action definition from.
+``"uses:"`` specifies which Graylint release to get the GitHub Action definition from.
 We recommend to pin this to a specific release.
-``"version:"`` specifies which version of Darker to run in the GitHub Action.
+``"version:"`` specifies which version of Graylint to run in the GitHub Action.
 It defaults to the same version as in ``"uses:"``,
 but you can force it to use a different version as well.
-Darker versions available from PyPI are supported, as well as commit SHAs or branch
+Graylint versions available from PyPI are supported, as well as commit SHAs or branch
 names, prefixed with an ``@`` symbol (e.g. ``version: "@master"``).
 
-The ``revision: "master..."`` (or ``"main..."``) option instructs Darker
-to compare the current branch to the branching point from main branch
-when determining which source code lines have been changed.
-If omitted, the Darker GitHub Action will determine the commit range automatically.
+The ``revision: "master..."`` (or ``"main..."``) option instructs Graylint
+to run linters in the branching point from main branch
+and then run them again in the current branch.
+If omitted, the Graylint GitHub Action will determine the commit range automatically.
 
-``"src:"`` defines the root directory to run Darker for.
+``"src:"`` defines the root directory to run Graylint for.
 This is typically the source tree, but you can use ``"."`` (the default)
-to also reformat Python files like ``"setup.py"`` in the root of the whole repository.
+to also lint Python files like ``"setup.py"`` in the root of the whole repository.
 
-You can also configure other arguments passed to Darker via ``"options:"``.
-It defaults to ``"--check --diff --color"``.
-You can e.g. add ``"--isort"`` to sort imports, or ``"--verbose"`` for debug logging.
+You can also configure other arguments passed to Graylint via ``"options:"``.
+It defaults to ``""``.
+You can e.g. add ``"--verbose"`` for debug logging.
 
-To run linters through Darker, you can provide a comma separated list of linters using
+To run linters through Graylint, you can provide a comma separated list of linters using
 the ``lint:`` option. Only ``flake8``, ``pylint`` and ``mypy`` are supported. Other
-linters may or may not work with Darker, depending on their message output format.
+linters may or may not work with Graylint, depending on their message output format.
 Versions can be constrained using ``pip`` syntax, e.g. ``"flake8>=3.9.2"``.
-
-*New in version 1.1.0:*
-GitHub Actions integration. Modeled after how Black_ does it,
-thanks to Black authors for the example!
-
-*New in version 1.4.1:*
-The ``revision:`` option, with smart default value if omitted.
-
-*New in version 1.5.0:*
-The ``lint:`` option.
 
 
 .. _Using linters:
@@ -786,24 +424,17 @@ The ``lint:`` option.
 Using linters
 =============
 
-One way to use Darker is to filter linter output to only those linter messages
-which appeared after the modifications to source code files,
-as well as old messages which concern modified lines.
-Darker supports any linter with output in one of the following formats::
+Graylint supports any linter with output in one of the following formats::
 
     <file>:<linenum>: <description>
     <file>:<linenum>:<col>: <description>
 
-Most notably, the following linters/checkers have been verified to work with Darker:
+Most notably, the following linters/checkers have been verified to work with Graylint:
 
 - Mypy_ for static type checking
 - Pylint_ for generic static checking of code
 - Flake8_ for style guide enforcement
 - `cov_to_lint.py`_ for test coverage
-
-*New in version 1.1.0:* Support for Mypy_, Pylint_, Flake8_ and compatible linters.
-
-*New in version 1.2.0:* Support for test coverage output using `cov_to_lint.py`_.
 
 To run a linter, use the ``--lint`` / ``-L`` command line option with the linter
 command or a full command line to pass to a linter. Some examples:
@@ -814,29 +445,21 @@ command or a full command line to pass to a linter. Some examples:
 - ``-L cov_to_lint.py``: read ``.coverage`` and list non-covered modified lines
 
 **Note:** Full command lines aren't fully tested on Windows. See issue `#456`_ for a
-possible bug.
+possible bug (in Darker which is where Graylint code originates from).
 
-Darker also groups linter output into blocks of consecutive lines
+Graylint also groups linter output into blocks of consecutive lines
 separated by blank lines.
 Here's an example of `cov_to_lint.py`_ output::
 
-    $ darker --revision 0.1.0.. --check --lint cov_to_lint.py src
-    src/darker/__main__.py:94:  no coverage:             logger.debug("No changes in %s after isort", src)
-    src/darker/__main__.py:95:  no coverage:             break
+    $ graylint --revision 0.1.0.. --lint cov_to_lint.py src
+    src/graylint/__main__.py:94:  no coverage:             logger.debug("No changes in %s after isort", src)
+    src/graylint/__main__.py:95:  no coverage:             break
 
-    src/darker/__main__.py:125: no coverage:         except NotEquivalentError:
+    src/graylint/__main__.py:125: no coverage:         except NotEquivalentError:
 
-    src/darker/__main__.py:130: no coverage:             if context_lines == max_context_lines:
-    src/darker/__main__.py:131: no coverage:                 raise
-    src/darker/__main__.py:132: no coverage:             logger.debug(
-
-+-----------------------------------------------------------------------+
-|                               ⚠ NOTE ⚠                                |
-+=======================================================================+
-| Don't enable linting on the command line or in the configuration when |
-| running Darker as a reformatter in VSCode. You will confuse VSCode    |
-| with unexpected output from Darker, as it only expect black's output  |
-+-----------------------------------------------------------------------+
+    src/graylint/__main__.py:130: no coverage:             if context_lines == max_context_lines:
+    src/graylint/__main__.py:131: no coverage:                 raise
+    src/graylint/__main__.py:132: no coverage:             logger.debug(
 
 .. _Mypy: https://pypi.org/project/mypy
 .. _Pylint: https://pypi.org/project/pylint
@@ -848,16 +471,16 @@ Here's an example of `cov_to_lint.py`_ output::
 Syntax highlighting
 ===================
 
-Darker automatically enables syntax highlighting for the ``--diff``,
-``-d``/``--stdout`` and ``-L``/``--lint`` options if it's running on a terminal and the
+Graylint automatically enables syntax highlighting for the ``-L``/``--lint`` option
+if it's running on a terminal and the
 Pygments_ package is installed.
 
 You can force enable syntax highlighting on non-terminal output using
 
-- the ``color = true`` option in the ``[tool.darker]`` section of ``pyproject.toml`` of
-  your Python project's root directory,
+- the ``color = true`` option in the ``[tool.graylint]`` section of ``pyproject.toml``
+  of your Python project's root directory,
 - the ``PY_COLORS=1`` environment variable, and
-- the ``--color`` command line option for ``darker``.
+- the ``--color`` command line option for ``graylint``.
   
 You can force disable syntax highlighting on terminal output using
 
@@ -871,54 +494,57 @@ line options always take highest precedence.
 .. _Pygments: https://pypi.org/project/Pygments/
 
 
-Guarding against Black compatibility breakage
-=============================================
+Guarding against linter compatibility breakage
+==============================================
 
-Darker accesses some Black internals which don't belong to its public API. Darker is
-thus subject to becoming incompatible with future versions of Black.
+Graylint relies on calling linters with well-known command line arguments
+and expects their output to conform to a defined format.
+Graylint is subject to becoming incompatible with future versions of linters
+if either of these change.
 
-To protect users against such breakage, we test Darker daily against the `Black main
-branch`_ and strive to proactively fix any potential incompatibilities through this
-process. If a commit to Black ``main`` branch introduces an incompatibility with
-Darker, we will release a first patch version for Darker that prevents upgrading Black
-and a second patch version that fixes the incompatibility. A hypothetical example:
+To protect users against such breakage, we test Graylint daily against main branches of
+supported linters and strive to proactively fix any potential incompatibilities through
+this process. If a commit to a linter's ``main`` branch introduces an incompatibility
+with Graylint, we will release a first patch version for Graylint that prevents
+upgrading that linter and a second patch version that fixes the incompatibility.
+A hypothetical example:
 
-1. Darker 9.0.0; Black 35.12.0
+1. Graylint 9.0.0; Pylint 35.12.0
    -> OK
-2. Darker 9.0.0; Black ``main`` (after 35.12.0)
+2. Graylint 9.0.0; Pylint ``main`` (after 35.12.0)
    -> ERROR on CI test-future_ workflow
-3. Darker 9.0.1 released, with constraint ``Black<=35.12.0``
+3. Graylint 9.0.1 released, with constraint ``Pylint<=35.12.0``
    -> OK
-4. Black 36.1.0 released, but Darker 9.0.1 prevents upgrade; Black 35.12.0
+4. Pylint 36.1.0 released, but Graylint 9.0.1 prevents upgrade; Pylint 35.12.0
    -> OK
-5. Darker 9.0.2 released with a compatibility fix, constraint removed; Black 36.1.0
+5. Graylint 9.0.2 released with a compatibility fix, constraint removed; Pylint 36.1.0
    -> OK
 
-If a Black release introduces an incompatibility before the second Darker patch version
-that fixes it, the first Darker patch version will downgrade Black to the latest
-compatible version:
+If a Pylint release introduces an incompatibility before the second Graylint patch
+version that fixes it, the first Graylint patch version will downgrade Pylint to the
+latest compatible version:
 
-1. Darker 9.0.0; Black 35.12.0
+1. Graylint 9.0.0; Pylint 35.12.0
    -> OK
-2. Darker 9.0.0; Black 36.1.0
+2. Graylint 9.0.0; Pylint 36.1.0
    -> ERROR
-3. Darker 9.0.1, constraint ``Black<=35.12.0``; downgrades to Black 35.12.0
+3. Graylint 9.0.1, constraint ``Pylint<=35.12.0``; downgrades to Pylint 35.12.0
    -> OK
-4. Darker 9.0.2 released with a compatibility fix, constraint removed; Black 36.1.0
+4. Graylint 9.0.2 released with a compatibility fix, constraint removed; Pylint 36.1.0
    -> OK
 
-To be completely safe, you can pin both Darker and Black to known good versions, but
+To be completely safe, you can pin both Graylint and Pylint to known good versions, but
 this may prevent you from receiving improvements in Black. 
 
 It is recommended to use the '``~=``' "`compatible release`_" version specifier for
-Darker to ensure you have the latest version before the next major release that may
+Graylint to ensure you have the latest version before the next major release that may
 cause compatibility issues. 
 
-See issue `#382`_ and PR `#430`_ for more information.
+See issue `#382`_ and PR `#430`_ in Darker (where this feature originates from)
+for more information.
 
 .. _compatible release: https://peps.python.org/pep-0440/#compatible-release
-.. _Black main branch: https://github.com/psf/black/commits/main
-.. _test-future: https://github.com/akaihola/darker/blob/master/.github/workflows/test-future.yml
+.. _test-future: https://github.com/akaihola/graylint/blob/master/.github/workflows/test-future.yml
 .. _#382: https://github.com/akaihola/darker/issues/382
 .. _#430: https://github.com/akaihola/darker/issues/430
 
@@ -926,18 +552,12 @@ See issue `#382`_ and PR `#430`_ for more information.
 How does it work?
 =================
 
-Darker takes a ``git diff`` of your Python files,
-records which lines of current files have been edited or added since the last commit.
-It then runs Black_ and notes which chunks of lines were reformatted.
-Finally, only those reformatted chunks on which edited lines fall (even partially)
-are applied to the edited file.
-
-Also, in case the ``--isort`` option was specified,
-isort_ is run on each edited file before applying Black_.
-Similarly, each linter requested using the `--lint <command>` option is run,
-and only those linting messages are displayed which appeared after the modifications to
-the source code files,
-or which were there already before but now fall on modified lines.
+Graylint runs linters in two different revisions of your repository,
+records which lines of current files have been edited or added,
+and tracks which lines they correspond to in the older revision.
+It then filters out any linter errors which appear in both revisions
+on matching lines.
+Finally, only remaning errors in the newer revision are displayed.
 
 
 License
@@ -946,42 +566,19 @@ License
 BSD. See ``LICENSE.rst``.
 
 
-Prior art
-=========
-
-- black-macchiato__
-- darken__ (deprecated in favor of Darker; thanks Carreau__ for inspiration!)
-
-__ https://github.com/wbolster/black-macchiato
-__ https://github.com/Carreau/darken
-__ https://github.com/Carreau
-
-
 Interesting code formatting and analysis projects to watch
 ==========================================================
 
-The following projects are related to Black_ or Darker in some way or another.
-Some of them we might want to integrate to be part of a Darker run.
+The following projects are related to Graylint in some way or another.
+Some of them we might want to integrate to be part of a Graylint run.
 
-- blacken-docs__ – Run Black_ on Python code blocks in documentation files
-- blackdoc__ – Run Black_ on documentation code snippets
-- velin__ – Reformat docstrings that follow the numpydoc__ convention
+- Darker__ – Reformat code only in modified blocks of code
 - diff-cov-lint__ – Pylint and coverage reports for git diff only
 - xenon__ – Monitor code complexity
-- pyupgrade__ – Upgrade syntax for newer versions of the language (see `#51`_)
-- yapf_ – Google's Python formatter
-- yapf_diff__ – apply yapf_ or other formatters to modified lines only
 
-__ https://github.com/asottile/blacken-docs
-__ https://github.com/keewis/blackdoc
-__ https://github.com/Carreau/velin
-__ https://pypi.org/project/numpydoc
+__ https://github.com/akaihola/darker
 __ https://gitlab.com/sVerentsov/diff-cov-lint
 __ https://github.com/rubik/xenon
-__ https://github.com/asottile/pyupgrade
-__ https://github.com/google/yapf/blob/main/yapf/third_party/yapf_diff/yapf_diff.py
-.. _yapf: https://github.com/google/yapf
-.. _#51: https://github.com/akaihola/darker/pull/51
 
 
 Contributors ✨
@@ -2138,7 +1735,7 @@ Thanks goes to these wonderful people (`emoji key`_):
 This project follows the all-contributors_ specification.
 Contributions of any kind are welcome!
 
-.. _README.rst: https://github.com/akaihola/darker/blob/master/README.rst
+.. _README.rst: https://github.com/akaihola/graylint/blob/master/README.rst
 .. _emoji key: https://allcontributors.org/docs/en/emoji-key
 .. _all-contributors: https://allcontributors.org
 
@@ -2148,5 +1745,5 @@ GitHub stars trend
 
 |stargazers|_
 
-.. |stargazers| image:: https://starchart.cc/akaihola/darker.svg
-.. _stargazers: https://starchart.cc/akaihola/darker
+.. |stargazers| image:: https://starchart.cc/akaihola/graylint.svg
+.. _stargazers: https://starchart.cc/akaihola/graylint
