@@ -42,8 +42,8 @@ from typing import (
     Union,
 )
 
-from darker.diff import map_unmodified_lines
-from darker.git import (
+from darkgraylib.diff import map_unmodified_lines
+from darkgraylib.git import (
     STDIN,
     WORKTREE,
     RevisionRange,
@@ -52,8 +52,8 @@ from darker.git import (
     git_get_root,
     git_rev_parse,
 )
-from darker.highlighting import colorize
-from darker.utils import WINDOWS
+from darkgraylib.highlighting import colorize
+from darkgraylib.utils import WINDOWS
 
 logger = logging.getLogger(__name__)
 
