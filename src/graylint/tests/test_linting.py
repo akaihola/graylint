@@ -1,26 +1,26 @@
 # pylint: disable=protected-access,too-many-arguments,use-dict-literal
 
-"""Unit tests for :mod:`darker.linting`"""
+"""Unit tests for `graylint.linting`"""
 
 import os
 from pathlib import Path
-from subprocess import PIPE, Popen  # nosec
+from subprocess import PIPE  # nosec
 from textwrap import dedent
-from typing import Any, Dict, Iterable, List, Tuple, Union
+from typing import Dict, Iterable, List, Tuple, Union
 from unittest.mock import patch
 
 import pytest
 
-from darker import linting
-from darker.git import WORKTREE, RevisionRange
-from darker.linting import (
+from darkgraylib.git import WORKTREE, RevisionRange
+from graylint import linting
+from graylint.linting import (
     DiffLineMapping,
     LinterMessage,
     MessageLocation,
     make_linter_env,
 )
-from darker.tests.helpers import raises_if_exception
-from darker.utils import WINDOWS
+from darkgraylib.testtools.helpers import raises_if_exception
+from darkgraylib.utils import WINDOWS
 
 SKIP_ON_WINDOWS = [pytest.mark.skip] if WINDOWS else []
 SKIP_ON_UNIX = [] if WINDOWS else [pytest.mark.skip]
