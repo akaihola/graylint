@@ -1,22 +1,22 @@
 ---
-name: "Darker"
-description: "Apply Black, isort and linters to modified lines only."
-author: "Antti Kaihola and contributors to Darker"
+name: "Graylint"
+description: "Run linters and show only messages changed since a past revision."
+author: "Antti Kaihola and contributors to Graylint"
 inputs:
   options:
     description: >-
-      Options passed to Darker. Use `darker --help` to see available options.
-      Default: '--check --diff --color'
+      Options passed to Graylint. Use `graylint --help` to see available options.
+      Default: '--color'
     required: false
-    default: "--check --diff --color"
+    default: "--color"
   src:
-    description: "Source to run Darker. Default: '.'"
+    description: "Source tree paths to run the linters on. Default: '.'"
     required: false
     default: "."
   version:
-    description: 'Version of Darker to use, e.g. "~=1.7.3", "1.7.3", "@master"'
+    description: 'Version of Graylint to use, e.g. "~=1.0.0", "1.0.0", "@main"'
     required: false
-    default: "~=1.7.3"
+    default: "@main"
   revision:
     description: >-
       Git revision range to compare when determining modified lines.
@@ -24,7 +24,7 @@ inputs:
     required: false
   lint:
     description: >-
-      Comma-separated list of linters to `pip install` and run from Darker.
+      Comma-separated list of linters to `pip install` and run from Graylint.
       Optionally, version constraints (using pip syntax) can be specified.
       Example: flake8,pylint==2.13.1
     required: false
@@ -38,7 +38,7 @@ runs:
     - name: Commit Range
       id: commit-range
       uses: akaihola/darker/.github/actions/commit-range@1.7.1
-    - name: Run Darker
+    - name: Run Graylint
       run: |
         # Exists since using github.action_path + path to main script doesn't
         # work because bash interprets the backslashes in github.action_path

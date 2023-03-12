@@ -75,58 +75,58 @@ def main_patch(
 
 
 def test_creates_virtualenv(tmp_path, main_patch):
-    """The GitHub action creates a virtualenv for Darker"""
+    """The GitHub action creates a virtualenv for Graylint"""
     with pytest.raises(SysExitCalled):
 
         run_module("main")
 
     assert main_patch.subprocess.run.call_args_list[0] == call(
-        [sys.executable, "-m", "venv", str(tmp_path / ".darker-env")],
+        [sys.executable, "-m", "venv", str(tmp_path / ".graylint-env")],
         check=True,
     )
 
 
 @pytest.mark.kwparametrize(
-    dict(run_main_env={}, expect=["darker[color,isort]"]),
+    dict(run_main_env={}, expect=["graylint[color]"]),
     dict(
-        run_main_env={"INPUT_VERSION": "1.5.0"}, expect=["darker[color,isort]==1.5.0"]
+        run_main_env={"INPUT_VERSION": "1.5.0"}, expect=["graylint[color]==1.5.0"]
     ),
     dict(
-        run_main_env={"INPUT_VERSION": "@master"},
+        run_main_env={"INPUT_VERSION": "@main"},
         expect=[
-            "git+https://github.com/akaihola/darker@master#egg=darker[color,isort]"
+            "git+https://github.com/akaihola/graylint@main#egg=graylint[color]"
         ],
     ),
     dict(
         run_main_env={"INPUT_LINT": "pylint"},
-        expect=["darker[color,isort]", "pylint"],
+        expect=["graylint[color]", "pylint"],
     ),
     dict(
         run_main_env={"INPUT_LINT": "pylint,flake8"},
-        expect=["darker[color,isort]", "pylint", "flake8"],
+        expect=["graylint[color]", "pylint", "flake8"],
     ),
     dict(
         run_main_env={"INPUT_LINT": "  flake8  "},
-        expect=["darker[color,isort]", "flake8"],
+        expect=["graylint[color]", "flake8"],
     ),
     dict(
         run_main_env={"INPUT_LINT": "  flake8  ,  pylint  "},
-        expect=["darker[color,isort]", "flake8", "pylint"],
+        expect=["graylint[color]", "flake8", "pylint"],
     ),
     dict(
         run_main_env={"INPUT_LINT": "  flake8  >=  3.9.2  ,  pylint  ==  2.13.1  "},
-        expect=["darker[color,isort]", "flake8>=3.9.2", "pylint==2.13.1"],
+        expect=["graylint[color]", "flake8>=3.9.2", "pylint==2.13.1"],
     ),
 )
 def test_installs_packages(tmp_path, main_patch, run_main_env, expect):
-    """Darker, isort and linters are installed in the virtualenv using pip"""
+    """Graylint and linters are installed in the virtualenv using pip"""
     with pytest.raises(SysExitCalled):
 
         run_module("main")
 
     assert main_patch.subprocess.run.call_args_list[1] == call(
         [
-            str(tmp_path / ".darker-env" / BIN / "python"),
+            str(tmp_path / ".graylint-env" / BIN / "python"),
             "-m",
             "pip",
             "install",
@@ -151,7 +151,7 @@ def test_wont_install_unknown_packages(tmp_path, linters):
 
         run_module("main")
 
-    # only virtualenv `run` called, `pip` and `darker` not called
+    # only virtualenv `run` called, `pip` and `graylint` not called
     (venv_create,) = main_patch.subprocess.run.call_args_list
     assert venv_create == call([ANY, "-m", "venv", ANY], check=True)
     assert not main_patch.sys.exit.called
@@ -164,24 +164,24 @@ def test_wont_install_unknown_packages(tmp_path, linters):
         expect=["--revision", "HEAD^", "subdir/", "myfile.py"],
     ),
     dict(
-        env={"INPUT_SRC": ".", "INPUT_OPTIONS": "--isort"},
-        expect=["--isort", "--revision", "HEAD^", "."],
+        env={"INPUT_SRC": ".", "INPUT_OPTIONS": ""},
+        expect=["--revision", "HEAD^", "."],
     ),
     dict(
-        env={"INPUT_SRC": ".", "INPUT_REVISION": "master..."},
-        expect=["--revision", "master...", "."],
+        env={"INPUT_SRC": ".", "INPUT_REVISION": "main..."},
+        expect=["--revision", "main...", "."],
     ),
     dict(
-        env={"INPUT_SRC": ".", "INPUT_COMMIT_RANGE": "master..."},
-        expect=["--revision", "master...", "."],
+        env={"INPUT_SRC": ".", "INPUT_COMMIT_RANGE": "main..."},
+        expect=["--revision", "main...", "."],
     ),
     dict(
         env={
             "INPUT_SRC": ".",
-            "INPUT_REVISION": "master...",
+            "INPUT_REVISION": "main...",
             "INPUT_COMMIT_RANGE": "ignored",
         },
-        expect=["--revision", "master...", "."],
+        expect=["--revision", "main...", "."],
     ),
     dict(
         env={"INPUT_SRC": ".", "INPUT_LINT": "pylint,flake8"},
@@ -194,32 +194,31 @@ def test_wont_install_unknown_packages(tmp_path, linters):
     dict(
         env={
             "INPUT_SRC": "here.py there/too",
-            "INPUT_OPTIONS": "--isort --verbose",
-            "INPUT_REVISION": "master...",
+            "INPUT_OPTIONS": "--verbose",
+            "INPUT_REVISION": "main...",
             "INPUT_COMMIT_RANGE": "ignored",
             "INPUT_LINT": "pylint,flake8",
         },
         expect=[
-            "--isort",
             "--verbose",
             "--lint",
             "pylint",
             "--lint",
             "flake8",
             "--revision",
-            "master...",
+            "main...",
             "here.py",
             "there/too",
         ],
     ),
 )
 def test_runs_darker(tmp_path, env, expect):
-    """Configuration translates correctly into a Darker command line"""
+    """Configuration translates correctly into a Graylint command line"""
     with patch_main(tmp_path, env) as main_patch, pytest.raises(SysExitCalled):
 
         run_module("main")
 
-    darker = str(tmp_path / ".darker-env" / BIN / "darker")
+    graylint = str(tmp_path / ".graylint-env" / BIN / "graylint")
     # This gets the first list item of the first positional argument to the `run` call.
     assert darker in [c.args[0][0] for c in main_patch.subprocess.run.call_args_list]
 
@@ -233,7 +232,7 @@ def test_error_if_pip_fails(tmp_path, capsys):
         run_module("main")
 
     assert main_patch.subprocess.run.call_args_list[-1] == call(
-        [ANY, "-m", "pip", "install", "darker[color,isort]"],
+        [ANY, "-m", "pip", "install", "graylint[color]"],
         check=False,
         stdout=PIPE,
         stderr=STDOUT,
@@ -241,7 +240,7 @@ def test_error_if_pip_fails(tmp_path, capsys):
     )
     assert (
         capsys.readouterr().out.splitlines()[-1]
-        == "::error::Failed to install darker[color,isort]."
+        == "::error::Failed to install graylint[color]."
     )
     main_patch.sys.exit.assert_called_once_with(42)
 
