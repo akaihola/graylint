@@ -1,5 +1,5 @@
 ---
-name: Test linting using the Darker GitHub Action
+name: Test linting using the Graylint GitHub Action
 
 on: push  # yamllint disable-line rule:truthy
 
@@ -11,11 +11,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Run Darker's own GitHub action straight from the repository
+      - name: Run Graylint's own GitHub action straight from the repository
         uses: ./
         with:
-          options: --check --diff --color --isort --config pyproject.toml
-          src: src/darker
-          revision: origin/master...
+          options: --color --config pyproject.toml
+          src: src/graylint
+          revision: origin/main...
           lint: flake8
           version: "@${{ github.ref_name }}"
