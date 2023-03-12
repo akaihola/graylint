@@ -30,7 +30,7 @@ def main_with_error_handling() -> int:
 
 def main():
     args, config, config_nondefault = parse_command_line(
-        make_argument_parser, sys.argv[1:], GraylintConfig
+        make_argument_parser, sys.argv[1:], "graylint", GraylintConfig
     )
     setup_logging(args.log_level)
     show_config_if_debug(config, config_nondefault, args.log_level)
