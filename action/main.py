@@ -16,6 +16,7 @@ OPTIONS = os.getenv("INPUT_OPTIONS", default="")
 SRC = os.getenv("INPUT_SRC", default="")
 VERSION = os.getenv("INPUT_VERSION", default="")
 LINT = os.getenv("INPUT_LINT", default="")
+EXTRA_PACKAGES = os.getenv("INPUT_EXTRA_PACKAGES", default="")
 REVISION = os.getenv("INPUT_REVISION") or os.getenv("INPUT_COMMIT_RANGE") or "HEAD^"
 
 run([sys.executable, "-m", "venv", str(ENV_PATH)], check=True)
@@ -37,9 +38,10 @@ for linter_requirement in parse_requirements(LINT.replace(",", "\n")):
         )
     req.append(str(linter_requirement))
     linter_options.extend(["--lint", linter])
+extra_packages = shlex.split(EXTRA_PACKAGES)
 
 pip_proc = run(  # nosec
-    [str(ENV_BIN / "python"), "-m", "pip", "install"] + req,
+    [str(ENV_BIN / "python"), "-m", "pip", "install"] + req + extra_packages,
     check=False,
     stdout=PIPE,
     stderr=STDOUT,

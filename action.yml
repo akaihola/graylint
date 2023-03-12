@@ -29,6 +29,12 @@ inputs:
       Example: flake8,pylint==2.13.1
     required: false
     default: ''
+  extra_packages:
+    description: >-
+      Extra Python packages to `pip install` before running Graylint. Useful
+      for installing the tested package itself (e.g. `-e .[test]`), linter
+      plugins (e.g. `flake8-bugbear`), or imports followed by Mypy (e.g.
+      `types-requests`). This string is passed to `pip install` as-is.
 branding:
   color: "black"
   icon: "check-circle"
@@ -69,6 +75,7 @@ runs:
         INPUT_VERSION: ${{ inputs.version }}
         INPUT_REVISION: ${{ inputs.revision }}
         INPUT_LINT: ${{ inputs.lint }}
+        INPUT_EXTRA_PACKAGES: ${{ inputs.extra_packages }}
         INPUT_COMMIT_RANGE: ${{ steps.commit-range.outputs.commit-range }}
         pythonioencoding: utf-8
       shell: bash
