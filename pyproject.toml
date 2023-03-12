@@ -9,6 +9,9 @@ readme = "README.rst"
 license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
 dynamic = ["version", "description"]
+dependencies = [
+    "darkgraylib @ git+https://github.com/akaihola/darkgraylib.git@469ad599",
+]
 
 [project.scripts]
 graylint = "graylint.__main__:main_with_error_handling"
