@@ -1,7 +1,6 @@
 import logging
 import sys
 from argparse import ArgumentError
-from typing import List
 
 from darkgraylib.command_line import parse_command_line
 from darkgraylib.config import show_config_if_debug
