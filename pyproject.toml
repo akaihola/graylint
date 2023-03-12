@@ -10,7 +10,7 @@ license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
 dynamic = ["version", "description"]
 dependencies = [
-    "darkgraylib @ git+https://github.com/akaihola/darkgraylib.git@469ad599",
+    "darkgraylib @ git+https://github.com/akaihola/darkgraylib.git@main",
 ]
 
 [project.scripts]
