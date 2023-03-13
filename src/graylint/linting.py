@@ -298,7 +298,8 @@ def _check_linter_output(
         cmdline_parts = shlex.split(cmdline, posix=not WINDOWS)
     else:
         cmdline_parts = cmdline
-    cmdline_and_paths = cmdline_parts + [str(path) for path in sorted(paths)]
+    existing_path_strs = sorted(str(path) for path in paths if (root / path).exists())
+    cmdline_and_paths = cmdline_parts + existing_path_strs
     logger.debug("[%s]$ %s", root, shlex.join(cmdline_and_paths))
     with Popen(  # nosec
         cmdline_and_paths,
