@@ -12,6 +12,8 @@ from unittest.mock import patch
 import pytest
 
 from darkgraylib.git import WORKTREE, RevisionRange
+from darkgraylib.tests.helpers import raises_if_exception
+from darkgraylib.utils import WINDOWS
 from graylint import linting
 from graylint.linting import (
     DiffLineMapping,
@@ -19,8 +21,6 @@ from graylint.linting import (
     MessageLocation,
     make_linter_env,
 )
-from darkgraylib.testtools.helpers import raises_if_exception
-from darkgraylib.utils import WINDOWS
 
 SKIP_ON_WINDOWS = [pytest.mark.skip] if WINDOWS else []
 SKIP_ON_UNIX = [] if WINDOWS else [pytest.mark.skip]
@@ -187,6 +187,8 @@ def test_require_rev2_worktree(rev2, expect):
 )
 def test_check_linter_output(tmp_path, cmdline, expect):
     """``_check_linter_output()`` runs linter and returns the stdout stream"""
+    (tmp_path / "first.py").touch()
+    (tmp_path / "the  2nd.py").touch()
     with linting._check_linter_output(
         cmdline,
         tmp_path,
