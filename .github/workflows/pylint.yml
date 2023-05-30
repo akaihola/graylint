@@ -1,0 +1,22 @@
+---
+name: pylint
+
+on: push  # yamllint disable-line rule:truthy
+
+jobs:
+  pylint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - name: Install dependencies for running Pylint
+        run: |
+          pip install -U \
+            pip-requirements-parser
+          pip list
+      - uses: wearerequired/lint-action@v2.3.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pylint: true
+          continue_on_error: false
