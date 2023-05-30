@@ -12,6 +12,9 @@ Fixed
 - Use ``git worktree`` instead of ``git clone`` and ``git checkout`` to set up a
   temporary working tree for running linters for a baseline in the ``rev1`` revision of
   the repository.
+- Use the original repository working directory name as the name of the temporary
+  directory for getting the linter baseline. This avoids issues with Mypy when there's
+  an ``__init__.py`` in the repository root.
 
 
 Darker 0.1.0 to 0.7.0
