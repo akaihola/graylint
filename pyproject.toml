@@ -13,6 +13,11 @@ dependencies = [
     "darkgraylib @ git+https://github.com/akaihola/darkgraylib.git@main",
 ]
 
+[project.optional-dependencies]
+test = [
+    "mypy>=0.990",
+]
+
 [project.scripts]
 graylint = "graylint.__main__:main_with_error_handling"
 
