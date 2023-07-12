@@ -18,3 +18,4 @@ graylint = "graylint.__main__:main_with_error_handling"
 
 [project.urls]
 Home = "https://github.com/akaihola/graylint"
+News = "https://github.com/akaihola/graylint/discussions/categories/announcements"
