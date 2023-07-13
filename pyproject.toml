@@ -18,3 +18,6 @@ graylint = "graylint.__main__:main_with_error_handling"
 
 [project.urls]
 Home = "https://github.com/akaihola/graylint"
+
+[project.entry-points."pytest11"]
+darkgraylib = "darkgraylib.tests.plugin"

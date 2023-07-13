@@ -6,6 +6,8 @@ These features will be included in the next release:
 Added
 -----
 - Copied linting related code from Darker 1.7.0.
+- Use the ``git_repo`` fixture from the Pytest plugin in ``darkgraylib`` to create
+  temporary Git repositories for testing.
 
 Fixed
 -----
