@@ -10,7 +10,7 @@ from typing import Dict, Iterable, List, Tuple, Union
 import pytest
 
 from darkgraylib.git import WORKTREE, RevisionRange
-from darkgraylib.tests.helpers import raises_if_exception
+from darkgraylib.testtools.helpers import raises_if_exception
 from darkgraylib.utils import WINDOWS
 from graylint import linting
 from graylint.linting import (
