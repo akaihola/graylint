@@ -1,0 +1,144 @@
+---
+name: Build and test
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+
+jobs:
+
+  build-wheel:
+    runs-on: ubuntu-latest
+    outputs:
+      wheel-path: ${{ steps.get-darker-version.outputs.wheel-path }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - name: Install wheel
+        run: python -m pip install wheel
+      - name: Build wheel distribution
+        run: python setup.py bdist_wheel
+      - name: Upload wheel for other jobs
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+      - name: Find out Darker version and output it for test jobs
+        id: get-darker-version
+        shell: python
+        run: |
+          from os import environ
+          from pathlib import Path
+          from runpy import run_path
+          version = run_path("src/darker/version.py")["__version__"]
+          Path(environ["GITHUB_OUTPUT"]).open("a").write(
+              f"wheel-path=dist/darker-{version}-py3-none-any.whl\n"
+          )
+
+  test-nixos:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    needs:
+      - build-wheel
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v22
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - name: Download wheel uploaded by the build-wheel job
+        uses: actions/download-artifact@v3
+      - name: Run tests in nix-shell
+        run: |
+          nix-shell \
+            --pure \
+            --run '
+              python -m venv venv
+              source venv/bin/activate
+              pip install "${{needs.build-wheel.outputs.wheel-path}}[test]"
+              pytest
+            ' \
+            ./default.nix
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+        python-version:
+          - '3.7'
+          - '3.8'
+          - '3.9'
+          - '3.10'
+          - '3.11'
+          - '3.12-dev'
+        constraints: ['black==22.12.0']
+        include:
+          - os: ubuntu-latest
+            python-version: '3.7'
+            constraints: '--constraint constraints-oldest.txt'
+          - os: ubuntu-latest
+            python-version: '3.11'
+            constraints: '--constraint constraints-future.txt'
+            upgrade: '--upgrade --upgrade-strategy=eager'
+    needs:
+      - build-wheel
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          # need full history since Pytest runs Darker itself below
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Download wheel uploaded by the build-wheel job
+        uses: actions/download-artifact@v3
+      - name: Install Darker and its dependencies from the wheel build earlier
+        run: pip install "${{needs.build-wheel.outputs.wheel-path}}[test]"
+                         ${{ matrix.upgrade }} ${{ matrix.constraints }}
+      - name: Downgrade target-version when running oldest supported Black
+        if: matrix.constraints == '--constraint constraints-oldest.txt'
+        run: |
+          sed -i 's/py311/py39/' pyproject.toml
+      - name: Run Pytest with the Darker plugin on recent Black versions
+        if: matrix.constraints != '--constraint constraints-oldest.txt'
+        run: |
+          pytest --darker
+      - name: Run Pytest without the Darker plugin on oldest Black version
+        # The reformatting rules used to be a bit different. We don't need to
+        # test reformatting Darker's own code base with old Black versions.
+        # Interoperability is ensured by unit tests.
+        if: matrix.constraints == '--constraint constraints-oldest.txt'
+        run: |
+          pytest
+
+  build-sdist-validate-dists:
+    runs-on: ubuntu-latest
+    needs:
+      - build-wheel
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - name: Install twine
+        run: python -m pip install twine
+      - name: Download wheel uploaded by the build-wheel job
+        uses: actions/download-artifact@v3
+      - name: Build source distribution
+        run: python setup.py sdist
+      - name: Validate distributions
+        run: twine check dist/*
