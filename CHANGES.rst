@@ -6,6 +6,7 @@ These features will be included in the next release:
 Added
 -----
 - Copied linting related code from Darker 1.7.0.
+- Drop support for Python 3.7.
 
 Fixed
 -----

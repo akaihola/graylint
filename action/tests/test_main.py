@@ -219,9 +219,8 @@ def test_runs_darker(tmp_path, env, expect):
         run_module("main")
 
     graylint = str(tmp_path / ".graylint-env" / BIN / "graylint")
-    # We can change `c[0][0][0]` to `c.args[0][0]` after dropping Python 3.7 support.
     # This gets the first list item of the first positional argument to the `run` call.
-    assert graylint in [c[0][0][0] for c in main_patch.subprocess.run.call_args_list]
+    assert graylint in [c.args[0][0] for c in main_patch.subprocess.run.call_args_list]
 
 
 def test_error_if_pip_fails(tmp_path, capsys):

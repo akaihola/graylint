@@ -8,6 +8,7 @@ authors = [{name = "Antti Kaihola", email = "13725+akaihola@users.noreply.github
 readme = "README.rst"
 license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
+requires-python = ">=3.8"
 dynamic = ["version", "description"]
 dependencies = [
     "darkgraylib @ git+https://github.com/akaihola/darkgraylib.git@main",
