@@ -14,6 +14,8 @@ Fixed
 - Use ``git worktree`` instead of ``git clone`` and ``git checkout`` to set up a
   temporary working tree for running linters for a baseline in the ``rev1`` revision of
   the repository.
+- Omit missing paths from linter command lines. Mypy was known to lint nothing if any
+  of the paths on the command line didn't exist.
 
 
 Darker 0.1.0 to 0.7.0

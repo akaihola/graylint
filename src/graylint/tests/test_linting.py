@@ -190,7 +190,7 @@ def test_check_linter_output(tmp_path, cmdline, expect):
     with linting._check_linter_output(
         cmdline,
         tmp_path,
-        {Path("first.py"), Path("the  2nd.py")},
+        {Path("first.py"), Path("the  2nd.py"), Path("missing.py")},
         make_linter_env(tmp_path, "WORKTREE"),
     ) as stdout:
         lines = list(stdout)
