@@ -8,6 +8,7 @@ Added
 - Copied linting related code from Darker 1.7.0.
 - Drop support for Python 3.7.
 - Add a CI workflow to build the package and run unit tests on different platforms.
+- Configure the ``ruff`` linter for Graylint's own repository.
 
 Fixed
 -----
