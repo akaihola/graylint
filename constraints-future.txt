@@ -1,0 +1,9 @@
+# Constraints for pip to pin dependencies to development versions.
+# This is used in a GitHub Workflow matrix job which ensures everything
+# still works against upcaming releases of Python ependencies. Keep this
+# up-to-date by adding entries for any packages we want to get early
+# incompatibility warnings for.
+darkgraylib @ git+https://github.com/akaihola/darkgraylib.git@main
+toml @ git+https://github.com/uiri/toml.git@master
+# Don't know how to install this from python/typeshed@main:
+types-toml

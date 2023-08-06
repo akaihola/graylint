@@ -1,0 +1,139 @@
+---
+name: Build and test
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+
+jobs:
+
+  build-wheel:
+    runs-on: ubuntu-latest
+    outputs:
+      wheel-path: ${{ steps.get-graylint-version.outputs.wheel-path }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - name: Install flit
+        run: python -m pip install flit
+      - name: Build wheel distribution
+        run: flit build --format=wheel
+      - name: Upload wheel for other jobs
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+      - name: Find out Graylint version and output it for test jobs
+        id: get-graylint-version
+        shell: python
+        run: |
+          from os import environ
+          from pathlib import Path
+          from runpy import run_path
+          version = run_path("src/graylint/__init__.py")["__version__"]
+          Path(environ["GITHUB_OUTPUT"]).open("a").write(
+              f"wheel-path=dist/graylint-{version}-py3-none-any.whl\n"
+          )
+
+  test-nixos:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    needs:
+      - build-wheel
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v22
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - name: Download wheel uploaded by the build-wheel job
+        uses: actions/download-artifact@v3
+      - name: Run tests in nix-shell
+        run: |
+          nix-shell \
+            --pure \
+            --run '
+              python -m venv venv
+              source venv/bin/activate
+              cert_file=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt
+              export NIX_SSL_CERT_FILE=$cert_file
+              pip install "${{needs.build-wheel.outputs.wheel-path}}[test]"
+              pytest
+            ' \
+            ./default.nix
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+        python-version:
+          - '3.8'
+          - '3.9'
+          - '3.10'
+          - '3.11'
+          - '3.12-dev'
+        constraints: ['']
+        include:
+          - os: ubuntu-latest
+            python-version: '3.8'
+            constraints: '--constraint constraints-oldest.txt'
+          - os: ubuntu-latest
+            python-version: '3.11'
+            constraints: '--constraint constraints-future.txt'
+            upgrade: '--upgrade --upgrade-strategy=eager'
+    needs:
+      - build-wheel
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          # need full history since Pytest runs Graylint itself below
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Download wheel uploaded by the build-wheel job
+        uses: actions/download-artifact@v3
+      - name: Install Graylint and its dependencies from the wheel build earlier
+        run: pip install "${{needs.build-wheel.outputs.wheel-path}}[test]"
+                         ${{ matrix.upgrade }} ${{ matrix.constraints }}
+      ## TODO: Enable when the pytest-graylint plugin is available on PyPI
+      # - name: Run Pytest with the Graylint plugin on recent Black versions
+      #   if: matrix.constraints != '--constraint constraints-oldest.txt'
+      #   run: |
+      #     pytest --graylint
+      - name: Run Pytest without the Graylint plugin with oldest supported dependencies
+        if: matrix.constraints == '--constraint constraints-oldest.txt'
+        run: |
+          pytest
+
+  build-sdist-validate-dists:
+    runs-on: ubuntu-latest
+    needs:
+      - build-wheel
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - name: Install flit and twine
+        run: python -m pip install flit twine
+      - name: Download wheel uploaded by the build-wheel job
+        uses: actions/download-artifact@v3
+      - name: Build source distribution
+        run: flit build --format=sdist
+      - name: Validate distributions
+        run: twine check dist/*
