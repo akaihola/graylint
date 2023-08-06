@@ -4,7 +4,7 @@ name: Test linting using the Graylint GitHub Action
 on: push  # yamllint disable-line rule:truthy
 
 jobs:
-  darker-github-action-linting-test:
+  graylint-github-action-linting-test:
     runs-on: ubuntu-latest
 
     steps:
