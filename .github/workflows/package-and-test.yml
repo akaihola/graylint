@@ -110,14 +110,12 @@ jobs:
       - name: Install Graylint and its dependencies from the wheel build earlier
         run: pip install "${{needs.build-wheel.outputs.wheel-path}}[test]"
                          ${{ matrix.upgrade }} ${{ matrix.constraints }}
-      - name: Run Pytest with the Graylint plugin on recent Black versions
-        if: matrix.constraints != '--constraint constraints-oldest.txt'
-        run: |
-          pytest --graylint
-      - name: Run Pytest without the Graylint plugin on oldest Black version
-        # The reformatting rules used to be a bit different. We don't need to
-        # test reformatting Graylint's own code base with old Black versions.
-        # Interoperability is ensured by unit tests.
+      ## TODO: Enable when the pytest-graylint plugin is available on PyPI
+      # - name: Run Pytest with the Graylint plugin on recent Black versions
+      #   if: matrix.constraints != '--constraint constraints-oldest.txt'
+      #   run: |
+      #     pytest --graylint
+      - name: Run Pytest without the Graylint plugin with oldest supported dependencies
         if: matrix.constraints == '--constraint constraints-oldest.txt'
         run: |
           pytest
