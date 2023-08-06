@@ -85,7 +85,7 @@ jobs:
           - '3.10'
           - '3.11'
           - '3.12-dev'
-        constraints: ['black==22.12.0']
+        constraints: ['']
         include:
           - os: ubuntu-latest
             python-version: '3.8'
@@ -110,10 +110,6 @@ jobs:
       - name: Install Graylint and its dependencies from the wheel build earlier
         run: pip install "${{needs.build-wheel.outputs.wheel-path}}[test]"
                          ${{ matrix.upgrade }} ${{ matrix.constraints }}
-      - name: Downgrade target-version when running oldest supported Black
-        if: matrix.constraints == '--constraint constraints-oldest.txt'
-        run: |
-          sed -i 's/py311/py39/' pyproject.toml
       - name: Run Pytest with the Graylint plugin on recent Black versions
         if: matrix.constraints != '--constraint constraints-oldest.txt'
         run: |
