@@ -25,3 +25,13 @@ graylint = "graylint.__main__:main_with_error_handling"
 
 [project.urls]
 Home = "https://github.com/akaihola/graylint"
+
+[tool.ruff]
+select = ["ALL"]
+ignore = [
+    "A002",  # builtin-argument-shadowing
+    "ANN101",  # missing-type-self
+    "D203",  # one-blank-line-before-class
+    "D213",  # multi-line-summary-second-line
+]
+target-version = ["py38"]
