@@ -9,6 +9,8 @@ on:  # yamllint disable-line rule:truthy
     branches:
       - main
 
+env:
+  PY_IGNORE_IMPORTMISMATCH: 1
 
 jobs:
 
@@ -17,8 +19,8 @@ jobs:
     outputs:
       wheel-path: ${{ steps.get-graylint-version.outputs.wheel-path }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
       - name: Install wheel
         run: python -m pip install wheel
       - name: Build wheel distribution
@@ -52,7 +54,7 @@ jobs:
     needs:
       - build-wheel
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v22
         with:
           nix_path: nixpkgs=channel:nixos-unstable
@@ -68,7 +70,11 @@ jobs:
               cert_file=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt
               export NIX_SSL_CERT_FILE=$cert_file
               pip install "${{needs.build-wheel.outputs.wheel-path}}[test]"
-              pytest
+              # Run tests in installed package to avoid plugin import issue:
+              pytest $(python -c "
+          import os, graylint
+          print(os.path.dirname(graylint.__file__))
+              ")
             ' \
             ./default.nix
 
@@ -88,39 +94,47 @@ jobs:
           - '3.11'
           - '3.12-dev'
         constraints: ['']
+        post_install: ['']
         include:
           - os: ubuntu-latest
             python-version: '3.8'
             constraints: '--constraint constraints-oldest.txt'
           - os: ubuntu-latest
             python-version: '3.11'
-            constraints: '--constraint constraints-future.txt'
-            upgrade: '--upgrade --upgrade-strategy=eager'
+            post_install: pip install -r constraints-future.txt
+                                      --upgrade --upgrade-strategy=eager
     needs:
       - build-wheel
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           # need full history since Pytest runs Graylint itself below
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Download wheel uploaded by the build-wheel job
         uses: actions/download-artifact@v3
-      - name: Install Graylint and its dependencies from the wheel build earlier
+      - name: Install Darker and its dependencies from the wheel built earlier
         run: pip install "${{needs.build-wheel.outputs.wheel-path}}[test]"
                          ${{ matrix.upgrade }} ${{ matrix.constraints }}
-      - run: pytest
+      - name: Upgrade Darkgraylib & toml from main if future constraints
+        # This can't be done in the same Pip invocation as installing
+        # Darkgraylib since Darkgraylib might place an upper limit on these
+        # during compatibility fixing periods.
+        if: matrix.post_install
+        run: ${{ matrix.post_install }}
+      - name: Run Pytest
+        run: pytest
 
   build-sdist-validate-dists:
     runs-on: ubuntu-latest
     needs:
       - build-wheel
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
       - name: Install twine
         run: python -m pip install twine
       - name: Download wheel uploaded by the build-wheel job
