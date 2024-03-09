@@ -35,6 +35,10 @@ However, when run in a Git repository, it runs the linters both in an old and a 
 revision of the source tree. It then only reports those linting messages which appeared
 after the modifications to the source code files between those revisions.
 
+Originally this functionality lived in the Darker_ package, but since version 2.0.0
+Darker only focuses on reformatting code while the linting capability continues in
+Graylint.
+
 To integrate Graylint with your IDE or with pre-commit_,
 see the relevant sections below in this document.
 
