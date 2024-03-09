@@ -17,8 +17,8 @@ jobs:
     outputs:
       wheel-path: ${{ steps.get-graylint-version.outputs.wheel-path }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
       - name: Install flit
         run: python -m pip install flit
       - name: Build wheel distribution
@@ -52,7 +52,7 @@ jobs:
     needs:
       - build-wheel
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v22
         with:
           nix_path: nixpkgs=channel:nixos-unstable
@@ -99,12 +99,12 @@ jobs:
     needs:
       - build-wheel
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           # need full history since Pytest runs Graylint itself below
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Download wheel uploaded by the build-wheel job
@@ -127,8 +127,8 @@ jobs:
     needs:
       - build-wheel
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
       - name: Install flit and twine
         run: python -m pip install flit twine
       - name: Download wheel uploaded by the build-wheel job
