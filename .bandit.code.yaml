@@ -4,5 +4,5 @@
 # Used in `.github/workflows/bandit.yml`
 targets: .
 exclude_dirs:
-  - ./src/darker/tests
+  - ./src/graylint/tests
   - ./action/tests
