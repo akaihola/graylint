@@ -22,7 +22,8 @@ import re
 import sys
 from datetime import date
 from pathlib import Path
-from typing import Dict, List, Match, Optional, Tuple, TypedDict
+from types import EllipsisType
+from typing import Dict, List, Match, Optional, Tuple, TypedDict, Union, cast
 from warnings import warn
 
 import click
@@ -172,8 +173,10 @@ class ReplacementDict(TypedDict):
 
 
 if sys.version_info >= (3, 9):
-    PATTERN_NAMES = PatternDict.__required_keys__  # type: ignore[attr-defined]  # pylint: disable=no-member  # noqa
-    REPLACEMENT_NAMES = ReplacementDict.__required_keys__  # type: ignore[attr-defined]  # pylint: disable=no-member  # noqa
+    PATTERN_NAMES = PatternDict.__required_keys__  # pylint: disable=no-member  # noqa
+    REPLACEMENT_NAMES = (
+        ReplacementDict.__required_keys__
+    )  # pylint: disable=no-member  # noqa
 else:
     PATTERN_NAMES = PatternDict.__annotations__  # pylint: disable=no-member
     REPLACEMENT_NAMES = ReplacementDict.__annotations__  # pylint: disable=no-member
@@ -381,7 +384,8 @@ def replace_spans(spans: List[Tuple[int, int]], replacement: str, content: str) 
     """
     parts = []
     for (_, end1), (start2, end2) in zip(
-        [(..., 0)] + spans, spans + [(len(content), ...)]
+        [(..., 0)] + cast(List[Tuple[Union[EllipsisType, int], int]], spans),
+        spans + [(len(content), ...)],
     ):
         parts.append(content[end1:start2])
         if end2 is not ...:
