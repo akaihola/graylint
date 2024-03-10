@@ -5,7 +5,7 @@ author: "Antti Kaihola and contributors to Graylint"
 inputs:
   options:
     description: >-
-      Options passed to Graylint. Use `graylint --help` to see available options.
+      Options for Graylint. Use `graylint --help` to see available options.
       Default: '--color'
     required: false
     default: "--color"
