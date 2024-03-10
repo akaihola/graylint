@@ -6,15 +6,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: pip install '.[flynt,isort]'
-      - name: Verify that README contains output of darker --help
+      - run: pip install '.'
+      - name: Verify that README contains output of graylint --help
         shell: python
         run: |
           import sys
           from pathlib import Path
           from pprint import pprint
           from subprocess import check_output, STDOUT
-          cmd = ["darker", "--options-for-readme"]
+          cmd = ["graylint", "--options-for-readme"]
           usage = check_output(cmd, stderr=STDOUT, encoding="utf-8")
           readme = Path("README.rst").read_text()
           if usage in readme:
