@@ -298,7 +298,8 @@ def _check_linter_output(
         cmdline_parts = shlex.split(cmdline, posix=not WINDOWS)
     else:
         cmdline_parts = cmdline
-    cmdline_and_paths = cmdline_parts + [str(path) for path in sorted(paths)]
+    existing_path_strs = sorted(str(path) for path in paths if (root / path).exists())
+    cmdline_and_paths = cmdline_parts + existing_path_strs
     logger.debug("[%s]$ %s", root, shlex.join(cmdline_and_paths))
     with Popen(  # nosec
         cmdline_and_paths,
@@ -467,6 +468,29 @@ def _get_messages_from_linters(
     return result
 
 
+def _log_messages(
+    baseline: Dict[MessageLocation, List[LinterMessage]],
+    new_messages: Dict[MessageLocation, List[LinterMessage]],
+) -> None:
+    """Output recorded messages at baseline and at rev2 to debug log, no highlighting
+
+    :param baseline: The baseline messages recorded for revision ``rev1``
+    :param new_messages: The new messages recorded for revision ``rev2``
+
+    """
+    for title, message_set in [
+        ("BASELINE AT REV1", baseline),
+        ("CURRENT AT REV2", new_messages),
+    ]:
+        logger.debug("%s:", title)
+        logger.debug(len(title) * "=")
+        for message_location, messages in sorted(message_set.items()):
+            for message in messages:
+                logger.debug(
+                    "%s: %s [%s]", message_location, message.description, message.linter
+                )
+
+
 def _print_new_linter_messages(
     baseline: Dict[MessageLocation, List[LinterMessage]],
     new_messages: Dict[MessageLocation, List[LinterMessage]],
@@ -482,6 +506,8 @@ def _print_new_linter_messages(
     :return: The number of linter errors displayed
 
     """
+    if logger.getEffectiveLevel() <= logging.DEBUG:
+        _log_messages(baseline, new_messages)
     error_count = 0
     prev_location = NO_MESSAGE_LOCATION
     for message_location, messages in sorted(new_messages.items()):
