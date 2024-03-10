@@ -212,7 +212,7 @@ def test_wont_install_unknown_packages(tmp_path, linters):
         ],
     ),
 )
-def test_runs_darker(tmp_path, env, expect):
+def test_runs_graylint(tmp_path, env, expect):
     """Configuration translates correctly into a Graylint command line"""
     with patch_main(tmp_path, env) as main_patch, pytest.raises(SysExitCalled):
 
