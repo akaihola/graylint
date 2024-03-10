@@ -175,8 +175,8 @@ class ReplacementDict(TypedDict):
 if sys.version_info >= (3, 9):
     PATTERN_NAMES = PatternDict.__required_keys__  # pylint: disable=no-member  # noqa
     REPLACEMENT_NAMES = (
-        ReplacementDict.__required_keys__
-    )  # pylint: disable=no-member  # noqa
+        ReplacementDict.__required_keys__  # pylint: disable=no-member  # noqa
+    )
 else:
     PATTERN_NAMES = PatternDict.__annotations__  # pylint: disable=no-member
     REPLACEMENT_NAMES = ReplacementDict.__annotations__  # pylint: disable=no-member
