@@ -220,7 +220,7 @@ def test_runs_darker(tmp_path, env, expect):
 
     graylint = str(tmp_path / ".graylint-env" / BIN / "graylint")
     # This gets the first list item of the first positional argument to the `run` call.
-    assert darker in [c.args[0][0] for c in main_patch.subprocess.run.call_args_list]
+    assert graylint in [c.args[0][0] for c in main_patch.subprocess.run.call_args_list]
 
 
 def test_error_if_pip_fails(tmp_path, capsys):

@@ -4,9 +4,9 @@
 
 import os
 from pathlib import Path
-from subprocess import PIPE  # nosec
+from subprocess import PIPE, Popen  # nosec
 from textwrap import dedent
-from typing import Dict, Iterable, List, Tuple, Union
+from typing import Any, Dict, Iterable, List, Tuple, Union
 from unittest.mock import patch
 
 import pytest
