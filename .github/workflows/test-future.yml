@@ -2,7 +2,7 @@
 name: test-future
 
 # This workflow detects breakage against upcoming releases of dependencies
-# even in the absence of activity in Darker's own repository.
+# even in the absence of activity in Graylint's own repository.
 
 on:  # yamllint disable-line rule:truthy
   schedule:
@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 'master'
+          ref: 'main'
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
@@ -32,7 +32,7 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
-      - name: Note a possible Black incompatibility and required actions
+      - name: Note a possible dependency incompatibility and required actions
         if: failure()
         shell: python
         run: |
@@ -45,12 +45,12 @@ jobs:
 
           for linenum, line in enumerate(open("setup.cfg"), 1):
               constraint = line.strip()
-              if constraint.startswith("black>="):
-                  column = line.index("black>=") + 1
+              if ">=" in constraint:
+                  column = line.index(">=") + 1
                   end_column = len(line)
                   break
           else:
-              raise RuntimeError("black>= line not found in setup.cfg")
+              raise RuntimeError(">= line not found in setup.cfg")
 
           response = urllib.request.urlopen(
               'https://pypi.org/pypi/black/json'
@@ -63,9 +63,9 @@ jobs:
           print(
               dedent(
                   f"""
-                  ### :x: Future Black incompatibility? :x:
+                  ### :x: Future dependency incompatibility? :x:
 
-                  You could add a maximum version constraint for Black on
+                  You could add a maximum version constraint for a dependency on
                   `setup.cfg` line {linenum}, e.g.
                   `{constraint},<={latest_version}`
 
@@ -82,7 +82,7 @@ jobs:
               f"line={linenum},"
               f"col={column},"
               f"endColumn={end_column},"
-              "title=Future Black incompatibility?::"
-              "You could add a maximum version constraint for Black here, "
-              f"e.g. {constraint},<={latest_version}"
+              "title=Future dependency incompatibility?::"
+              "You could add a maximum version constraint for a dependency "
+              f"here, e.g. {constraint},<={latest_version}"
           )

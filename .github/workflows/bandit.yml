@@ -19,7 +19,7 @@ jobs:
       - name: Bandit security check for tests
         uses: akaihola/bandit-report-artifacts@use-config
         with:
-          project_path: ./src/darker/tests
+          project_path: ./src/graylint/tests
           config_file: ./.bandit.tests.yaml
 
       - name: Bandit security check for GitHub Action `main.py` tests
