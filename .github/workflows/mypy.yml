@@ -20,9 +20,7 @@ jobs:
       - uses: actions/setup-python@v5
       - run: |
           pip install -U \
-            black \
-            flynt \
-            isort \
+            git+https://github.com/akaihola/darkgraylib.git@main \
             mypy>=0.990 \
             pytest \
             types-requests \
