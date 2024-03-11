@@ -112,9 +112,7 @@ jobs:
       - name: Install Graylint and its dependencies from the wheel build earlier
         run: pip install "${{needs.build-wheel.outputs.wheel-path}}[test]"
                          ${{ matrix.upgrade }} ${{ matrix.constraints }}
-      - name: Run Pytest with oldest supported dependencies
-        if: matrix.constraints == '--constraint constraints-oldest.txt'
-        run: pytest
+      - run: pytest
 
   build-sdist-validate-dists:
     runs-on: ubuntu-latest
