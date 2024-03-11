@@ -207,7 +207,7 @@ tools. Linters can also be configured on the command line, for example::
     graylint -L "mypy --strict" .
     graylint --lint "pylint --errors-only" .
   
-The following `command line arguments`_ can also be used to modify the defaults:
+The following command line arguments can also be used to modify the defaults:
 
 -r REV, --revision REV
        Revisions to compare. The default is ``HEAD..:WORKTREE:`` which compares the
