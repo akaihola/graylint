@@ -14,4 +14,4 @@ FROM python:3-slim
 COPY --from=builder /root/.local /root/.local
 ENV PATH=/root/.local/bin:$PATH
 
-CMD ["darker"]
+CMD ["graylint"]
