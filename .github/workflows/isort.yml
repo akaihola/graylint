@@ -3,6 +3,14 @@ name: isort
 
 on: push  # yamllint disable-line rule:truthy
 
+# Down scope as necessary via
+# https://docs.github.com/en/actions/security-guides
+#  /automatic-token-authentication#
+#  modifying-the-permissions-for-the-github_token
+permissions:
+  checks: write
+  contents: write
+
 jobs:
   isort:
     runs-on: ubuntu-latest
@@ -11,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
       - run: pip install 'isort>=5.0.1'
-      - uses: wearerequired/lint-action@v2.1.0
+      - uses: wearerequired/lint-action@v2.3.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           isort: true

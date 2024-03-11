@@ -15,4 +15,4 @@ src = [
     "action",
     "src",
 ]
-revision = "origin/master..."
+revision = "origin/main..."

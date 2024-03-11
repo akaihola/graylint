@@ -3,6 +3,14 @@ name: pylint
 
 on: push  # yamllint disable-line rule:truthy
 
+# Down scope as necessary via
+# https://docs.github.com/en/actions/security-guides
+#  /automatic-token-authentication#
+#  modifying-the-permissions-for-the-github_token
+permissions:
+  checks: write
+  contents: write
+
 jobs:
   pylint:
     runs-on: ubuntu-latest
@@ -14,7 +22,7 @@ jobs:
         run: |
           pip install -U \
             airium \
-            black \
+            git+https://github.com/akaihola/darkgraylib.git@main \
             defusedxml \
             pip-requirements-parser \
             pygments \
@@ -26,7 +34,7 @@ jobs:
             ruamel.yaml \
             toml
           pip list
-      - uses: wearerequired/lint-action@v2.1.0
+      - uses: wearerequired/lint-action@v2.3.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pylint: true

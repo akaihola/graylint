@@ -319,7 +319,7 @@ class Contributor:
 RTL_OVERRIDE = "\u202e"
 
 
-def _normalize_rtl_override(text: str) -> str:
+def _normalize_rtl_override(text: Optional[str]) -> Optional[str]:
     """Normalize text surrounded by right-to-left override characters
 
     :param text: Text to normalize
@@ -354,7 +354,7 @@ def join_github_users_with_contributions(
         try:
             gh_user = cast(GitHubUser, session.get(f"/users/{username}").json())
         except NotFoundError:
-            gh_user = DELETED_USERS[username]
+            gh_user = cast(GitHubUser, DELETED_USERS[username])
         name = _normalize_rtl_override(gh_user["name"])
         try:
             contributor = Contributor(

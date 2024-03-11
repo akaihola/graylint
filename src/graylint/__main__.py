@@ -1,3 +1,5 @@
+"""Graylint - run linters and hide linter errors already present in previous revision"""
+
 import logging
 import sys
 from argparse import ArgumentError
@@ -27,7 +29,12 @@ def main_with_error_handling() -> int:
         sys.exit(str(exc_info))
 
 
-def main():
+def main() -> int:
+    """Parse the command line and reformat and optionally lint each source file
+
+    :return: Total number of linting errors found on modified lines
+
+    """
     args, config, config_nondefault = parse_command_line(
         make_argument_parser, sys.argv[1:], "graylint", GraylintConfig
     )
@@ -45,6 +52,7 @@ def main():
         revrange,
         use_color=should_use_color(config["color"]),
     )
+    return linter_failures_on_modified_lines
 
 
 if __name__ == "__main__":

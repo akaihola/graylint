@@ -105,7 +105,7 @@ which may be preferable depending on your setup.
 Use ``python -m graylint`` instead of ``graylint`` in that case.
 
 By default, ``graylint`` doesn't run any linters.
-You can enable indiviual linters with the
+You can enable individual linters with the
 ``-L <linter>`` / ``--lint <linter>`` command line options:
 
 .. _Conda: https://conda.io/
@@ -557,7 +557,7 @@ records which lines of current files have been edited or added,
 and tracks which lines they correspond to in the older revision.
 It then filters out any linter errors which appear in both revisions
 on matching lines.
-Finally, only remaning errors in the newer revision are displayed.
+Finally, only remaining errors in the newer revision are displayed.
 
 
 License

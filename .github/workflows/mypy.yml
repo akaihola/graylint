@@ -3,6 +3,14 @@ name: mypy
 
 on: push  # yamllint disable-line rule:truthy
 
+# Down scope as necessary via
+# https://docs.github.com/en/actions/security-guides
+#  /automatic-token-authentication#
+#  modifying-the-permissions-for-the-github_token
+permissions:
+  checks: write
+  contents: write
+
 jobs:
   mypy:
     runs-on: ubuntu-latest
@@ -12,14 +20,12 @@ jobs:
       - uses: actions/setup-python@v5
       - run: |
           pip install -U \
-            black \
-            flynt \
-            isort \
+            git+https://github.com/akaihola/darkgraylib.git@main \
             mypy>=0.990 \
             pytest \
             types-requests \
             types-toml
-      - uses: wearerequired/lint-action@v2.1.0
+      - uses: wearerequired/lint-action@v2.3.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mypy: true

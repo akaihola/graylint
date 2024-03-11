@@ -22,14 +22,15 @@ import re
 import sys
 from datetime import date
 from pathlib import Path
-from typing import Dict, List, Match, Optional, Tuple, TypedDict
+from types import EllipsisType
+from typing import Dict, List, Match, Optional, Tuple, TypedDict, Union, cast
 from warnings import warn
 
 import click
 import requests
 from packaging.version import Version
 
-VERSION_PY_PATH = "src/darker/version.py"
+VERSION_PY_PATH = "src/graylint/version.py"
 
 
 # Below are the regular expression patterns for finding and replacing version and
@@ -56,39 +57,39 @@ PATTERNS = {
     VERSION_PY_PATH: {r"^__version__ *= *\"{old_version->new_version}\""},
     "action.yml": {
         (
-            r"^    description: \'Version of Darker to use, e\.g\."
+            r"^    description: \'Version of Graylint to use, e\.g\."
             r' "~={old_version->new_version}"'
         ),
         (
-            r"^    description: \'Version of Darker to use, e\.g\."
+            r"^    description: \'Version of Graylint to use, e\.g\."
             r' "~=.*?", "{old_version->new_version}"'
         ),
         r'^    default: "~={old_version->new_version}"',
         (
-            r"^      uses: akaihola/darker/.github/actions/commit-range"
+            r"^      uses: akaihola/graylint/.github/actions/commit-range"
             r"@{old_version->new_version}"
         ),
     },
     "README.rst": {
-        r"^  pip install --upgrade darker~={old_version->new_version}",
-        r"^  conda install -c conda-forge darker~={old_version->new_version} isort",
+        r"^  pip install --upgrade graylint~={old_version->new_version}",
+        r"^  conda install -c conda-forge graylint~={old_version->new_version} isort",
         r"^     (?:   )?rev: {old_version->new_version}",
-        r"^         - uses: akaihola/darker@{old_version->new_version}",
+        r"^         - uses: akaihola/graylint@{old_version->new_version}",
         r'^             version: "~={old_version->new_version}"',
         r"label=release%20{any_version->next_version}",
         (
             r"^\.\. \|next-milestone\| image::"
-            r" https://img\.shields\.io/github/milestones/progress/akaihola/darker/"
+            r" https://img\.shields\.io/github/milestones/progress/akaihola/graylint/"
             r"{any_milestone->next_milestone}"
         ),
         (
             r"^\.\. _next-milestone:"
-            r" https://github\.com/akaihola/darker/milestone/"
+            r" https://github\.com/akaihola/graylint/milestone/"
             r"{any_milestone->next_milestone}"
         ),
     },
     ".github/ISSUE_TEMPLATE/bug_report.md": {
-        r"^ - Darker version \[e\.g\. {old_version->new_version}\]"
+        r"^ - Graylint version \[e\.g\. {old_version->new_version}\]"
     },
 }
 
@@ -112,7 +113,7 @@ def bump_version(  # pylint: disable=too-many-locals
         path = Path(path_str)
         content = path.read_text(encoding="utf-8")
         for pattern_template in pattern_templates:
-            # example: pattern_template == r"darker/{any_milestone->next_milestone}"
+            # example: pattern_template == r"graylint/{any_milestone->next_milestone}"
             template_match = CAPTURE_RE.search(pattern_template)
             if not template_match:
                 raise NoMatch("Can't find `{CAPTURE_RE}` in `{pattern_template}`")
@@ -123,7 +124,7 @@ def bump_version(  # pylint: disable=too-many-locals
             pattern = replace_spans(
                 [template_match.span()], f"({current_pattern})", pattern_template
             )
-            # example: pattern = r"darker/(14)"
+            # example: pattern = r"graylint/(14)"
             content = replace_group_1(pattern, replacement, content, path=path_str)
         if dry_run:
             print(f"\n######## {path_str} ########\n")
@@ -172,8 +173,10 @@ class ReplacementDict(TypedDict):
 
 
 if sys.version_info >= (3, 9):
-    PATTERN_NAMES = PatternDict.__required_keys__  # type: ignore[attr-defined]  # pylint: disable=no-member  # noqa
-    REPLACEMENT_NAMES = ReplacementDict.__required_keys__  # type: ignore[attr-defined]  # pylint: disable=no-member  # noqa
+    PATTERN_NAMES = PatternDict.__required_keys__  # pylint: disable=no-member  # noqa
+    REPLACEMENT_NAMES = (
+        ReplacementDict.__required_keys__  # pylint: disable=no-member  # noqa
+    )
 else:
     PATTERN_NAMES = PatternDict.__annotations__  # pylint: disable=no-member
     REPLACEMENT_NAMES = ReplacementDict.__annotations__  # pylint: disable=no-member
@@ -276,14 +279,14 @@ def get_milestone_numbers(token: Optional[str]) -> Dict[Version, str]:
 
     """
     milestones = requests.get(
-        "https://api.github.com/repos/akaihola/darker/milestones",
+        "https://api.github.com/repos/akaihola/graylint/milestones",
         headers={"Authorization": f"Bearer {token}"} if token else {},
         timeout=10,
     ).json()
     if not isinstance(milestones, list):
         raise TypeError(f"Expected a JSON list from GitHub API, got {milestones}")
     # Extract milestone numbers from the milestone titles. Titles are expected to be
-    # like "Darker x.y.z" or "Darker x.y.z - additional comment".
+    # like "Graylint x.y.z" or "Graylint x.y.z - additional comment".
     return {
         Version(m["title"].split("-")[0].split()[-1]): str(m["number"])
         for m in milestones
@@ -381,7 +384,8 @@ def replace_spans(spans: List[Tuple[int, int]], replacement: str, content: str) 
     """
     parts = []
     for (_, end1), (start2, end2) in zip(
-        [(..., 0)] + spans, spans + [(len(content), ...)]
+        [(..., 0)] + cast(List[Tuple[Union[EllipsisType, int], int]], spans),
+        spans + [(len(content), ...)],
     ):
         parts.append(content[end1:start2])
         if end2 is not ...:
