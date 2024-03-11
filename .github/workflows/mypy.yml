@@ -3,6 +3,14 @@ name: mypy
 
 on: push  # yamllint disable-line rule:truthy
 
+# Down scope as necessary via
+# https://docs.github.com/en/actions/security-guides
+#  /automatic-token-authentication#
+#  modifying-the-permissions-for-the-github_token
+permissions:
+  checks: write
+  contents: write
+
 jobs:
   mypy:
     runs-on: ubuntu-latest
