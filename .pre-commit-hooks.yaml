@@ -1,9 +1,9 @@
 ---
-- id: darker
-  name: darker
+- id: graylint
+  name: graylint
   description: >-
-    Black reformatting to Python files only in regions changed since last commit
-  entry: "darker -r :PRE-COMMIT:"
+    Run Ruff and omit previously existing errors on unmodified lines
+  entry: "graylint -r :PRE-COMMIT: --lint 'ruff check'"
   language: python
   language_version: python3
   require_serial: true
