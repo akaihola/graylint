@@ -22,13 +22,27 @@ import re
 import sys
 from datetime import date
 from pathlib import Path
-from types import EllipsisType
-from typing import Dict, List, Match, Optional, Tuple, TypedDict, Union, cast
+from typing import (
+    TYPE_CHECKING,
+    Dict,
+    List,
+    Match,
+    Optional,
+    Tuple,
+    TypedDict,
+    Union,
+    cast,
+)
 from warnings import warn
 
 import click
 import requests
 from packaging.version import Version
+
+if TYPE_CHECKING and sys.version_info >= (3, 10):
+    from types import EllipsisType
+else:
+    from typing import Any as EllipsisType  # pylint: disable=ungrouped-imports
 
 VERSION_PY_PATH = "src/graylint/version.py"
 
