@@ -116,7 +116,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Download wheel uploaded by the build-wheel job
         uses: actions/download-artifact@v3
-      - name: Install Darker and its dependencies from the wheel built earlier
+      - name: Install Graylint and its dependencies from the wheel built earlier
         run: pip install "${{needs.build-wheel.outputs.wheel-path}}[test]"
                          ${{ matrix.upgrade }} ${{ matrix.constraints }}
       - name: Upgrade Darkgraylib & toml from main if future constraints
