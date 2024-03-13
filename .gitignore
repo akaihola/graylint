@@ -1,6 +1,6 @@
 /.idea/
 /http_cache.sqlite
-darker.egg-info/
+graylint.egg-info/
 __pycache__/
 .mypy_cache/
 *.pyc

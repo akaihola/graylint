@@ -30,7 +30,7 @@ def main_with_error_handling() -> int:
 
 
 def main() -> int:
-    """Parse the command line and reformat and optionally lint each source file
+    """Parse the command line and lint each source file
 
     :return: Total number of linting errors found on modified lines
 

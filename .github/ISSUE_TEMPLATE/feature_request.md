@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for Darker
+about: Suggest an idea for Graylint
 title: ''
 labels: ''
 assignees: ''
@@ -11,7 +11,7 @@ assignees: ''
 
     NOTE:
 
-    To ask for help using Darker, please use Discussions (see the top of this page).
+    To ask for help using Graylint, please use Discussions (see the top of this page).
     This form is only for requesting features.
 
 -->

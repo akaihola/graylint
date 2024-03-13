@@ -1,6 +1,6 @@
-========================
- Contributors to Darker
-========================
+==========================
+ Contributors to Graylint
+==========================
 
 (in alphabetic order and with GitHub handles)
 
@@ -19,7 +19,7 @@
 - Bao (@baod-rate)
 - Bao (@qubidt)
 - Ben Falk (@falkben)
-- Bharat Kunwar (@brtknr)
+- Bharat (@brtknr)
 - Brandon Perkins (@bdperkin)
 - Carsten Kraus (@casio)
 - Cedric (@mrfroggg)
@@ -42,6 +42,7 @@
 - DylanYoung (@DylanYoung)
 - Eric Riddoch (@phitoduck)
 - Eyob Kibret (@Eyobkibret15)
+- Filipp Samoilov (@samoylovfp)
 - Filippos Giannakos (@philipgian)
 - Fox_white (@foxwhite25)
 - Georges Discry (@gdiscry)
@@ -54,18 +55,18 @@
 - Jasleen Kaur (@jasleen19)
 - Jens Diemer (@jedie)
 - Jens Hedegaard Nielsen (@jenshnielsen)
-- john lee (@leej3)
+- John lee (@leej3)
 - jsuit (@jsuit)
 - Kentaro Wada (@wkentaro)
 - Kevin David (@Asuskf)
 - Krischtopp (@Krischtopp)
 - Leo Torres (@leotrs)
+- M Bussonnier (@Carreau)
 - Magnus N. Malmquist (@magnunm)
 - Mark Davidoff (@markddavidoff)
 - Martin Häcker (@dwt)
 - martinRenou (@martinRenou)
 - Mat Clayton (@matclayton)
-- Matthias Bussonnier (@Carreau)
 - Matthijs van der Burgh (@MatthijsBurgh)
 - mayk0gan (@mayk0gan)
 - Min RK (@minrk)
@@ -84,7 +85,6 @@
 - Roberto Polli (@ioggstream)
 - Ronie Martinez (@roniemartinez)
 - Ross Barnowski (@rossbar)
-- samoylovfp (@samoylovfp)
 - Samuel Gaist (@sgaist)
 - Sarah (@seweissman)
 - Sean Hammond (@sherbie)

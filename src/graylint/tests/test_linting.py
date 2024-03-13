@@ -298,7 +298,7 @@ def test_run_linters(
     - creating and committing ``one.py`` and ``two.py``
     - running::
 
-          $ darker -L 'echo test.py:1:' one.py two.py
+          $ graylint -L 'echo test.py:1:' one.py two.py
           test.py:1: git-repo-root/one.py git-repo-root/two.py
 
     """

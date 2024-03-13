@@ -1,6 +1,6 @@
-========================
- Contributing to Darker
-========================
+==========================
+ Contributing to Graylint
+==========================
 
 This is a micro project with a small code base, few contributors and hobby maintainership.
 For this reason, please don't expect immediate responses to bug reports and pull requests.
@@ -15,10 +15,11 @@ Bug reports
 
 Please include
 
-- release or Git commit for the version of Darker you're using
-- Python, black and isort versions
+- release or Git commit for the version of Graylint you're using
+- Python and linter versions
 - your command line
-- file to be formatted as an attachment, if possible – also great if squeezed down to a minimal example
+- file to be linted as an attachment, if possible – also great if squeezed down to a
+  minimal example
 - resulting output or error message
 - expected output
 
@@ -27,7 +28,8 @@ Pull requests
 
 To speed up review and increase odds for the PR to be accepted, please
 
-- keep all code black & isort formatted
+- keep all modified code black & isort formatted
+- don't reformat unmodified code
 - include a test case for new or modified code
 - use type hinting
 - make sure the test suite passes
@@ -70,9 +72,9 @@ GitHub Docs.
 3. In the left sidebar, click `Developer settings`_.
 4. In the left sidebar, under **Personal access tokens**, click `Fine-grained tokens`_.
 5. Click `Generate new token`_.
-6. Under **Token name**, enter "``Update Darker contributors``".
+6. Under **Token name**, enter "``Update Graylint contributors``".
 7. Under **Expiration**, select an expiration for the token.
-8. Under **Description**, type "``Allow darker/release_tools/update_contributors.py to
+8. Under **Description**, type "``Allow graylint/release_tools/update_contributors.py to
    retrieve any user's login, full name and link to avatar picture.``"
 9. Click **Generate token**.
 10. Copy and save the token (you won't be able to see it again), and use it on the
@@ -89,22 +91,31 @@ GitHub Docs.
 Setting up a development environment
 ====================================
 
-To set up an isolated virtualenv for Darker development, run the test suite and lint
-the code base on a Unix-like system::
+To set up an isolated virtualenv for Graylint development,
+modify code in your own branch,
+run the test suite, and reformat and lint modified code on a Unix-like system::
 
-    git clone git@github.com:akaihola/darker.git
-    python -m venv .venv-darker
-    source .venv-darker/bin/activate
-    cd darker
-    pip install -e '.[test]' mypy pylint flake8
+    git clone git@github.com:akaihola/graylint.git
+    python -m venv .venv-graylint
+    source .venv-graylint/bin/activate
+    cd graylint
+    pip install -e '.[test]'
+    git checkout -b my-feature-branch
+    # modify code
+    git commit -m "My feature"
     pytest
-    pylint src
-    mypy .
-    flake8 src
+    darker --config check-graylint.toml
 
-Before pushing your commits to a feature branch, it's good to run::
+Darker will fix formatting on modified lines and list any linting errors your changes
+may have introduced compared to the branching point of your feature branch from
+``main``:
+- reformat using Black
+- sort imports using isort
+- run Flake8
+- run Mypy
+- run Pydocstyle
+- run Pylint
+- run Ruff
 
-    darker --isort -L mypy -L pylint -L flake8 -r master... .
-
-This will fix formatting on modified lines and list any linting errors your changes may
-have introduced compared to the branching point of your feature branch from ``master``.
+Those tools have also been configured to match the conventions in the Graylint code
+base.
