@@ -5,6 +5,16 @@ These features will be included in the next release:
 
 Added
 -----
+
+Fixed
+-----
+
+
+1.0.0_ - 2024-03-13
+===================
+
+Added
+-----
 - Copied linting related code from Darker 1.7.3.
 - The command ``graylint --config=check-graylint.toml`` now runs Flake8_, Mypy_,
   pydocstyle_, Pylint_ and Ruff_ on Graylint's code base and reports new linting errors
