@@ -5,13 +5,11 @@ These features will be included in the next release:
 
 Added
 -----
+- Update Darkgraylib to 1.1.0 for compatibility with Darker.
 
 Removed
 -------
 - ``bump_version.py`` is now in the separate ``darkgray-dev-tools`` repository.
-
-Fixed
------
 
 
 1.0.0_ - 2024-03-13
