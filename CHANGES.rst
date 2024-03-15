@@ -6,6 +6,14 @@ These features will be included in the next release:
 Added
 -----
 - Support for Python 3.12 in the package metadata and the CI build.
+- In the future test, upgrade ``Pygments`` to repository ``master``.
+- Messages from future test are now generic, not Black-specific.
+- Require ``click`` when running tests.
+
+Removed
+-------
+- Dependency on flynt and regex.
+- Obsolete Mypy configuration options.
 
 Fixed
 -----
