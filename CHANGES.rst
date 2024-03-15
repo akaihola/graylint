@@ -6,6 +6,10 @@ These features will be included in the next release:
 Added
 -----
 
+Removed
+-------
+- ``bump_version.py`` is now in the separate ``darkgray-dev-tools`` repository.
+
 Fixed
 -----
 
