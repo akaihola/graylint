@@ -22,9 +22,9 @@
 .. |changelog-badge| image:: https://img.shields.io/badge/-change%20log-purple
    :alt: Change log
 .. _changelog-badge: https://github.com/akaihola/graylint/blob/master/CHANGES.rst
-.. |next-milestone| image:: https://img.shields.io/github/milestones/progress/akaihola/graylint/2?color=red&label=release%201.0.1
+.. |next-milestone| image:: https://img.shields.io/github/milestones/progress/akaihola/graylint/2?color=red&label=release%201.1.0
    :alt: Next milestone
-.. _next-milestone: https://github.com/akaihola/graylint/milestone/2
+.. _next-milestone: https://github.com/akaihola/graylint/milestone/3
 
 
 What?
@@ -79,7 +79,7 @@ How?
 
 To install or upgrade, use::
 
-  pip install --upgrade graylint~=1.0.0
+  pip install --upgrade graylint~=1.0.1
 
 Or, if you're using Conda_ for package management::
 
@@ -381,11 +381,11 @@ Create a file named ``.github/workflows/graylint.yml`` inside your repository wi
            with:
              fetch-depth: 0 
          - uses: actions/setup-python@v5
-         - uses: akaihola/graylint@1.0.0
+         - uses: akaihola/graylint@1.0.1
            with:
              options: "-v"
              src: "./src"
-             version: "~=1.0.0"
+             version: "~=1.0.1"
              lint: "flake8,pylint==2.13.1"
 
 There needs to be a working Python environment, set up using ``actions/setup-python``
