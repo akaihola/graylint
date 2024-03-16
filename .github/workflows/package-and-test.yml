@@ -92,7 +92,8 @@ jobs:
           - '3.9'
           - '3.10'
           - '3.11'
-          - '3.12-dev'
+          - '3.12'
+          - '3.13-dev'
         constraints: ['']
         post_install: ['']
         include:
@@ -100,7 +101,7 @@ jobs:
             python-version: '3.8'
             constraints: '--constraint constraints-oldest.txt'
           - os: ubuntu-latest
-            python-version: '3.11'
+            python-version: '3.12'
             post_install: pip install -r constraints-future.txt
                                       --upgrade --upgrade-strategy=eager
     needs:
