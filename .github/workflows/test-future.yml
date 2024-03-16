@@ -28,7 +28,7 @@ jobs:
             --constraint=constraints-future.txt \
             --upgrade \
             --upgrade-strategy=eager \
-            -e '.[test]'
+            -e '.[test]' packaging setuptools
       - name: Test with pytest
         run: |
           pytest
@@ -39,50 +39,65 @@ jobs:
           import json
           import os
           import urllib.request
-          from distutils.version import LooseVersion
           from importlib.metadata import version
+          from packaging.requirements import InvalidRequirement, Requirement
+          from packaging.version import Version
+          from pathlib import Path
+          from setuptools.config.setupcfg import read_configuration
           from textwrap import dedent
 
-          for linenum, line in enumerate(open("setup.cfg"), 1):
-              constraint = line.strip()
-              if ">=" in constraint:
-                  column = line.index(">=") + 1
-                  end_column = len(line)
-                  break
+          setup_cfg = read_configuration("setup.cfg")
+          for constraint in setup_cfg["options"]["install_requires"]:
+              try:
+                  requirement = Requirement(constraint)
+              except InvalidRequirement:
+                  continue
+              if any(
+                  specifier.operator in ["<", "<=", "~="]
+                  for specifier in requirement.specifier
+              ):
+                  continue
+              linenum, line = next(
+                  (_, l) for _, l in enumerate(Path("setup.cfg").open())
+                  if l.strip() == constraint
+              )
+              end_column = len(line)
+              column = end_column - len(line.strip())
+              response = urllib.request.urlopen(
+                  f'https://pypi.org/pypi/{requirement.name}/json'
+              ).read().decode()
+              latest_version = max(
+                  Version(s)
+                  for s in json.loads(response)['releases'].keys()
+              )
+
+              print(
+                  dedent(
+                      f"""
+                      ### :x: Future dependency incompatibility? :x:
+
+                      You could add a maximum version constraint for a dependency on
+                      `setup.cfg` line {linenum+1}, e.g.
+                      `{constraint},<={latest_version}`
+
+                      See [#382](/akaihola/darker/issues/382)
+                      for more information
+                      """
+                  ),
+                  file=open(os.getenv("GITHUB_STEP_SUMMARY"), "a"),
+              )
+
+              print(
+                  "::notice "
+                  "file=setup.cfg,"
+                  f"line={linenum+1},"
+                  f"col={column},"
+                  f"endColumn={end_column},"
+                  "title=Future dependency incompatibility?::"
+                  "You could add a maximum version constraint for a dependency "
+                  f"here, e.g. {constraint},<={latest_version}"
+              )
+              break
+
           else:
               raise RuntimeError(">= line not found in setup.cfg")
-
-          response = urllib.request.urlopen(
-              'https://pypi.org/pypi/black/json'
-          ).read().decode()
-          latest_version = max(
-              LooseVersion(s)
-              for s in json.loads(response)['releases'].keys()
-          )
-
-          print(
-              dedent(
-                  f"""
-                  ### :x: Future dependency incompatibility? :x:
-
-                  You could add a maximum version constraint for a dependency on
-                  `setup.cfg` line {linenum}, e.g.
-                  `{constraint},<={latest_version}`
-
-                  See [#382](/akaihola/darker/issues/382)
-                  for more information
-                  """
-              ),
-              file=open(os.getenv("GITHUB_STEP_SUMMARY"), "a"),
-          )
-
-          print(
-              "::notice "
-              "file=setup.cfg,"
-              f"line={linenum},"
-              f"col={column},"
-              f"endColumn={end_column},"
-              "title=Future dependency incompatibility?::"
-              "You could add a maximum version constraint for a dependency "
-              f"here, e.g. {constraint},<={latest_version}"
-          )

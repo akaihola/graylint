@@ -122,7 +122,7 @@ jobs:
                          ${{ matrix.upgrade }} ${{ matrix.constraints }}
       - name: Upgrade Darkgraylib & toml from main if future constraints
         # This can't be done in the same Pip invocation as installing
-        # Darkgraylib since Darkgraylib might place an upper limit on these
+        # Darkgraylib since Darkgraylib might place an upper limit on dependencies
         # during compatibility fixing periods.
         if: matrix.post_install
         run: ${{ matrix.post_install }}

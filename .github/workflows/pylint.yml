@@ -28,7 +28,6 @@ jobs:
             pygments \
             pylint \
             pytest>=6.2.0 \
-            regex \
             requests \
             requests-cache \
             ruamel.yaml \
