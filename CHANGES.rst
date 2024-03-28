@@ -16,6 +16,8 @@ Removed
 - Obsolete Mypy configuration options.
 - Skip tests on Python 3.13-dev in Windows and macOS. C extension builds are failing,
   this exclusion is to be removed when Python 3.13 has been removed.
+- The ``release_tools/update_contributors.py`` script was moved to the
+  ``darkgray-dev-tools`` repository.
 
 Fixed
 -----
