@@ -12,6 +12,7 @@ target-version = ["py38", "py39", "py310", "py311", "py312"]
 # Darker makes isort read its configuration from the file indicated by the `--config`
 # option, so we need to mirror the same configuration here and in `check-graylint.toml`.
 profile = "black"
+known_first_party = ["darkgraylib", "graylint"]
 known_third_party = ["pytest"]
 
 [tool.darker]
@@ -49,3 +50,7 @@ ignore = [
     "C408",  # Unnecessary `dict` call (rewrite as a literal)
     "S101",  # Use of `assert` detected
 ]
+
+[tool.ruff.lint.isort]
+known-first-party = ["darkgraylib", "graylint"]
+known-third-party = ["pytest"]
