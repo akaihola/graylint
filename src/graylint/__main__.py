@@ -52,7 +52,7 @@ def main(argv: list[str] = None) -> int:
         revrange,
         use_color=should_use_color(config["color"]),
     )
-    return linter_failures_on_modified_lines
+    return 1 if linter_failures_on_modified_lines else 0
 
 
 if __name__ == "__main__":
