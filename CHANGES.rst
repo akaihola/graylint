@@ -9,6 +9,8 @@ Added
 - In the future test, upgrade ``Pygments`` to repository ``master``.
 - Messages from future test are now generic, not Black-specific.
 - Require ``click`` when running tests.
+- Linter failures now result in an exit value of 1. This makes Graylint compatible with
+  ``pre-commit``.
 
 Removed
 -------
