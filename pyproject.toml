@@ -42,7 +42,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"src/darker/tests/*.py" = [
+"src/graylint/tests/*.py" = [
     "ANN001",  # Missing type annotation for function argument
     "ANN201",  # Missing return type annotation for public function
     "ANN204",  # Missing return type annotation for special method `__init__`
