@@ -1,5 +1,7 @@
 """Graylint - run linters and hide linter errors already present in previous revision"""
 
+from __future__ import annotations
+
 import logging
 import sys
 from argparse import ArgumentError
@@ -10,11 +12,9 @@ from darkgraylib.git import RevisionRange
 from darkgraylib.highlighting import should_use_color
 from darkgraylib.log import setup_logging
 from darkgraylib.main import resolve_paths
-
 from graylint.command_line import make_argument_parser
 from graylint.config import GraylintConfig
 from graylint.linting import run_linters
-
 
 logger = logging.getLogger(__name__)
 
@@ -29,14 +29,14 @@ def main_with_error_handling() -> int:
         sys.exit(str(exc_info))
 
 
-def main() -> int:
+def main(argv: list[str] = None) -> int:
     """Parse the command line and lint each source file
 
     :return: Total number of linting errors found on modified lines
 
     """
     args, config, config_nondefault = parse_command_line(
-        make_argument_parser, sys.argv[1:], "graylint", GraylintConfig
+        make_argument_parser, argv, "graylint", GraylintConfig
     )
     setup_logging(args.log_level)
     show_config_if_debug(config, config_nondefault, args.log_level)
