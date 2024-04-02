@@ -5,6 +5,16 @@ These features will be included in the next release:
 
 Added
 -----
+
+Fixed
+-----
+
+
+1.1.0_ - 2024-04-02
+===================
+
+Added
+-----
 - Support for Python 3.12 in the package metadata and the CI build.
 - In the future test, upgrade ``Pygments`` to repository ``master``.
 - Messages from future test are now generic, not Black-specific.
@@ -76,4 +86,7 @@ For changes before the migration of code from Darker to Graylint, see
 
 __ https://github.com/akaihola/darker/blob/master/CHANGES.rst
 
-.. _Unreleased: https://github.com/akaihola/graylint/compare/0.0.1...HEAD
+.. _Unreleased: https://github.com/akaihola/graylint/compare/1.1.0...HEAD
+.. _1.1.0: https://github.com/akaihola/graylint/compare/v1.0.1...v1.1.0
+.. _1.0.1: https://github.com/akaihola/graylint/compare/v1.0.0...v1.0.1
+.. _1.0.0: https://github.com/akaihola/graylint/compare/1.7.3...v1.0.0
