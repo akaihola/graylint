@@ -88,14 +88,10 @@ def test_creates_virtualenv(tmp_path, main_patch):
 
 @pytest.mark.kwparametrize(
     dict(run_main_env={}, expect=["graylint[color]"]),
-    dict(
-        run_main_env={"INPUT_VERSION": "1.5.0"}, expect=["graylint[color]==1.5.0"]
-    ),
+    dict(run_main_env={"INPUT_VERSION": "1.5.0"}, expect=["graylint[color]==1.5.0"]),
     dict(
         run_main_env={"INPUT_VERSION": "@main"},
-        expect=[
-            "git+https://github.com/akaihola/graylint@main#egg=graylint[color]"
-        ],
+        expect=["git+https://github.com/akaihola/graylint@main#egg=graylint[color]"],
     ),
     dict(
         run_main_env={"INPUT_LINT": "pylint"},
