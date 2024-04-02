@@ -12,6 +12,7 @@ target-version = ["py38", "py39", "py310", "py311", "py312"]
 # Darker makes isort read its configuration from the file indicated by the `--config`
 # option, so we need to mirror the same configuration here and in `check-graylint.toml`.
 profile = "black"
+known_first_party = ["darkgraylib", "graylint"]
 known_third_party = ["pytest"]
 
 [tool.darker]
@@ -42,10 +43,14 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"src/darker/tests/*.py" = [
+"src/graylint/tests/*.py" = [
     "ANN001",  # Missing type annotation for function argument
     "ANN201",  # Missing return type annotation for public function
     "ANN204",  # Missing return type annotation for special method `__init__`
     "C408",  # Unnecessary `dict` call (rewrite as a literal)
     "S101",  # Use of `assert` detected
 ]
+
+[tool.ruff.lint.isort]
+known-first-party = ["darkgraylib", "graylint"]
+known-third-party = ["pytest"]
