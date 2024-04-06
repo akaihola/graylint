@@ -167,6 +167,56 @@ def test_require_rev2_worktree(rev2, expect):
 
 
 @pytest.mark.kwparametrize(
+    dict(cmdline="echo", expect=["echo"]),
+    dict(cmdline="echo words separately", expect=["echo", "words", "separately"]),
+    dict(cmdline='echo "two  spaces"', expect=["echo", "two  spaces"]),
+    dict(cmdline="echo eat  spaces", expect=["echo", "eat", "spaces"]),
+    dict(cmdline="echo 'quoted words'", expect=["echo", "quoted words"]),
+    dict(cmdline='echo "quoted words"', expect=["echo", "quoted words"]),
+    dict(
+        cmdline='echo "quoted words" "and more"',
+        expect=["echo", "quoted words", "and more"],
+    ),
+    dict(
+        cmdline='echo "quoted words" and more',
+        expect=["echo", "quoted words", "and", "more"],
+    ),
+    dict(
+        cmdline='echo "quoted words" and "more"',
+        expect=["echo", "quoted words", "and", "more"],
+    ),
+    dict(
+        cmdline='echo "quoted words" "and" "more"',
+        expect=["echo", "quoted words", "and", "more"],
+    ),
+    dict(
+        cmdline='echo "quoted words" "and" more',
+        expect=["echo", "quoted words", "and", "more"],
+    ),
+    dict(
+        cmdline=r"echo C:\Program Files\Windows",
+        expect=(
+            ["echo", r"C:\Program", r"Files\Windows"]
+            if WINDOWS
+            else ["echo", "C:Program", "FilesWindows"]
+        ),
+    ),
+    dict(
+        cmdline=r'echo "C:\Program Files\Windows"',
+        expect=(
+            ["echo", r"C:\Program Files\Windows"]
+            if WINDOWS
+            else ["echo", r"C:\Program Files\Windows"]
+        ),
+    ),
+)
+def test_shlex_split(cmdline, expect):
+    """`linting.shlex_split` splits a command line correctly on different platforms"""
+    result = linting.shlex_split(cmdline)
+    assert result == expect
+
+
+@pytest.mark.kwparametrize(
     dict(cmdline="echo", expect=["first.py the  2nd.py\n"]),
     dict(cmdline="echo words before", expect=["words before first.py the  2nd.py\n"]),
     dict(cmdline='echo "two  spaces"', expect=["two  spaces first.py the  2nd.py\n"]),
