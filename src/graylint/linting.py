@@ -19,6 +19,8 @@ provided that the ``<linenum>`` falls on a changed line.
 
 """
 
+from __future__ import annotations
+
 import logging
 import os
 import re
@@ -276,6 +278,24 @@ def _require_rev2_worktree(rev2: str) -> None:
         )
 
 
+def shlex_split(cmdline: str) -> list[str]:
+    """Split a command line string into a list of arguments
+
+    This is a wrapper around `shlex.split` which makes Unix and Windows behavior
+    consistent. On Unix, `shlex.split` splits the string into a list of arguments
+    as expected. On Windows, it doesn't handle quoted strings correctly, so we strip
+    quotes from arguments manually.
+
+    :param cmdline: The command line string to split
+    :return: A list of arguments
+
+    """
+    if not WINDOWS:
+        return shlex.split(cmdline, posix=True)
+    parts = shlex.split(cmdline, posix=False)
+    return shlex.split(" ".join(part.replace("\\", r"\\") for part in parts))
+
+
 @contextmanager
 def _check_linter_output(
     cmdline: Union[str, List[str]],
@@ -293,7 +313,7 @@ def _check_linter_output(
 
     """
     if isinstance(cmdline, str):
-        cmdline_parts = shlex.split(cmdline, posix=not WINDOWS)
+        cmdline_parts = shlex_split(cmdline)
     else:
         cmdline_parts = cmdline
     existing_path_strs = sorted(str(path) for path in paths if (root / path).exists())
@@ -330,7 +350,7 @@ def run_linter(  # pylint: disable=too-many-locals
     missing_files = set()
     result = {}
     if isinstance(cmdline, str):
-        linter = shlex.split(cmdline, posix=not WINDOWS)[0]
+        linter = shlex_split(cmdline)[0]
         cmdline_str = cmdline
     else:
         linter = cmdline[0]
