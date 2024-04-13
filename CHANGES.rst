@@ -5,6 +5,7 @@ These features will be included in the next release:
 
 Added
 -----
+- Update to Darkgraylib 1.2.0 for compatibility with Darker 2.1.1.
 
 Fixed
 -----
