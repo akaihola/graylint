@@ -5,6 +5,16 @@ These features will be included in the next release:
 
 Added
 -----
+
+Fixed
+-----
+
+
+1.1.1_ - 2024-04-13
+===================
+
+Added
+-----
 - Update to Darkgraylib 1.2.0 for compatibility with Darker 2.1.1.
 
 Fixed
