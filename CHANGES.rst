@@ -8,6 +8,7 @@ Added
 
 Fixed
 -----
+- Linter command lines with quoting on Windows.
 
 
 1.1.0_ - 2024-04-02
