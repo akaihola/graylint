@@ -39,7 +39,7 @@ def main(argv: list[str] = None) -> int:
         make_argument_parser, argv, "graylint", GraylintConfig
     )
     setup_logging(args.log_level)
-    show_config_if_debug(config, config_nondefault, args.log_level)
+    show_config_if_debug(config, config_nondefault, args.log_level, "graylint")
     paths, root = resolve_paths(args.stdin_filename, args.src)
     revrange = RevisionRange.parse_with_common_ancestor(
         args.revision, root, args.stdin_filename is not None
