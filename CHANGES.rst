@@ -5,6 +5,8 @@ These features will be included in the next release:
 
 Added
 -----
+- New exit codes 3 for invalid command line arguments and 123 for unknown failures.
+- Display exit code in parentheses after error message.
 
 Fixed
 -----
