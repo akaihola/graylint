@@ -19,10 +19,10 @@ from graylint.linting import run_linters
 logger = logging.getLogger(__name__)
 
 
-def main_with_error_handling() -> int:
+def main_with_error_handling(argv: list[str] | None = None) -> int:
     """Entry point for console script"""
     try:
-        return main()
+        return main(argv)
     except ArgumentError as exc_info:
         if logger.root.level < logging.WARNING:
             raise

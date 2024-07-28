@@ -1,10 +1,12 @@
 """Tests for the `graylint.__main__` module."""
 
+import os
+from contextlib import nullcontext
 from unittest.mock import Mock, patch
 
 import pytest
 
-from graylint.__main__ import main
+from graylint.__main__ import main, main_with_error_handling
 
 
 @pytest.mark.kwparametrize(
@@ -23,14 +25,39 @@ def test_main_retval(numfails, expect_retval):
 
 
 @pytest.mark.kwparametrize(
-    dict(arguments=[], expect_retval=0),
-    dict(arguments=["--lint", "echo subdir/a.py:1: message"], expect_retval=1),
+    dict(arguments=["{repo_root}"], expect_retval=0),
+    dict(
+        arguments=["--lint", "echo subdir/a.py:1: message", "{repo_root}"],
+        expect_retval=1,
+        expect_output=f"\nsubdir{os.sep}a.py:1: message . [echo]\n",
+    ),
+    dict(arguments=["a.py"], expect_retval=0),
+    dict(arguments=["--config", "my.cfg", "a.py"], expect_retval=0),
+    dict(
+        arguments=["--invalid-option"],
+        expect_retval=3,
+        expect_exit=pytest.raises(SystemExit, match="3"),
+    ),
+    expect_output="",
+    expect_exit=nullcontext(),
 )
-def test_main(git_repo, arguments, expect_retval):
+def test_main(
+    git_repo,
+    capsys,
+    arguments,
+    expect_retval,
+    expect_output,
+    expect_exit,
+):
     """Main function return value is 1 if there are linter errors."""
-    paths = git_repo.add({"subdir/a.py": "\n"}, commit="Initial commit")
+    paths = git_repo.add({"subdir/a.py": "\n", "my.cfg": ""}, commit="Initial commit")
     paths["subdir/a.py"].write_text("Foo\n")
+    rendered_arguments = [
+        argument.format(repo_root=str(git_repo.root)) for argument in arguments
+    ]
+    with expect_exit:
 
-    retval = main([*arguments, str(git_repo.root)])
+        retval = main_with_error_handling(rendered_arguments)
 
-    assert retval == expect_retval
+        assert retval == expect_retval
+    assert capsys.readouterr().out == expect_output
