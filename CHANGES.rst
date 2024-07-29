@@ -8,10 +8,17 @@ Added
 
 Fixed
 -----
+
+
+1.1.2_ - 2024-07-29
+===================
+
+Fixed
+-----
 - In the configuration dump printed when ``-vv`` verbosity is used, the configuration
   section is now correctly named ``[tool.graylint]`` instead of ``[tool.darkgraylib]``.
   This required an update to Darkgraylib 1.3.0.
-- Update to Darkgraylib 1.3.1 to fix ``--version``.
+- Update to Darkgraylib 1.3.1 to fix ``--version`` (see below).
 - Pass Graylint version to `~darkgraylib.command_line.make_argument_parser` to make
   ``--version`` display the correct version number.
 - Update ``darkgray-dev-tools`` for Pip >= 24.1 compatibility.

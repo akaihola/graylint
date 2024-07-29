@@ -14,7 +14,7 @@ inputs:
     required: false
     default: "."
   version:
-    description: 'Version of Graylint to use, e.g. "~=1.1.1", "1.0.0", "@main"'
+    description: 'Version of Graylint to use, e.g. "~=1.1.2", "1.0.0", "@main"'
     required: false
     default: "@main"
   revision:
