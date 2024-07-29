@@ -8,6 +8,9 @@ Added
 
 Fixed
 -----
+- In the configuration dump printed when ``-vv`` verbosity is used, the configuration
+  section is now correctly named ``[tool.graylint]`` instead of ``[tool.darkgraylib]``.
+  This required an update to Darkgraylib 1.3.0.
 
 
 1.1.1_ - 2024-04-13
