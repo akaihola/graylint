@@ -14,6 +14,7 @@ Fixed
 - Update to Darkgraylib 1.3.1 to fix ``--version``.
 - Pass Graylint version to `~darkgraylib.command_line.make_argument_parser` to make
   ``--version`` display the correct version number.
+- Update ``darkgray-dev-tools`` for Pip >= 24.1 compatibility.
 
 
 1.1.1_ - 2024-04-13
