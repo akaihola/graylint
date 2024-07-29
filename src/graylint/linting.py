@@ -31,18 +31,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from subprocess import PIPE, Popen  # nosec
 from tempfile import TemporaryDirectory
-from typing import (
-    IO,
-    Callable,
-    Collection,
-    Dict,
-    Generator,
-    Iterable,
-    List,
-    Set,
-    Tuple,
-    Union,
-)
+from typing import IO, Callable, Collection, Generator, Iterable
 
 from darkgraylib.diff import map_unmodified_lines
 from darkgraylib.git import (
@@ -99,7 +88,7 @@ class DiffLineMapping:
     """A mapping from unmodified lines in new and old versions of files"""
 
     def __init__(self) -> None:
-        self._mapping: Dict[Tuple[Path, int], Tuple[Path, int]] = {}
+        self._mapping: dict[tuple[Path, int], tuple[Path, int]] = {}
 
     def __setitem__(
         self, new_location: MessageLocation, old_location: MessageLocation
@@ -157,7 +146,7 @@ def normalize_whitespace(message: LinterMessage) -> LinterMessage:
     )
 
 
-def make_linter_env(root: Path, revision: str) -> Dict[str, str]:
+def make_linter_env(root: Path, revision: str) -> dict[str, str]:
     """Populate environment variables for running linters
 
     :param root: The path to the root of the Git repository
@@ -190,7 +179,7 @@ def _strict_nonneg_int(text: str) -> int:
 
 def _parse_linter_line(
     linter: str, line: str, cwd: Path
-) -> Tuple[MessageLocation, LinterMessage]:
+) -> tuple[MessageLocation, LinterMessage]:
     """Parse one line of linter output
 
     Only parses lines with
@@ -298,11 +287,11 @@ def shlex_split(cmdline: str) -> list[str]:
 
 @contextmanager
 def _check_linter_output(
-    cmdline: Union[str, List[str]],
+    cmdline: str | list[str],
     root: Path,
     paths: Collection[Path],
-    env: Dict[str, str],
-) -> Generator[IO[str], None, None]:
+    env: dict[str, str],
+) -> Generator[IO[str]]:
     """Run a linter as a subprocess and return its standard output stream
 
     :param cmdline: The command line for running the linter
@@ -333,11 +322,11 @@ def _check_linter_output(
 
 
 def run_linter(  # pylint: disable=too-many-locals
-    cmdline: Union[str, List[str]],
+    cmdline: str | list[str],
     root: Path,
     paths: Collection[Path],
-    env: Dict[str, str],
-) -> Dict[MessageLocation, LinterMessage]:
+    env: dict[str, str],
+) -> dict[MessageLocation, LinterMessage]:
     """Run the given linter and return linting errors falling on changed lines
 
     :param cmdline: The command line for running the linter
@@ -379,9 +368,9 @@ def run_linter(  # pylint: disable=too-many-locals
 
 
 def run_linters(
-    linter_cmdlines: List[Union[str, List[str]]],
+    linter_cmdlines: list[str | list[str]],
     root: Path,
-    paths: Set[Path],
+    paths: set[Path],
     revrange: RevisionRange,
     use_color: bool,
 ) -> int:
@@ -463,12 +452,12 @@ def _identity_line_processor(message: LinterMessage) -> LinterMessage:
 
 
 def _get_messages_from_linters(
-    linter_cmdlines: Iterable[Union[str, List[str]]],
+    linter_cmdlines: Iterable[str | list[str]],
     root: Path,
     paths: Collection[Path],
-    env: Dict[str, str],
+    env: dict[str, str],
     line_processor: Callable[[LinterMessage], LinterMessage] = _identity_line_processor,
-) -> Dict[MessageLocation, List[LinterMessage]]:
+) -> dict[MessageLocation, list[LinterMessage]]:
     """Run given linters for the given directory and return linting errors
 
     :param linter_cmdlines: The command lines for running the linters
@@ -487,8 +476,8 @@ def _get_messages_from_linters(
 
 
 def _log_messages(
-    baseline: Dict[MessageLocation, List[LinterMessage]],
-    new_messages: Dict[MessageLocation, List[LinterMessage]],
+    baseline: dict[MessageLocation, list[LinterMessage]],
+    new_messages: dict[MessageLocation, list[LinterMessage]],
 ) -> None:
     """Output recorded messages at baseline and at rev2 to debug log, no highlighting
 
@@ -510,8 +499,8 @@ def _log_messages(
 
 
 def _print_new_linter_messages(
-    baseline: Dict[MessageLocation, List[LinterMessage]],
-    new_messages: Dict[MessageLocation, List[LinterMessage]],
+    baseline: dict[MessageLocation, list[LinterMessage]],
+    new_messages: dict[MessageLocation, list[LinterMessage]],
     diff_line_mapping: DiffLineMapping,
     use_color: bool,
 ) -> int:
@@ -531,7 +520,7 @@ def _print_new_linter_messages(
     for message_location, messages in sorted(new_messages.items()):
         old_location = diff_line_mapping.get(message_location)
         is_modified_line = old_location == NO_MESSAGE_LOCATION
-        old_messages: List[LinterMessage] = baseline.get(old_location, [])
+        old_messages: list[LinterMessage] = baseline.get(old_location, [])
         for message in messages:
             if not is_modified_line and normalize_whitespace(message) in old_messages:
                 # Only hide messages when
@@ -552,11 +541,11 @@ def _print_new_linter_messages(
 
 
 def _get_messages_from_linters_for_baseline(
-    linter_cmdlines: List[Union[str, List[str]]],
+    linter_cmdlines: list[str | list[str]],
     root: Path,
     paths: Collection[Path],
     revision: str,
-) -> Dict[MessageLocation, List[LinterMessage]]:
+) -> dict[MessageLocation, list[LinterMessage]]:
     """Clone the Git repository at a given revision and run linters against it
 
     :param linter_cmdlines: The command lines for linter tools to run on the files
