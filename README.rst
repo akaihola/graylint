@@ -79,7 +79,7 @@ How?
 
 To install or upgrade, use::
 
-  pip install --upgrade graylint~=1.1.1
+  pip install --upgrade graylint~=1.1.2
 
 Or, if you're using Conda_ for package management::
 
@@ -381,11 +381,11 @@ Create a file named ``.github/workflows/graylint.yml`` inside your repository wi
            with:
              fetch-depth: 0 
          - uses: actions/setup-python@v5
-         - uses: akaihola/graylint@1.1.1
+         - uses: akaihola/graylint@1.1.2
            with:
              options: "-v"
              src: "./src"
-             version: "~=1.1.1"
+             version: "~=1.1.2"
              lint: "flake8,pylint==2.13.1"
 
 There needs to be a working Python environment, set up using ``actions/setup-python``
