@@ -47,7 +47,9 @@ ignore = [
     "ANN001",  # Missing type annotation for function argument
     "ANN201",  # Missing return type annotation for public function
     "ANN204",  # Missing return type annotation for special method `__init__`
+    "INP001",  # File is part of an implicit namespace package
     "C408",  # Unnecessary `dict` call (rewrite as a literal)
+    "PLR0913",  # Too many arguments in function definition
     "S101",  # Use of `assert` detected
 ]
 

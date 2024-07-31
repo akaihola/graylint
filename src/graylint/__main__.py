@@ -6,7 +6,11 @@ import logging
 import sys
 from argparse import ArgumentError
 
-from darkgraylib.command_line import parse_command_line
+from darkgraylib.command_line import (
+    EXIT_CODE_CMDLINE_ERROR,
+    EXIT_CODE_UNKNOWN,
+    parse_command_line,
+)
 from darkgraylib.config import show_config_if_debug
 from darkgraylib.git import RevisionRange
 from darkgraylib.highlighting import should_use_color
@@ -19,14 +23,16 @@ from graylint.linting import run_linters
 logger = logging.getLogger(__name__)
 
 
-def main_with_error_handling() -> int:
+def main_with_error_handling(argv: list[str] | None = None) -> int:
     """Entry point for console script"""
     try:
-        return main()
+        return main(argv)
     except ArgumentError as exc_info:
-        if logger.root.level < logging.WARNING:
-            raise
-        sys.exit(str(exc_info))
+        logger.exception("%s (%d)", exc_info, EXIT_CODE_CMDLINE_ERROR)  # noqa: TRY401
+        return EXIT_CODE_CMDLINE_ERROR
+    except Exception as exc_info:  # pylint: disable=broad-exception-caught
+        logger.exception("%s (%d)", exc_info, EXIT_CODE_UNKNOWN)  # noqa: TRY401
+        return EXIT_CODE_UNKNOWN
 
 
 def main(argv: list[str] = None) -> int:
