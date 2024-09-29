@@ -1,4 +1,4 @@
-# pylint: disable=too-many-arguments,too-many-locals,use-dict-literal
+# pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals,use-dict-literal
 
 """Unit tests for :mod:`graylint.command_line`."""
 

@@ -1,4 +1,4 @@
-# pylint: disable=protected-access,too-many-arguments,use-dict-literal
+# pylint: disable=protected-access,too-many-arguments,too-many-positional-arguments,use-dict-literal
 
 """Unit tests for `graylint.linting`"""
 
