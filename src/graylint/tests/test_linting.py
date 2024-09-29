@@ -1,6 +1,7 @@
 """Unit tests for `graylint.linting`."""
 
-# pylint: disable=protected-access,too-many-arguments,use-dict-literal
+# pylint: disable=protected-access,too-many-arguments,too-many-positional-arguments
+# pylint: disable=use-dict-literal
 
 import os
 from pathlib import Path
