@@ -1,6 +1,6 @@
 """Unit tests for `graylint.linting`."""
 
-# pylint: disable=no-member,protected-access,redefined-outer-name,too-many-arguments
+# pylint: disable=protected-access,too-many-arguments,too-many-positional-arguments
 # pylint: disable=use-dict-literal
 
 from __future__ import annotations
