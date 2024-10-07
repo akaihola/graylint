@@ -289,7 +289,7 @@ do the following:
    .. code-block:: yaml
 
       - repo: https://github.com/akaihola/graylint
-        rev: 1.0.0
+        rev: v2.0.0
         hooks:
           - id: graylint
 
@@ -308,7 +308,7 @@ you use to known compatible versions, for example:
 .. code-block:: yaml
 
    - repo: https://github.com/akaihola/graylint
-     rev: 1.0.0
+     rev: v2.0.0
      hooks:
        - id: graylint
          args:
@@ -337,7 +337,7 @@ Note the inclusion of the ``ruff`` Python package under ``additional_dependencie
 .. code-block:: yaml
 
    - repo: https://github.com/akaihola/graylint
-     rev: 1.0.0
+     rev: v2.0.0
      hooks:
        - id: graylint
          args: [--lint "ruff check"]
