@@ -8,6 +8,7 @@ Added
 
 Fixed
 -----
+- Version tag in pre-commit instructions.
 
 
 2.0.0_ - 2024-07-31
