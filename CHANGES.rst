@@ -5,6 +5,7 @@ These features will be included in the next release:
 
 Added
 -----
+- Only run the activity summary workflow weekly.
 
 Fixed
 -----
