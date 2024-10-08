@@ -52,6 +52,7 @@
 - Hugo van Kemenade (@hugovk)
 - Iryna (@irynahryshanovich)
 - Jairo Llopis (@yajo)
+- Jake Leahy (@ire4ever1190)
 - Jasleen Kaur (@jasleen19)
 - Jens Diemer (@jedie)
 - Jens Hedegaard Nielsen (@jenshnielsen)

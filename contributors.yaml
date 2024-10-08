@@ -102,6 +102,9 @@ hugovk:
   - {link_type: pulls-author, type: Code}
 ioggstream:
   - {link_type: search-comments, type: Bug reports}
+ire4ever1190:
+  - {link_type: pulls-author, type: Code}
+  - {link_type: issues, type: Bug reports}
 irynahryshanovich:
   - {link_type: issues, type: Bug reports}
 ivanov:
