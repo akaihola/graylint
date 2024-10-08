@@ -43,8 +43,8 @@
   - |-
     ^\.\. \|next-milestone\| image:: https://img\.shields\.io/github/milestones/progress/akaihola/graylint/{any_milestone->next_milestone}
 
-    - |-
-      ^     (?:   )?rev: {old_version->new_version}
+  - |-
+    ^     (?:   )?rev: v{old_version->new_version}
 
   - |-
     label=release%20{any_version->next_version}
