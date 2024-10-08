@@ -1080,6 +1080,7 @@ Thanks goes to these wonderful people (`emoji key`_):
          </a>
          <br />
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aire4ever1190&type=pullrequests" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aire4ever1190&type=issues" title="Bug reports">🐛</a>
        </td>
      </tr>
      <tr>
@@ -1488,6 +1489,20 @@ Thanks goes to these wonderful people (`emoji key`_):
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Astrzonnek&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
+         <a href="https://github.com/Svenito">
+           <img src="https://avatars.githubusercontent.com/u/31278?v=3" width="100px;" alt="@Svenito" />
+           <br />
+           <sub>
+             <b>Sven Steinbauer</b>
+           </sub>
+         </a>
+         <br />
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3ASvenito&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3ASvenito&type=pullrequests" title="Code">💻</a>
+       </td>
+     </tr>
+     <tr>
+       <td align="center">
          <a href="https://github.com/tkolleh">
            <img src="https://avatars.githubusercontent.com/u/3095197?v=3" width="100px;" alt="@tkolleh" />
            <br />
@@ -1498,8 +1513,6 @@ Thanks goes to these wonderful people (`emoji key`_):
          <br />
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Atkolleh&type=issues" title="Bug reports">🐛</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/talhajunaidd">
            <img src="https://avatars.githubusercontent.com/u/6547611?v=3" width="100px;" alt="@talhajunaidd" />
@@ -1554,6 +1567,8 @@ Thanks goes to these wonderful people (`emoji key`_):
          <br />
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Atgross35&type=issues" title="Bug reports">🐛</a>
        </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/victorcui96">
            <img src="https://avatars.githubusercontent.com/u/14048976?v=3" width="100px;" alt="@victorcui96" />
@@ -1565,8 +1580,6 @@ Thanks goes to these wonderful people (`emoji key`_):
          <br />
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Avictorcui96&type=issues" title="Bug reports">🐛</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/yoursvivek">
            <img src="https://avatars.githubusercontent.com/u/163296?v=3" width="100px;" alt="@yoursvivek" />
@@ -1624,6 +1637,8 @@ Thanks goes to these wonderful people (`emoji key`_):
          <br />
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Azachnorton4C&type=issues" title="Bug reports">🐛</a>
        </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/clintonsteiner">
            <img src="https://avatars.githubusercontent.com/u/47841949?v=3" width="100px;" alt="@clintonsteiner" />
@@ -1635,8 +1650,6 @@ Thanks goes to these wonderful people (`emoji key`_):
          <br />
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aclintonsteiner&type=issues" title="Bug reports">🐛</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/deadkex">
            <img src="https://avatars.githubusercontent.com/u/59506422?v=3" width="100px;" alt="@deadkex" />
@@ -1693,6 +1706,8 @@ Thanks goes to these wonderful people (`emoji key`_):
          <br />
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Amayk0gan&type=issues" title="Bug reports">🐛</a>
        </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/okuuva">
            <img src="https://avatars.githubusercontent.com/u/2804020?v=3" width="100px;" alt="@okuuva" />
@@ -1704,8 +1719,6 @@ Thanks goes to these wonderful people (`emoji key`_):
          <br />
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Aokuuva&type=issues" title="Bug reports">🐛</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/overratedpro">
            <img src="https://avatars.githubusercontent.com/u/1379994?v=3" width="100px;" alt="@overratedpro" />

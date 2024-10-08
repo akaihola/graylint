@@ -94,6 +94,7 @@
 - Simone Gaiarin (@simgunz)
 - Stefaan Lippens (@soxofaan)
 - Stephan Trzonnek (@strzonnek)
+- Sven Steinbauer (@Svenito)
 - Talha Juanid (@talhajunaidd)
 - Thomas Güttler (@guettli)
 - TJ Kolleh (@tkolleh)

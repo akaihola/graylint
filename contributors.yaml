@@ -38,6 +38,9 @@ PatrickJordanCongenica:
   - {link_type: search-discussions, type: Bug reports}
 RishiKumarRay:
   - {link_type: search, type: Bug reports}
+Svenito:
+  - {link_type: issues, type: Bug reports}
+  - {link_type: pulls-author, type: Code}
 agandra:
   - {link_type: issues, type: Bug reports}
 akaihola:
