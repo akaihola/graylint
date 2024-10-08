@@ -10,6 +10,7 @@ Fixed
 -----
 - Version tag in pre-commit instructions.
 - Avoid a buggy ``flake8-bugbear`` version in the CI build.
+- Automation for updating version strings in README using ``darkgray_bump_version``.
 
 
 2.0.0_ - 2024-07-31
