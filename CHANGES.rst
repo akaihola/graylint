@@ -5,7 +5,6 @@ These features will be included in the next release:
 
 Added
 -----
-- Accept versions 2.0.0 through 2.2.x for the Darkgraylib_ dependency.
 
 Fixed
 -----
@@ -20,6 +19,8 @@ Internal
 - Add minimum version constraints for development dependencies.
 - Update pyupgrade_ target to Python 3.9+.
 - Validation in CI for installing package extras.
+- Accept versions 2.0.0 through 2.2.x for the Darkgraylib_ dependency.
+- Only run the activity summary workflow weekly.
 
 
 2.0.0_ - 2024-07-31
