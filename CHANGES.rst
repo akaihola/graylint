@@ -9,6 +9,7 @@ Added
 Fixed
 -----
 - Version tag in pre-commit instructions.
+- Avoid a buggy ``flake8-bugbear`` version in the CI build.
 
 
 2.0.0_ - 2024-07-31
