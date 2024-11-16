@@ -3,12 +3,14 @@
 # pylint: disable=no-member,protected-access,redefined-outer-name,too-many-arguments
 # pylint: disable=use-dict-literal
 
+from __future__ import annotations
+
 import os
 from pathlib import Path
 from subprocess import PIPE, Popen  # nosec
 from textwrap import dedent
 from types import SimpleNamespace
-from typing import Any, Dict, Iterable, List, Tuple, Union
+from typing import TYPE_CHECKING, Any
 from unittest.mock import patch
 
 import pytest
@@ -25,6 +27,9 @@ from graylint.linting import (
     MessageLocation,
     make_linter_env,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 SKIP_ON_WINDOWS = [pytest.mark.skip] if WINDOWS else []
 SKIP_ON_UNIX = [] if WINDOWS else [pytest.mark.skip]
@@ -464,8 +469,8 @@ def test_run_linters_stdin():
 
 
 def _build_messages(
-    lines_and_messages: Iterable[Union[Tuple[int, str], Tuple[int, str, str]]],
-) -> Dict[MessageLocation, List[LinterMessage]]:
+    lines_and_messages: Iterable[tuple[int, str] | tuple[int, str, str]],
+) -> dict[MessageLocation, list[LinterMessage]]:
     return {
         MessageLocation(Path("a.py"), line, 0): [
             LinterMessage(*msg.split(":")) for msg in msgs
@@ -585,7 +590,12 @@ def test_get_messages_from_linters_for_baseline(git_repo):
 class AssertEmptyStderrPopen(Popen[str]):  # pylint: disable=too-few-public-methods
     """A Popen to use for the following test; asserts that its stderr is empty"""
 
-    def __init__(self, args: List[str], **kwargs: Any):  # type: ignore[explicit-any]
+    def __init__(  # type: ignore[explicit-any]
+        self,
+        args: list[str],
+        **kwargs: Any,  # noqa: ANN401
+    ):
+        """Initialize the Popen object and assert that its stderr is empty."""
         super().__init__(args, stderr=PIPE, **kwargs)
         assert self.stderr is not None
         assert self.stderr.read() == ""
