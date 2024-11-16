@@ -3,12 +3,14 @@
 # pylint: disable=no-member,protected-access,redefined-outer-name,too-many-arguments
 # pylint: disable=use-dict-literal
 
+from __future__ import annotations
+
 import os
 from pathlib import Path
 from subprocess import PIPE, Popen  # nosec
 from textwrap import dedent
 from types import SimpleNamespace
-from typing import Any, Dict, Iterable, List, Tuple, Union
+from typing import Any, Iterable
 from unittest.mock import patch
 
 import pytest
@@ -515,8 +517,8 @@ def test_run_linters_stdin():
 
 
 def _build_messages(
-    lines_and_messages: Iterable[Union[Tuple[int, str], Tuple[int, str, str]]],
-) -> Dict[MessageLocation, List[LinterMessage]]:
+    lines_and_messages: Iterable[tuple[int, str] | tuple[int, str, str]],
+) -> dict[MessageLocation, list[LinterMessage]]:
     return {
         MessageLocation(Path("a.py"), line, 0): [
             LinterMessage(*msg.split(":")) for msg in msgs
@@ -640,7 +642,10 @@ class AssertEmptyStderrPopen(
     # the `type-arg` ignore above.
     """A Popen to use for the following test; asserts that its stderr is empty"""
 
-    def __init__(self, args: List[str], **kwargs: Any):  # type: ignore[misc]
+    def __init__(  # type: ignore[misc]
+        self, args: list[str], **kwargs: Any  # noqa: ANN401
+    ):
+        """Initialize the Popen object and assert that its stderr is empty."""
         super().__init__(args, stderr=PIPE, **kwargs)
         assert self.stderr is not None
         assert self.stderr.read() == ""
