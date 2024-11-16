@@ -365,19 +365,17 @@ def simple_test_repo(request, tmp_path_factory):
     "message, expect",
     [
         ("", 0),
-        ("test.py:1: message on modified line", 1),
-        ("test.py:2: message on unmodified line", 0),
+        ("__init__.py:1: message on modified line", 1),
+        ("__init__.py:4: message on unmodified line", 0),
     ],
 )
-def test_run_linters_return_value(git_repo, message, expect):
+def test_run_linters_return_value(simple_test_repo, message, expect):
     """``run_linters()`` returns the number of linter errors on modified lines"""
-    src_paths = git_repo.add({"test.py": "1\n2\n"}, commit="Initial commit")
-    src_paths["test.py"].write_bytes(b"one\n2\n")
     cmdline = ["echo", message]
 
     result = linting.run_linters(
         [cmdline],
-        git_repo.root,
+        simple_test_repo.root,
         {Path("test.py")},
         RevisionRange("HEAD", ":WORKTREE:"),
         [OutputSpec("gnu")],
