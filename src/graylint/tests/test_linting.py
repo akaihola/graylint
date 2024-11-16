@@ -409,40 +409,39 @@ def test_run_linters_on_new_file(simple_test_repo, make_temp_copy, monkeypatch, 
     ]
 
 
-def test_run_linters_line_separation(git_repo, capsys):
+def test_run_linters_line_separation(simple_test_repo, make_temp_copy, capsys):
     """``run_linters`` separates contiguous blocks of linter output with empty lines"""
-    paths = git_repo.add({"a.py": "1\n2\n3\n4\n5\n6\n"}, commit="Initial commit")
-    paths["a.py"].write_bytes(b"a\nb\nc\nd\ne\nf\n")
-    linter_output = git_repo.root / "dummy-linter-output.txt"
-    linter_output.write_text(
-        dedent(
-            """
-            a.py:2: first block
-            a.py:3: of linter output
-            a.py:5: second block
-            a.py:6: of linter output
-            """
+    with make_temp_copy(simple_test_repo.root) as root:
+        linter_output = root / "dummy-linter-output.txt"
+        linter_output.write_text(
+            dedent(
+                """
+                __init__.py:2: first block
+                __init__.py:3: of linter output
+                __init__.py:5: second block
+                __init__.py:6: of linter output
+                """
+            )
         )
-    )
-    cat_command = ["cmd", "/c", "type"] if WINDOWS else ["cat"]
+        cat_command = ["cmd", "/c", "type"] if WINDOWS else ["cat"]
 
-    linting.run_linters(
-        [[*cat_command, str(linter_output)]],
-        git_repo.root,
-        {Path(p) for p in paths},
-        RevisionRange("HEAD", ":WORKTREE:"),
-        [OutputSpec("gnu")],
-    )
+        linting.run_linters(
+            [[*cat_command, str(linter_output)]],
+            root,
+            {Path("__init__.py")},
+            RevisionRange("HEAD", ":WORKTREE:"),
+            [OutputSpec("gnu")],
+        )
 
     result = capsys.readouterr().out
     cat_cmd = "cmd" if WINDOWS else "cat"
     assert result == dedent(
         f"""
-        a.py:2: first block [{cat_cmd}]
-        a.py:3: of linter output [{cat_cmd}]
+        __init__.py:2: first block [{cat_cmd}]
+        __init__.py:3: of linter output [{cat_cmd}]
 
-        a.py:5: second block [{cat_cmd}]
-        a.py:6: of linter output [{cat_cmd}]
+        __init__.py:5: second block [{cat_cmd}]
+        __init__.py:6: of linter output [{cat_cmd}]
         """
     )
 
