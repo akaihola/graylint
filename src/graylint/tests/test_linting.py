@@ -1,6 +1,7 @@
 """Unit tests for `graylint.linting`."""
 
-# pylint: disable=protected-access,too-many-arguments,use-dict-literal
+# pylint: disable=protected-access,redefined-outer-name,too-many-arguments
+# pylint: disable=use-dict-literal
 
 import os
 from pathlib import Path
@@ -12,6 +13,7 @@ from unittest.mock import patch
 import pytest
 
 from darkgraylib.git import WORKTREE, RevisionRange
+from darkgraylib.testtools.git_repo_plugin import GitRepoFixture
 from darkgraylib.testtools.helpers import raises_if_exception
 from darkgraylib.utils import WINDOWS
 from graylint import linting
@@ -88,6 +90,13 @@ def test_normalize_whitespace():
     )
 
 
+@pytest.fixture(scope="module")
+def parse_linter_line_repo(request, tmp_path_factory):
+    """Git repository fixture for `test_parse_linter_line`."""
+    with GitRepoFixture.context(request, tmp_path_factory) as repo:
+        yield repo
+
+
 @pytest.mark.kwparametrize(
     dict(
         line="module.py:42: Just a line number\n",
@@ -145,13 +154,14 @@ def test_normalize_whitespace():
     dict(line="plus:42:+5 before column\n", expect=(Path(), 0, 0, "")),
     dict(line="minus:42:-5 before column\n", expect=(Path(), 0, 0, "")),
 )
-def test_parse_linter_line(git_repo, monkeypatch, line, expect):
+def test_parse_linter_line(parse_linter_line_repo, monkeypatch, line, expect):
     """Linter output is parsed correctly"""
-    monkeypatch.chdir(git_repo.root)
-    root_abs = git_repo.root.absolute()
+    root = parse_linter_line_repo.root
+    monkeypatch.chdir(root)
+    root_abs = root.absolute()
     line_expanded = line.format(git_root_absolute=root_abs, sep=os.sep)
 
-    result = linting._parse_linter_line("linter", line_expanded, git_repo.root)
+    result = linting._parse_linter_line("linter", line_expanded, root)
 
     assert result == (MessageLocation(*expect[:3]), LinterMessage("linter", expect[3]))
 
