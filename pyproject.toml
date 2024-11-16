@@ -51,6 +51,7 @@ ignore = [
     "C408",  # Unnecessary `dict` call (rewrite as a literal)
     "PLR0913",  # Too many arguments in function definition
     "S101",  # Use of `assert` detected
+    "SLF001",  # Private member accessed
 ]
 
 [tool.ruff.lint.isort]
