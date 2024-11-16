@@ -384,28 +384,28 @@ def test_run_linters_return_value(simple_test_repo, message, expect):
     assert result == expect
 
 
-def test_run_linters_on_new_file(git_repo, capsys):
+def test_run_linters_on_new_file(simple_test_repo, make_temp_copy, monkeypatch, capsys):
     """``run_linters()`` considers file missing from history as empty
 
     Passes through all linter errors as if the original file was empty.
 
     """
-    git_repo.add({"file1.py": "1\n"}, commit="Initial commit")
-    git_repo.create_tag("initial")
-    (git_repo.root / "file2.py").write_bytes(b"1\n2\n")
+    with make_temp_copy(simple_test_repo.root) as root:
+        monkeypatch.chdir(root)
+        (root / "new_file.py").write_bytes(b"1\n2\n")
 
-    linting.run_linters(
-        [["echo", "file2.py:1: message on a file not seen in Git history"]],
-        Path(git_repo.root),
-        {Path("file2.py")},
-        RevisionRange("initial", ":WORKTREE:"),
-        [OutputSpec("gnu")],
-    )
+        linting.run_linters(
+            [["echo", "new_file.py:1: message on a file not seen in Git history"]],
+            root,
+            {Path("new_file.py")},
+            RevisionRange(simple_test_repo.hash_initial, ":WORKTREE:"),
+            [OutputSpec("gnu")],
+        )
 
     output = capsys.readouterr().out.splitlines()
     assert output == [
         "",
-        "file2.py:1: message on a file not seen in Git history file2.py [echo]",
+        "new_file.py:1: message on a file not seen in Git history new_file.py [echo]",
     ]
 
 
