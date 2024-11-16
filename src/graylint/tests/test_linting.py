@@ -591,22 +591,20 @@ class AssertEmptyStderrPopen(Popen[str]):  # pylint: disable=too-few-public-meth
         assert self.stderr.read() == ""
 
 
-def test_get_messages_from_linters_for_baseline_no_mypy_errors(git_repo):
+def test_get_messages_from_linters_for_baseline_no_mypy_errors(simple_test_repo):
     """Ensure Mypy does not fail early when ``__init__.py`` is at the repository root
 
     Regression test for #498
 
     """
-    git_repo.add({"__init__.py": ""}, commit="Initial commit")
-    initial = git_repo.get_hash()
     with patch.object(linting, "Popen", AssertEmptyStderrPopen):
         # end of test setup
 
         _ = linting._get_messages_from_linters_for_baseline(
             linter_cmdlines=[["mypy"]],
-            root=git_repo.root,
+            root=simple_test_repo.root,
             paths=[Path("__init__.py")],
-            revision=initial,
+            revision=simple_test_repo.hash_initial,
         )
 
 
