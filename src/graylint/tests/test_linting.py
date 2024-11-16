@@ -203,6 +203,23 @@ def test_check_linter_output(tmp_path, cmdline, expect):
     assert lines == expect
 
 
+@pytest.fixture(scope="module")
+def run_linters_repo(request, tmp_path_factory):
+    """Git repository fixture for `test_run_linters`."""
+    with GitRepoFixture.context(request, tmp_path_factory) as repo:
+        paths = repo.add(
+            {
+                "test.py": "1 unmoved\n2 modify\n3 to 4 moved\n",
+                "nonpython.txt": "hello\n",
+            },
+            commit="Initial commit",
+        )
+        paths["test.py"].write_bytes(
+            b"1 unmoved\n2 modified\n3 inserted\n3 to 4 moved\n"
+        )
+        yield repo
+
+
 @pytest.mark.kwparametrize(
     dict(
         _descr="New message for test.py",
@@ -283,7 +300,8 @@ def test_check_linter_output(tmp_path, cmdline, expect):
     expect_log=[],
 )
 def test_run_linters(
-    git_repo,
+    run_linters_repo,
+    make_temp_copy,
     capsys,
     caplog,
     _descr,
@@ -294,47 +312,43 @@ def test_run_linters(
 ):
     """Linter gets correct paths on command line and outputs just changed lines
 
-    We use ``echo`` as our "linter". It just adds the paths of each file to lint as an
-    "error" on a line of ``test.py``. What this test does is the equivalent of e.g.::
+    We use ``cat`` as our "linter". It just gets the content of the given file.
+    What this test does is the equivalent of e.g.::
 
-    - creating a ``test.py`` such that the first line is modified after the last commit
-    - creating and committing ``one.py`` and ``two.py``
+    - committing a ``test.py`` and a ``messages`` with mock linter output
+    - modifying ``test.py`` and ``messages`` in the working tree
     - running::
 
-          $ graylint -L 'echo test.py:1:' one.py two.py
-          test.py:1: git-repo-root/one.py git-repo-root/two.py
+          $ graylint -L 'cat messages' test.py
+          test.py:1: <here are some messages from the test case>
 
     """
-    src_paths = git_repo.add(
-        {
-            "test.py": "1 unmoved\n2 modify\n3 to 4 moved\n",
-            "nonpython.txt": "hello\n",
-            "messages": "\n".join(messages_before),
-        },
-        commit="Initial commit",
-    )
-    src_paths["test.py"].write_bytes(
-        b"1 unmoved\n2 modified\n3 inserted\n3 to 4 moved\n"
-    )
-    src_paths["messages"].write_text("\n".join(messages_after))
-    cmdlines: list[list[str]] = [["cat", "messages"]]
-    revrange = RevisionRange("HEAD", ":WORKTREE:")
+    with make_temp_copy(run_linters_repo.root) as root:
+        repo = GitRepoFixture(
+            root, {"HOME": str(root), "LC_ALL": "C", "PATH": os.environ["PATH"]}
+        )
+        paths = repo.add(
+            {"messages": "\n".join(messages_before)}, commit="Messages before"
+        )
+        paths["messages"].write_text("\n".join(messages_after))
+        cmdlines: list[list[str]] = [["cat", "messages"]]
+        revrange = RevisionRange("HEAD", ":WORKTREE:")
 
-    linting.run_linters(
-        cmdlines, git_repo.root, {Path("dummy path")}, revrange, [OutputSpec("gnu")]
-    )
+        linting.run_linters(
+            cmdlines, repo.root, {Path("dummy path")}, revrange, [OutputSpec("gnu")]
+        )
 
     # We can now verify that the linter received the correct paths on its command line
     # by checking standard output from the our `echo` "linter".
     # The test cases also verify that only linter reports on modified lines are output.
     result = capsys.readouterr().out.splitlines()
-    assert result == git_repo.expand_root(expect_output)
+    assert result == repo.expand_root(expect_output)
     logs = [
         f"{record.levelname} {record.message}"
         for record in caplog.records
         if record.levelname != "DEBUG"
     ]
-    assert logs == git_repo.expand_root(expect_log)
+    assert logs == repo.expand_root(expect_log)
 
 
 def test_run_linters_non_worktree():
