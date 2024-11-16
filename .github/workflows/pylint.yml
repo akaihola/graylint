@@ -20,8 +20,9 @@ jobs:
       - uses: actions/setup-python@v5
       - name: Install dependencies for running Pylint
         run: |
+          # TODO: change to darkgraylib.git@main before merging
           pip install -U \
-            git+https://github.com/akaihola/darkgraylib.git@main \
+            git+https://github.com/akaihola/darkgraylib.git@module-scope-git-repo-fixture \
             defusedxml \
             pip-requirements-parser \
             pygments \

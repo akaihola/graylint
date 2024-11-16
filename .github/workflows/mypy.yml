@@ -19,8 +19,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
       - run: |
+          # TODO: change to darkgraylib.git@main before merging
           pip install -U \
-            git+https://github.com/akaihola/darkgraylib.git@main \
+            git+https://github.com/akaihola/darkgraylib.git@module-scope-git-repo-fixture \
             mypy>=0.990 \
             pytest \
             types-requests \
