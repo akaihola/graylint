@@ -1,12 +1,13 @@
 """Unit tests for `graylint.linting`."""
 
-# pylint: disable=protected-access,redefined-outer-name,too-many-arguments
+# pylint: disable=no-member,protected-access,redefined-outer-name,too-many-arguments
 # pylint: disable=use-dict-literal
 
 import os
 from pathlib import Path
 from subprocess import PIPE, Popen  # nosec
 from textwrap import dedent
+from types import SimpleNamespace
 from typing import Any, Dict, Iterable, List, Tuple, Union
 from unittest.mock import patch
 
@@ -342,6 +343,21 @@ def test_run_linters_non_worktree():
                 "..HEAD", Path("dummy cwd"), stdin_mode=False
             ),
             [OutputSpec("gnu")],
+        )
+
+
+@pytest.fixture(scope="module")
+def simple_test_repo(request, tmp_path_factory):
+    """Git repository fixture for `test_run_linters`."""
+    with GitRepoFixture.context(request, tmp_path_factory) as repo:
+        paths = repo.add({"__init__.py": "1\n2\n3\n4\n5\n6\n"}, commit="Initial commit")
+        initial = repo.get_hash()
+        repo.create_tag("initial")
+        paths["__init__.py"].write_bytes(b"a\nb\nc\n4\ne\nf\n")
+        yield SimpleNamespace(
+            root=repo.root,
+            paths=paths,
+            hash_initial=initial,
         )
 
 
