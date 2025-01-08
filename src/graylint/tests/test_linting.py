@@ -1,6 +1,6 @@
-# pylint: disable=protected-access,too-many-arguments,use-dict-literal
+"""Unit tests for `graylint.linting`."""
 
-"""Unit tests for `graylint.linting`"""
+# pylint: disable=protected-access,too-many-arguments,use-dict-literal
 
 import os
 from pathlib import Path
@@ -15,6 +15,7 @@ from darkgraylib.git import WORKTREE, RevisionRange
 from darkgraylib.testtools.helpers import raises_if_exception
 from darkgraylib.utils import WINDOWS
 from graylint import linting
+from graylint.command_line import OutputSpec
 from graylint.linting import (
     DiffLineMapping,
     LinterMessage,
@@ -355,7 +356,7 @@ def test_run_linters(
     revrange = RevisionRange("HEAD", ":WORKTREE:")
 
     linting.run_linters(
-        cmdlines, git_repo.root, {Path("dummy path")}, revrange, use_color=False
+        cmdlines, git_repo.root, {Path("dummy path")}, revrange, [OutputSpec("gnu")]
     )
 
     # We can now verify that the linter received the correct paths on its command line
@@ -382,7 +383,7 @@ def test_run_linters_non_worktree():
             RevisionRange.parse_with_common_ancestor(
                 "..HEAD", Path("dummy cwd"), stdin_mode=False
             ),
-            use_color=False,
+            [OutputSpec("gnu")],
         )
 
 
@@ -405,7 +406,7 @@ def test_run_linters_return_value(git_repo, message, expect):
         git_repo.root,
         {Path("test.py")},
         RevisionRange("HEAD", ":WORKTREE:"),
-        use_color=False,
+        [OutputSpec("gnu")],
     )
 
     assert result == expect
@@ -426,7 +427,7 @@ def test_run_linters_on_new_file(git_repo, capsys):
         Path(git_repo.root),
         {Path("file2.py")},
         RevisionRange("initial", ":WORKTREE:"),
-        use_color=False,
+        [OutputSpec("gnu")],
     )
 
     output = capsys.readouterr().out.splitlines()
@@ -458,7 +459,7 @@ def test_run_linters_line_separation(git_repo, capsys):
         git_repo.root,
         {Path(p) for p in paths},
         RevisionRange("HEAD", ":WORKTREE:"),
-        use_color=False,
+        [OutputSpec("gnu")],
     )
 
     result = capsys.readouterr().out
@@ -487,7 +488,7 @@ def test_run_linters_stdin():
             Path("/dummy-dir"),
             {Path("dummy.py")},
             RevisionRange("HEAD", ":STDIN:"),
-            use_color=False,
+            [OutputSpec("gnu")],
         )
 
 
@@ -541,7 +542,7 @@ def test_print_new_linter_messages(capsys):
         )
 
     linting._print_new_linter_messages(
-        baseline, new_messages, diff_line_mapping, use_color=False
+        baseline, new_messages, diff_line_mapping, [OutputSpec("gnu")]
     )
 
     result = capsys.readouterr().out.splitlines()
