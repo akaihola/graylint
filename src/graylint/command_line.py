@@ -1,10 +1,30 @@
 """Command line parsing for the ``graylint`` binary"""
 
-from argparse import ArgumentParser
+from argparse import Action, ArgumentParser, Namespace
+from typing import Any, Sequence
 
 import darkgraylib.command_line
 from graylint import help as hlp
 from graylint.version import __version__
+
+
+class ExtendFromEmptyAction(Action):
+    """Action to replace a default list with values from the command line."""
+
+    def __call__(
+        self,
+        parser: ArgumentParser,  # noqa: ARG002
+        namespace: Namespace,
+        values: str | Sequence[Any] | None,
+        option_string: str | None = None,
+    ) -> None:
+        """Return items from command line or the default list if omitted."""
+        if not isinstance(values, Sequence):
+            message = "Expected a sequence of values"
+            raise TypeError(message)
+        items = [] if option_string else self.default
+        items.extend(values)
+        setattr(namespace, self.dest, items)
 
 
 def make_argument_parser(require_src: bool) -> ArgumentParser:
