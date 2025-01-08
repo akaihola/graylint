@@ -65,7 +65,7 @@ News = "https://github.com/akaihola/graylint/discussions/categories/announcement
 graylint = "graylint.__main__:main_with_error_handling"
 
 [tool.setuptools]
-packages = ["graylint", "graylint.tests"]
+packages = ["graylint", "graylint.output", "graylint.tests"]
 package-dir = {"" = "src"}
 py-modules = []
 license-files = ["LICENSE.rst"]
