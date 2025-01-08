@@ -12,3 +12,10 @@ LINT = (
     " output is syntax highlighted when the `pygments` package is available if run on"
     " a terminal and or enabled by explicitly (see `--color`)."
 )
+
+FORMAT_TEMPLATE = (
+    "Specify output format and destination. Format can be one of:"
+    " {output_format_names}. Optional destination path can be specified after colon,"
+    " e.g. 'gnu:-' for stdout or 'gnu:annotations.txt' for file output. Multiple "
+    " formats can be specified with comma separation or by repeating the option."
+)
