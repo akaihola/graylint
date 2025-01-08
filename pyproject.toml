@@ -111,11 +111,12 @@ per-file-ignores = [
 
 [tool.ruff]
 target-version = "py39"
+output-format = "concise"
 
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "ANN101",  # Missing type annotation for `self` in method
+    "COM812",  # Trailing comma missing
     "D203",  # One blank line required before class docstring
     "D213",  # Multi-line docstring summary should start at the second line
     "D400",  # First line should end with a period (duplicates D415)
@@ -130,6 +131,7 @@ ignore = [
     "C408",  # Unnecessary `dict` call (rewrite as a literal)
     "PLR0913",  # Too many arguments in function definition
     "S101",  # Use of `assert` detected
+    "SLF001",  # Private member accessed
 ]
 
 [tool.ruff.lint.isort]
