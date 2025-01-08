@@ -64,6 +64,11 @@ News = "https://github.com/akaihola/graylint/discussions/categories/announcement
 [project.scripts]
 graylint = "graylint.__main__:main_with_error_handling"
 
+# plugin entry points:
+[project.entry-points."graylint.output_format"]
+gnu = "graylint.output.gnu:GnuErrorFormatOutputPlugin"
+github = "graylint.output.github:GitHubOutputPlugin"
+
 [tool.setuptools]
 packages = ["graylint", "graylint.output", "graylint.tests"]
 package-dir = {"" = "src"}
