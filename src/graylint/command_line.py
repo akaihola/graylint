@@ -14,8 +14,6 @@ def make_argument_parser(require_src: bool) -> ArgumentParser:
 
     :param require_src: ``True`` to require at least one path as a positional argument
                         on the command line. ``False`` to not require on.
-    :param description: The descriptive text for the application to be shown in
-                        ``--help`` output.
 
     """
     parser = darkgraylib.command_line.make_argument_parser(
