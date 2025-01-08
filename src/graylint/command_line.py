@@ -33,14 +33,3 @@ def make_argument_parser(require_src: bool) -> ArgumentParser:
 
     add_arg(hlp.LINT, "-L", "--lint", action="append", metavar="CMD", default=[])
     return parser
-
-
-def add_lint_arg(parser: ArgumentParser) -> None:
-    """Add the ``-L`` / ``--lint`` argument to the parser
-
-    :parser: The parser to add the argument to
-
-    """
-    add_parser_argument(
-        parser, hlp.LINT, "-L", "--lint", action="append", metavar="CMD", default=[]
-    )
