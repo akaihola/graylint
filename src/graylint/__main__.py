@@ -50,13 +50,17 @@ def main(argv: list[str] = None) -> int:
     revrange = RevisionRange.parse_with_common_ancestor(
         args.revision, root, args.stdin_filename is not None
     )
+    output_formats = [
+        output.with_color(use_color=should_use_color(config["color"]))
+        for output in args.output_format
+    ]
     linter_failures_on_modified_lines = run_linters(
         args.lint,
         root,
         # paths to lint are not limited to modified files or just Python files:
         {p.resolve().relative_to(root) for p in paths},
         revrange,
-        use_color=should_use_color(config["color"]),
+        output_formats,
     )
     return 1 if linter_failures_on_modified_lines else 0
 
