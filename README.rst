@@ -243,6 +243,11 @@ The following command line arguments can also be used to modify the defaults:
        their configuration as normally, and aren't affected by ``-c`` / ``--config``.
        Linter output is syntax highlighted when the ``pygments`` package is available if
        run on a terminal and or enabled by explicitly (see ``--color``).
+-o <FORMAT[:PATH]>, --output-format <FORMAT[:PATH]>
+       Specify output format and destination. Format can be one of: github (default),
+       gnu. Optional destination path can be specified after colon, e.g. 'gnu:-' for
+       stdout or 'gnu:annotations.txt' for file output. Multiple formats can be
+       specified with comma separation or by repeating the option.
 
 To change default values for these options for a given project,
 add a ``[tool.graylint]`` section to ``pyproject.toml`` in the
