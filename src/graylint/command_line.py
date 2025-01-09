@@ -3,10 +3,14 @@
 from __future__ import annotations
 
 from argparse import Action, ArgumentParser, Namespace
+from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Sequence
 
 import darkgraylib.command_line
 from graylint import help as hlp
+from graylint.output import OUTPUT_FORMAT_GROUP
+from graylint.output.destination import OutputDestination
 from graylint.version import __version__
 
 
@@ -27,6 +31,35 @@ class ExtendFromEmptyAction(Action):
         items = [] if option_string else self.default
         items.extend(values)
         setattr(namespace, self.dest, items)
+
+
+@dataclass
+class OutputSpec:
+    """Specification for an output format."""
+
+    format: str
+    path: OutputDestination = field(
+        default_factory=lambda: OutputDestination(Path("-"))
+    )
+    use_color: bool = False
+
+    @classmethod
+    def parse(cls, value: str) -> OutputSpec:
+        """Parse a format specification string into a FormatSpec object."""
+        if ":" in value:
+            fmt, path_str = value.split(":", 1)
+        else:
+            fmt, path_str = value, "-"
+
+        if fmt not in get_entry_point_names(OUTPUT_FORMAT_GROUP):
+            message = f"Unknown output format: {fmt}"
+            raise ValueError(message)
+
+        return cls(fmt, OutputDestination(Path(path_str)))
+
+    def with_color(self, *, use_color: bool) -> OutputSpec:
+        """Return a copy with color output enabled or disabled."""
+        return OutputSpec(self.format, self.path, use_color)
 
 
 def parse_format_args(value: str) -> list[OutputSpec]:
