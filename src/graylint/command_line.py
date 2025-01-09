@@ -1,5 +1,7 @@
 """Command line parsing for the ``graylint`` binary"""
 
+from __future__ import annotations
+
 from argparse import Action, ArgumentParser, Namespace
 from typing import Any, Sequence
 
@@ -25,6 +27,11 @@ class ExtendFromEmptyAction(Action):
         items = [] if option_string else self.default
         items.extend(values)
         setattr(namespace, self.dest, items)
+
+
+def parse_format_args(value: str) -> list[OutputSpec]:
+    """Parse comma-separated format specifications."""
+    return [OutputSpec.parse(v.strip()) for v in value.split(",")]
 
 
 def make_argument_parser(require_src: bool) -> ArgumentParser:
