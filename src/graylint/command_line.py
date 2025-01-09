@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, Sequence
 
 import darkgraylib.command_line
+from darkgraylib.plugins import get_entry_point_names
 from graylint import help as hlp
 from graylint.output import OUTPUT_FORMAT_GROUP
 from graylint.output.destination import OutputDestination
@@ -85,5 +86,20 @@ def make_argument_parser(require_src: bool) -> ArgumentParser:
 
     parser.add_argument(
         "-L", "--lint", action="append", metavar="CMD", default=[], help=hlp.LINT
+    )
+    output_formats = get_entry_point_names(OUTPUT_FORMAT_GROUP)
+    default_output_format = output_formats[0]
+    output_format_names = ", ".join(
+        f"{name} (default)" if name == default_output_format else name
+        for name in output_formats
+    )
+    parser.add_argument(
+        "-o",
+        "--output-format",
+        action=ExtendFromEmptyAction,
+        type=parse_format_args,
+        metavar="<FORMAT[:PATH]>",
+        default=[OutputSpec("gnu", OutputDestination(Path("-")))],
+        help=hlp.FORMAT_TEMPLATE.format(output_format_names=output_format_names),
     )
     return parser
