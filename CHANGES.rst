@@ -5,6 +5,7 @@ These features will be included in the next release:
 
 Added
 -----
+- Accept versions 2.0.0 through 2.2.x for the Darkgraylib_ dependency.
 
 Fixed
 -----
@@ -128,3 +129,11 @@ __ https://github.com/akaihola/darker/blob/master/CHANGES.rst
 .. _1.1.0: https://github.com/akaihola/graylint/compare/v1.0.1...v1.1.0
 .. _1.0.1: https://github.com/akaihola/graylint/compare/v1.0.0...v1.0.1
 .. _1.0.0: https://github.com/akaihola/graylint/compare/1.7.3...v1.0.0
+
+.. _Darkgraylib: https://github.com/akaihola/darkgraylib
+.. _Flake8: https://flake8.pycqa.org/
+.. _Mypy: https://www.mypy-lang.org/
+.. _pydocstyle: http://www.pydocstyle.org/
+.. _Pylint: https://pypi.org/project/pylint
+.. _pytest-darker: https://github.com/akaihola/pytest-darker
+.. _Ruff: https://astral.sh/ruff
