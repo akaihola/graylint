@@ -10,8 +10,9 @@ import pytest
 
 from darkgraylib.command_line import parse_command_line
 from darkgraylib.testtools.helpers import raises_if_exception
-from graylint.command_line import make_argument_parser
+from graylint.command_line import OutputSpec, make_argument_parser
 from graylint.config import GraylintConfig
+from graylint.output.destination import OutputDestination
 
 
 @pytest.mark.kwparametrize(
@@ -47,6 +48,12 @@ def test_make_argument_parser(require_src, expect):
         expect_config=("lint", ["flake8", "mypy"]),
         expect_modified=("lint", ["flake8", "mypy"]),
     ),
+    dict(
+        argv=["-o", "gnu", "."],
+        expect_value=("output_format", [OutputSpec("gnu", OutputDestination("-"))]),
+        expect_config=("output_format", [OutputSpec("gnu", OutputDestination("-"))]),
+        expect_modified=("output_format", ...),
+    ),
 )
 def test_parse_command_line(
     tmp_path,
@@ -65,7 +72,6 @@ def test_parse_command_line(
     with patch.dict(os.environ, {}, clear=True), raises_if_exception(
         expect_value,
     ) as expect_exception:
-
         args, effective_cfg, modified_cfg = parse_command_line(
             make_argument_parser,
             argv,
