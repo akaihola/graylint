@@ -32,7 +32,7 @@ color = [
     "Pygments>=2.4.0",
 ]
 release = [
-    "darkgray-dev-tools~=0.1.1",
+    "darkgray-dev-tools~=0.2.0",
 ]
 test = [
     # NOTE: remember to keep `constraints-oldest.txt` in sync with these
