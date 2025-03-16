@@ -617,7 +617,7 @@ class AssertEmptyStderrPopen(
     # the `type-arg` ignore above.
     """A Popen to use for the following test; asserts that its stderr is empty"""
 
-    def __init__(self, args: List[str], **kwargs: Any):  # type: ignore[misc]
+    def __init__(self, args: List[str], **kwargs: Any):  # type: ignore[explicit-any]
         super().__init__(args, stderr=PIPE, **kwargs)
         assert self.stderr is not None
         assert self.stderr.read() == ""
