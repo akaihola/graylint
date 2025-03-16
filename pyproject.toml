@@ -50,7 +50,7 @@ test = [
     "requests_cache>=0.7",
     "ruamel.yaml>=0.17.21",
     "ruff>=0.0.292",
-    "twine>=2.0.0",
+    "twine>=2.0.0,!=6.1.0",  # see https://github.com/pypa/twine/issues/1216
     "types-requests>=2.27.9",
     "types-toml>=0.10.4",
     "urllib3>=1.25.9",  # through requests-cache and twine, fixes CVE-2020-26137
