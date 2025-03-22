@@ -114,7 +114,7 @@ jobs:
         include:
           - os: ubuntu-latest
             python-version: '3.8'
-            constraints: '--constraint constraints-oldest.txt'
+            post_install: uv sync --all-extras --resolution lowest-direct
           - os: ubuntu-latest
             python-version: '3.12'
             post_install: pip install -r constraints-future.txt
