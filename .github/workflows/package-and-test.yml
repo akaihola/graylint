@@ -127,6 +127,10 @@ jobs:
         with:
           fetch-depth: 0
           # need full history since Pytest runs Graylint itself below
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          activate-environment: true
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
@@ -134,9 +138,12 @@ jobs:
       - name: Download wheel uploaded by the build-wheel job
         uses: actions/download-artifact@v4
       - name: Install Graylint and its dependencies from the wheel built earlier
-        run: pip install "${{needs.build-wheel.outputs.wheel-path}}[test]"
-                         ${{ matrix.upgrade }} ${{ matrix.constraints }}
-      - name: Upgrade Darkgraylib & toml from main if future constraints
+        run: uv pip install
+                    "${{needs.build-wheel.outputs.wheel-path}}[test]"
+                    ${{ matrix.upgrade }}
+                    ${{ matrix.constraints }}
+      - name: Upgrade/downgrade packages for future/oldest test
+        # Upgrade Darkgraylib & toml from main if future constraints.
         # This can't be done in the same Pip invocation as installing
         # Darkgraylib since Darkgraylib might place an upper limit on dependencies
         # during compatibility fixing periods.
