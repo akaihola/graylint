@@ -10,8 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-      - run: pip install -U pip-tools
-      - run: pip-compile setup.cfg
-      - run: pip install -U safety
+        with:
+          python-version: '3.x'
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            **/setup.cfg
+            **/pyproject.toml
       - name: Check dependencies for known security vulnerabilities using Safety
-        run: safety check --file requirements.txt
+        run: uv pip compile pyproject.toml | uvx safety check --file -
