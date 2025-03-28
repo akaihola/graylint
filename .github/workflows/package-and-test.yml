@@ -116,9 +116,10 @@ jobs:
             python-version: '3.8'
             post_install: uv sync --all-extras --resolution lowest-direct
           - os: ubuntu-latest
-            python-version: '3.12'
-            post_install: pip install -r constraints-future.txt
-                                      --upgrade --upgrade-strategy=eager
+            python-version: '3.13-dev'
+            post_install: uv pip install
+                                 --upgrade
+                                 --requirements constraints-future.txt
     needs:
       - build-wheel
     steps:
