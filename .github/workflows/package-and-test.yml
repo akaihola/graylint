@@ -144,7 +144,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
       - name: Install twine
-        run: python -m pip install twine
+        run: python -m pip install 'twine!=6.1.0'
+        # see https://github.com/pypa/twine/issues/1216
       - name: Download wheel uploaded by the build-wheel job
         uses: actions/download-artifact@v4.1.7
       - name: Build source distribution

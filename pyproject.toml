@@ -2,6 +2,76 @@
 # Minimum requirements for the build system to execute.
 requires = ["setuptools", "wheel"]  # PEP 508 specifications.
 
+[project]
+name = "graylint"
+authors = [{name = "Antti Kaihola", email = "13725+akaihola@users.noreply.github.com"}]
+license = {text = "BSD"}
+description = "Run linters and show only new errors compared to an older commit"
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.8"
+dependencies = [
+    # NOTE: remember to keep `constraints-oldest.txt` in sync with these
+    "darkgraylib>=2.0.0,<2.3.dev0",
+]
+# NOTE: remember to keep `.github/workflows/python-package.yml` in sync
+#       with the minimum required Python version
+dynamic = ["readme", "version"]
+
+[tool.setuptools.dynamic]
+version = {attr = "graylint.version.__version__"}
+
+[project.optional-dependencies]
+color = [
+    "Pygments>=2.4.0",
+]
+release = [
+    "darkgray-dev-tools~=0.2.0",
+]
+test = [
+    # NOTE: remember to keep `constraints-oldest.txt` in sync with these
+    "click>=8.0.0",
+    "cryptography>=3.3.2",  # through twine, fixes CVE-2020-36242
+    "defusedxml>=0.7.1",
+    "mypy>=0.990",
+    "pathspec",  # to test `gen_python_files` in `test_black_diff.py`
+    "pip-requirements-parser",
+    "pydocstyle",
+    "Pygments>=2.4.0",
+    "pylint",
+    "pytest>=6.2.0",
+    "pytest-kwparametrize>=0.0.3",
+    "requests_cache>=0.7",
+    "ruamel.yaml>=0.17.21",
+    "ruff>=0.0.292",
+    "twine>=2.0.0,!=6.1.0",  # see https://github.com/pypa/twine/issues/1216
+    "types-requests>=2.27.9",
+    "types-toml>=0.10.4",
+    "urllib3>=1.25.9",  # through requests-cache and twine, fixes CVE-2020-26137
+    "wheel>=0.21.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/akaihola/graylint"
+"Source Code" = "https://github.com/akaihola/graylint"
+"Change Log" = "https://github.com/akaihola/graylint/blob/master/CHANGES.rst"
+News = "https://github.com/akaihola/graylint/discussions/categories/announcements"
+
+[project.scripts]
+graylint = "graylint.__main__:main_with_error_handling"
+
+[tool.setuptools]
+packages = ["graylint", "graylint.tests"]
+package-dir = {"" = "src"}
+py-modules = []
+license-files = ["LICENSE.rst"]
+
 [tool.black]
 # Darker makes Black read its configuration from the file indicated by the `--config`
 # option, so we need to mirror the same configuration here and in `check-graylint.toml`.

@@ -13,6 +13,10 @@ Fixed
 - Avoid a buggy ``flake8-bugbear`` version in the CI build.
 - Automation for updating version strings in README using ``darkgray_bump_version``.
 
+Internal
+--------
+- Move ``setuptools`` configuration from ``setup.cfg`` to ``pyproject.toml``.
+
 
 2.0.0_ - 2024-07-31
 ===================
