@@ -23,10 +23,10 @@ jobs:
           pip install -U \
             git+https://github.com/akaihola/darkgraylib.git@main \
             defusedxml \
-            pip-requirements-parser \
+            pip-requirements-parser>=32.0.0 \
             pygments \
-            pylint \
-            pytest>=6.2.0 \
+            pylint>=2.13.0 \
+            pytest>=6.2.4 \
             requests \
             requests-cache \
             ruamel.yaml \

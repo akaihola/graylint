@@ -40,12 +40,12 @@ test = [
     "cryptography>=3.3.2",  # through twine, fixes CVE-2020-36242
     "defusedxml>=0.7.1",
     "mypy>=0.990",
-    "pathspec",  # to test `gen_python_files` in `test_black_diff.py`
-    "pip-requirements-parser",
-    "pydocstyle",
+    "pathspec>=0.2.2",  # to test `gen_python_files` in `test_black_diff.py`
+    "pip-requirements-parser>=32.0.0",
+    "pydocstyle>=1.0.0",
     "Pygments>=2.4.0",
-    "pylint",
-    "pytest>=6.2.0",
+    "pylint>=2.13.0",
+    "pytest>=6.2.4",
     "pytest-kwparametrize>=0.0.3",
     "requests_cache>=0.7",
     "ruamel.yaml>=0.17.21",
