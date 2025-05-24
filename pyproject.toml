@@ -15,9 +15,9 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
-    "darkgraylib>=2.0.0,<2.3.dev0",
+    "darkgraylib @ git+https://github.com/akaihola/darkgraylib",
 ]
 # NOTE: remember to keep `.github/workflows/python-package.yml` in sync
 #       with the minimum required Python version
