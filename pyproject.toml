@@ -15,9 +15,9 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
-    "darkgraylib>=2.0.0,<2.3.dev0",
+    "darkgraylib @ git+https://github.com/akaihola/darkgraylib",
 ]
 # NOTE: remember to keep `.github/workflows/python-package.yml` in sync
 #       with the minimum required Python version
@@ -64,8 +64,13 @@ News = "https://github.com/akaihola/graylint/discussions/categories/announcement
 [project.scripts]
 graylint = "graylint.__main__:main_with_error_handling"
 
+# plugin entry points:
+[project.entry-points."graylint.output_format"]
+gnu = "graylint.output.gnu:GnuErrorFormatOutputPlugin"
+github = "graylint.output.github:GitHubOutputPlugin"
+
 [tool.setuptools]
-packages = ["graylint", "graylint.tests"]
+packages = ["graylint", "graylint.output", "graylint.tests"]
 package-dir = {"" = "src"}
 py-modules = []
 license-files = ["LICENSE.rst"]
@@ -100,11 +105,12 @@ disable = ["wrong-import-order"]
 
 [tool.ruff]
 target-version = "py38"
+output-format = "concise"
 
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "ANN101",  # Missing type annotation for `self` in method
+    "COM812",  # Trailing comma missing
     "D203",  # One blank line required before class docstring
     "D213",  # Multi-line docstring summary should start at the second line
     "D400",  # First line should end with a period (duplicates D415)
@@ -119,6 +125,7 @@ ignore = [
     "C408",  # Unnecessary `dict` call (rewrite as a literal)
     "PLR0913",  # Too many arguments in function definition
     "S101",  # Use of `assert` detected
+    "SLF001",  # Private member accessed
 ]
 
 [tool.ruff.lint.isort]
