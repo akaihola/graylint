@@ -16,7 +16,7 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "darkgraylib>=2.0.0,<2.3.dev0",
+    "darkgraylib>=2.3.0,<3.0.dev0",
 ]
 # NOTE: remember to keep `.github/workflows/python-package.yml` in sync
 #       with the minimum required Python version
