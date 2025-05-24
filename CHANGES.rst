@@ -10,12 +10,16 @@ Added
 Fixed
 -----
 - Version tag in pre-commit instructions.
-- Avoid a buggy ``flake8-bugbear`` version in the CI build.
-- Automation for updating version strings in README using ``darkgray_bump_version``.
 
 Internal
 --------
-- Move ``setuptools`` configuration from ``setup.cfg`` to ``pyproject.toml``.
+- Move setuptools_ configuration from ``setup.cfg`` to ``pyproject.toml``.
+- Avoid a buggy flake8-bugbear_ version in the CI build.
+- Fix for updating version strings in README using ``darkgray_bump_version``.
+- Migrate CI workflows from pip_ to uv_ for faster dependency management.
+- Add minimum version constraints for development dependencies.
+- Update pyupgrade_ target to Python 3.9+.
+- Validation in CI for installing package extras.
 
 
 2.0.0_ - 2024-07-31
@@ -136,8 +140,13 @@ __ https://github.com/akaihola/darker/blob/master/CHANGES.rst
 
 .. _Darkgraylib: https://github.com/akaihola/darkgraylib
 .. _Flake8: https://flake8.pycqa.org/
+.. _flake8-bugbear: https://github.com/PyCQA/flake8-bugbear
 .. _Mypy: https://www.mypy-lang.org/
+.. _pip: https://pip.pypa.io/
 .. _pydocstyle: http://www.pydocstyle.org/
 .. _Pylint: https://pypi.org/project/pylint
 .. _pytest-darker: https://github.com/akaihola/pytest-darker
+.. _pyupgrade: https://github.com/asottile/pyupgrade
 .. _Ruff: https://astral.sh/ruff
+.. _setuptools: https://setuptools.pypa.io/
+.. _uv: https://docs.astral.sh/uv/

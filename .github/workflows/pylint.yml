@@ -18,20 +18,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            **/setup.cfg
+            **/pyproject.toml
       - name: Install dependencies for running Pylint
         run: |
-          pip install -U \
+          uv pip install --system --upgrade \
             git+https://github.com/akaihola/darkgraylib.git@main \
             defusedxml \
-            pip-requirements-parser \
+            pip-requirements-parser>=32.0.0 \
             pygments \
-            pylint \
-            pytest>=6.2.0 \
+            pylint>=2.13.0 \
+            pytest>=6.2.4 \
             requests \
             requests-cache \
             ruamel.yaml \
+            setuptools \
             toml
-          pip list
       - uses: wearerequired/lint-action@v2.3.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

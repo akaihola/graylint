@@ -30,8 +30,8 @@ isort = true
 lint = [
     "flake8",
     "mypy",
-    "pydocstyle",
-    "pylint",
+    "pydocstyle>=1.0.0",
+    "pylint>=2.13.0",
     "ruff check",
 ]
 
@@ -46,7 +46,7 @@ revision = "origin/main..."
 lint = [
     "flake8",
     "mypy",
-    "pydocstyle",
-    "pylint",
+    "pydocstyle>=1.0.0",
+    "pylint>=2.13.0",
     "ruff check",
 ]

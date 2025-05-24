@@ -10,6 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            **/setup.cfg
+            **/pyproject.toml
 
       - name: Make sure that `darkgray_bump_version` still finds all version strings
               and that there's a future milestone on GitHub Issues.
@@ -19,10 +25,13 @@ jobs:
         # in the GitHub repository with a future version number as its name.
         # This is used to update the call for reviewing pull requests
         # in `README.rst`.
-        run: |
-          pip install \
-            https://github.com/akaihola/darkgray-dev-tools/archive/refs/heads/main.zip
-          darkgray_bump_version \
-            --minor \
-            --dry-run \
+
+        # TODO: is it still necessary to run the `main` branch
+        #       or is there a good release?
+        run: uvx
+          --from
+          https://github.com/akaihola/darkgray-dev-tools/archive/refs/heads/main.zip
+          darkgray_bump_version
+            --minor
+            --dry-run
             --token=${{ secrets.GITHUB_TOKEN }}

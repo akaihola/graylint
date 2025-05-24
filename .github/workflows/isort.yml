@@ -18,8 +18,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-      - run: pip install 'isort>=5.0.1'
-      - uses: wearerequired/lint-action@v2.3.0
+        with:
+          python-version: '3.x'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            **/setup.cfg
+            **/pyproject.toml
+      - run: uv pip install --system 'isort>=5.0.1'
+      # Upstream lint-action 2.3.0 doesn't support isort.
+      # Gobot1234/lint-action had isort support but was outdated.
+      # I rebased Gobot1234's patch on top of upstream:
+      # https://github.com/wearerequired/lint-action/pull/858
+      - uses: akaihola/lint-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           isort: true
