@@ -7,6 +7,10 @@ Added
 -----
 - Accept versions 2.0.0 through 2.2.x for the Darkgraylib_ dependency.
 
+Removed
+-------
+- Drop support for Python 3.8.
+
 Fixed
 -----
 - Version tag in pre-commit instructions.

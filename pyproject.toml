@@ -9,13 +9,12 @@ license = {text = "BSD"}
 description = "Run linters and show only new errors compared to an older commit"
 classifiers = [
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
     "darkgraylib>=2.0.0,<2.3.dev0",
 ]
@@ -75,7 +74,7 @@ license-files = ["LICENSE.rst"]
 # Darker makes Black read its configuration from the file indicated by the `--config`
 # option, so we need to mirror the same configuration here and in `check-graylint.toml`.
 skip-string-normalization = false
-target-version = ["py38", "py39", "py310", "py311", "py312"]
+target-version = ["py39", "py310", "py311", "py312"]
 
 [tool.isort]
 # Darker makes isort read its configuration from the file indicated by the `--config`
@@ -111,7 +110,7 @@ per-file-ignores = [
 ]
 
 [tool.ruff]
-target-version = "py38"
+target-version = "py39"
 
 [tool.ruff.lint]
 select = ["ALL"]
