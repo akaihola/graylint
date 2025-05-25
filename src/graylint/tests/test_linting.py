@@ -610,11 +610,7 @@ def test_get_messages_from_linters_for_baseline(git_repo):
     assert result == expect
 
 
-class AssertEmptyStderrPopen(
-    Popen  # type: ignore[type-arg]
-):  # pylint: disable=too-few-public-methods
-    # When support for Python 3.8 is dropped, inherit `Popen[str]` instead and remove
-    # the `type-arg` ignore above.
+class AssertEmptyStderrPopen(Popen[str]):  # pylint: disable=too-few-public-methods
     """A Popen to use for the following test; asserts that its stderr is empty"""
 
     def __init__(self, args: List[str], **kwargs: Any):  # type: ignore[explicit-any]
