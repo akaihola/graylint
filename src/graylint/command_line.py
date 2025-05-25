@@ -10,8 +10,8 @@ from typing import Any, Sequence
 import darkgraylib.command_line
 from darkgraylib.plugins import get_entry_point_names
 from graylint import help as hlp
-from graylint.output import OUTPUT_FORMAT_GROUP
 from graylint.output.destination import OutputDestination
+from graylint.output.plugin_helpers import OUTPUT_FORMAT_GROUP
 from graylint.version import __version__
 
 

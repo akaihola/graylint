@@ -26,7 +26,7 @@ import os
 import re
 import shlex
 from collections import defaultdict
-from contextlib import ExitStack, contextmanager
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
 from subprocess import PIPE, Popen  # nosec
@@ -52,7 +52,7 @@ from darkgraylib.git import (
     git_rev_parse,
 )
 from darkgraylib.utils import WINDOWS
-from graylint.output import create_output_plugin
+from graylint.output.plugin_helpers import create_output_plugins
 
 if TYPE_CHECKING:
     from graylint.command_line import OutputSpec
@@ -530,10 +530,7 @@ def _print_new_linter_messages(
         _log_messages(baseline, new_messages)
     error_count = 0
     prev_location = NO_MESSAGE_LOCATION
-    with ExitStack() as stack:
-        outputs = [
-            stack.enter_context(create_output_plugin(output)) for output in output_spec
-        ]
+    with create_output_plugins(output_spec) as outputs:
         for message_location, messages in sorted(new_messages.items()):
             old_location = diff_line_mapping.get(message_location)
             is_modified_line = old_location == NO_MESSAGE_LOCATION
