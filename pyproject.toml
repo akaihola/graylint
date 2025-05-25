@@ -73,7 +73,7 @@ license-files = ["LICENSE.rst"]
 # Darker makes Black read its configuration from the file indicated by the `--config`
 # option, so we need to mirror the same configuration here and in `check-graylint.toml`.
 skip-string-normalization = false
-target-version = ["py38", "py39", "py310", "py311", "py312"]
+target-version = ["py39", "py310", "py311", "py312"]
 
 [tool.isort]
 # Darker makes isort read its configuration from the file indicated by the `--config`
