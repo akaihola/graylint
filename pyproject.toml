@@ -9,7 +9,6 @@ license = {text = "BSD"}
 description = "Run linters and show only new errors compared to an older commit"
 classifiers = [
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
