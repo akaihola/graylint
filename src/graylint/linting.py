@@ -31,7 +31,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from subprocess import PIPE, Popen  # nosec
 from tempfile import TemporaryDirectory
-from typing import IO, Callable, Collection, Generator, Iterable
+from typing import (
+    IO,
+    TYPE_CHECKING,
+    Callable,
+    Collection,
+    Generator,
+    Iterable,
+    Sequence,
+)
 
 from darkgraylib.diff import map_unmodified_lines
 from darkgraylib.git import (
@@ -43,8 +51,11 @@ from darkgraylib.git import (
     git_get_root,
     git_rev_parse,
 )
-from darkgraylib.highlighting import colorize
 from darkgraylib.utils import WINDOWS
+from graylint.output.plugin_helpers import create_output_plugins
+
+if TYPE_CHECKING:
+    from graylint.command_line import OutputSpec
 
 logger = logging.getLogger(__name__)
 
@@ -372,7 +383,7 @@ def run_linters(
     root: Path,
     paths: set[Path],
     revrange: RevisionRange,
-    use_color: bool,
+    output_spec: Sequence[OutputSpec],
 ) -> int:
     """Run the given linters on a set of files in the repository, filter messages
 
@@ -389,7 +400,7 @@ def run_linters(
     :param root: The root of the relative paths
     :param paths: The files and directories to check, relative to ``root``
     :param revrange: The Git revisions to compare
-    :param use_color: ``True`` to use syntax highlighting for linter output
+    :param output_spec: The output formats and destinations for linter messages
     :raises NotImplementedError: if ``--stdin-filename`` is used
     :return: Total number of linting errors found on modified lines
 
@@ -414,7 +425,7 @@ def run_linters(
             baseline={},
             new_messages=messages,
             diff_line_mapping=DiffLineMapping(),
-            use_color=use_color,
+            output_spec=output_spec,
         )
     git_paths = {(root / path).relative_to(git_root) for path in paths}
     # 10. first do a temporary checkout at `rev1` and run linter subprocesses once for
@@ -438,7 +449,9 @@ def run_linters(
     diff_line_mapping = _create_line_mapping(git_root, files_with_messages, revrange)
     # 12. hide linter messages which appear in the current versions and identically on
     #     corresponding lines in ``rev1``, and show all other linter messages
-    return _print_new_linter_messages(baseline, messages, diff_line_mapping, use_color)
+    return _print_new_linter_messages(
+        baseline, messages, diff_line_mapping, output_spec
+    )
 
 
 def _identity_line_processor(message: LinterMessage) -> LinterMessage:
@@ -502,14 +515,14 @@ def _print_new_linter_messages(
     baseline: dict[MessageLocation, list[LinterMessage]],
     new_messages: dict[MessageLocation, list[LinterMessage]],
     diff_line_mapping: DiffLineMapping,
-    use_color: bool,
+    output_spec: Sequence[OutputSpec],
 ) -> int:
     """Print all linter messages except those same as before on unmodified lines
 
     :param baseline: Linter messages and their locations for a previous version
     :param new_messages: New linter messages in a new version of the source file
     :param diff_line_mapping: Mapping between unmodified lines in old and new versions
-    :param use_color: ``True`` to highlight linter messages in the output
+    :param output_spec: The output formats and destinations for linter messages
     :return: The number of linter errors displayed
 
     """
@@ -517,26 +530,30 @@ def _print_new_linter_messages(
         _log_messages(baseline, new_messages)
     error_count = 0
     prev_location = NO_MESSAGE_LOCATION
-    for message_location, messages in sorted(new_messages.items()):
-        old_location = diff_line_mapping.get(message_location)
-        is_modified_line = old_location == NO_MESSAGE_LOCATION
-        old_messages: list[LinterMessage] = baseline.get(old_location, [])
-        for message in messages:
-            if not is_modified_line and normalize_whitespace(message) in old_messages:
-                # Only hide messages when
-                # - they occurred previously on the corresponding line
-                # - the line hasn't been modified
-                continue
-            if (
-                message_location.path != prev_location.path
-                or message_location.line > prev_location.line + 1
-            ):
-                print()
-            prev_location = message_location
-            print(colorize(f"{message_location}:", "lint_location", use_color), end=" ")
-            print(colorize(message.description, "lint_description", use_color), end=" ")
-            print(f"[{message.linter}]")
-            error_count += 1
+    with create_output_plugins(output_spec) as outputs:
+        for message_location, messages in sorted(new_messages.items()):
+            old_location = diff_line_mapping.get(message_location)
+            is_modified_line = old_location == NO_MESSAGE_LOCATION
+            old_messages: list[LinterMessage] = baseline.get(old_location, [])
+            for message in messages:
+                if (
+                    not is_modified_line
+                    and normalize_whitespace(message) in old_messages
+                ):
+                    # Only hide messages when
+                    # - they occurred previously on the corresponding line
+                    # - the line hasn't been modified
+                    continue
+                group_boundary = (
+                    message_location.path != prev_location.path
+                    or message_location.line > prev_location.line + 1
+                )
+                prev_location = message_location
+                for output in outputs:
+                    if group_boundary:
+                        output.group_delimiter()
+                    output.output(message_location, message)
+                error_count += 1
     return error_count
 
 
