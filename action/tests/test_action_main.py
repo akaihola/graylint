@@ -110,8 +110,29 @@ def test_creates_virtualenv(tmp_path, main_patch):
         expect=["graylint[color]", "flake8", "pylint"],
     ),
     dict(
+        run_main_env={"INPUT_LINT": "  flake8  pylint  "},
+        expect=["graylint[color]", "flake8", "pylint"],
+    ),
+    dict(
         run_main_env={"INPUT_LINT": "  flake8  >=  3.9.2  ,  pylint  ==  2.13.1  "},
         expect=["graylint[color]", "flake8>=3.9.2", "pylint==2.13.1"],
+    ),
+    dict(
+        run_main_env={
+            "INPUT_LINT": "  flake8  ",
+            "INPUT_WITH": (
+                "flake8-2020>=1.6.1 "
+                "flake8-bugbear>=22.1.11,!=24.8.19 "
+                "flake8-comprehensions>=3.7.0"
+            ),
+        },
+        expect=[
+            "graylint[color]",
+            "flake8",
+            "flake8-2020>=1.6.1",
+            "flake8-bugbear!=24.8.19,>=22.1.11",
+            "flake8-comprehensions>=3.7.0",
+        ],
     ),
 )
 def test_installs_packages(tmp_path, main_patch, run_main_env, expect):
