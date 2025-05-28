@@ -51,7 +51,6 @@ from darkgraylib.git import (
     git_get_root,
     git_rev_parse,
 )
-from darkgraylib.utils import WINDOWS
 from graylint.output.plugin_helpers import create_output_plugins
 
 if TYPE_CHECKING:
@@ -278,27 +277,9 @@ def _require_rev2_worktree(rev2: str) -> None:
         )
 
 
-def shlex_split(cmdline: str) -> list[str]:
-    """Split a command line string into a list of arguments
-
-    This is a wrapper around `shlex.split` which makes Unix and Windows behavior
-    consistent. On Unix, `shlex.split` splits the string into a list of arguments
-    as expected. On Windows, it doesn't handle quoted strings correctly, so we strip
-    quotes from arguments manually.
-
-    :param cmdline: The command line string to split
-    :return: A list of arguments
-
-    """
-    if not WINDOWS:
-        return shlex.split(cmdline, posix=True)
-    parts = shlex.split(cmdline, posix=False)
-    return shlex.split(" ".join(part.replace("\\", r"\\") for part in parts))
-
-
 @contextmanager
 def _check_linter_output(
-    cmdline: str | list[str],
+    cmdline: list[str],
     root: Path,
     paths: Collection[Path],
     env: dict[str, str],
@@ -312,12 +293,8 @@ def _check_linter_output(
     :return: The standard output stream of the linter subprocess
 
     """
-    if isinstance(cmdline, str):
-        cmdline_parts = shlex_split(cmdline)
-    else:
-        cmdline_parts = cmdline
     existing_path_strs = sorted(str(path) for path in paths if (root / path).exists())
-    cmdline_and_paths = cmdline_parts + existing_path_strs
+    cmdline_and_paths = cmdline + existing_path_strs
     logger.debug("[%s]$ %s", root, shlex.join(cmdline_and_paths))
     with Popen(  # nosec
         cmdline_and_paths,
@@ -333,7 +310,7 @@ def _check_linter_output(
 
 
 def run_linter(  # pylint: disable=too-many-locals
-    cmdline: str | list[str],
+    cmdline: list[str],
     root: Path,
     paths: Collection[Path],
     env: dict[str, str],
@@ -349,12 +326,8 @@ def run_linter(  # pylint: disable=too-many-locals
     """
     missing_files = set()
     result = {}
-    if isinstance(cmdline, str):
-        linter = shlex_split(cmdline)[0]
-        cmdline_str = cmdline
-    else:
-        linter = cmdline[0]
-        cmdline_str = shlex.join(cmdline)
+    linter = cmdline[0]
+    cmdline_str = shlex.join(cmdline)
     # 10. run a linter subprocess for files mentioned on the command line which may be
     #     modified or unmodified, to get current linting status in the working tree
     #     (steps 10.-12. are optional)
@@ -379,7 +352,7 @@ def run_linter(  # pylint: disable=too-many-locals
 
 
 def run_linters(
-    linter_cmdlines: list[str | list[str]],
+    linter_cmdlines: list[list[str]],
     root: Path,
     paths: set[Path],
     revrange: RevisionRange,
@@ -465,7 +438,7 @@ def _identity_line_processor(message: LinterMessage) -> LinterMessage:
 
 
 def _get_messages_from_linters(
-    linter_cmdlines: Iterable[str | list[str]],
+    linter_cmdlines: Iterable[list[str]],
     root: Path,
     paths: Collection[Path],
     env: dict[str, str],
@@ -558,7 +531,7 @@ def _print_new_linter_messages(
 
 
 def _get_messages_from_linters_for_baseline(
-    linter_cmdlines: list[str | list[str]],
+    linter_cmdlines: list[list[str]],
     root: Path,
     paths: Collection[Path],
     revision: str,

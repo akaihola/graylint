@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import shlex
 from argparse import Action, ArgumentParser, Namespace
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -9,6 +10,7 @@ from typing import Any, Sequence
 
 import darkgraylib.command_line
 from darkgraylib.plugins import get_entry_point_names
+from darkgraylib.utils import WINDOWS
 from graylint import help as hlp
 from graylint.output.destination import OutputDestination
 from graylint.output.plugin_helpers import OUTPUT_FORMAT_GROUP
@@ -32,6 +34,24 @@ class ExtendFromEmptyAction(Action):
         items = [] if option_string else self.default
         items.extend(values)
         setattr(namespace, self.dest, items)
+
+
+def shlex_split(cmdline: str) -> list[str]:
+    """Split a command line string into a list of arguments.
+
+    This is a wrapper around `shlex.split` which makes Unix and Windows behavior
+    consistent. On Unix, `shlex.split` splits the string into a list of arguments
+    as expected. On Windows, it doesn't handle quoted strings correctly, so we strip
+    quotes from arguments manually.
+
+    :param cmdline: The command line string to split
+    :return: A list of arguments
+
+    """
+    if not WINDOWS:
+        return shlex.split(cmdline, posix=True)
+    parts = shlex.split(cmdline, posix=False)
+    return shlex.split(" ".join(part.replace("\\", r"\\") for part in parts))
 
 
 @dataclass
