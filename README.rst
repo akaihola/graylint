@@ -626,7 +626,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Awnoise" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Awnoise&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/agandra">
@@ -637,7 +637,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Aagandra" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aagandra&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/kedhammar">
@@ -648,8 +648,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/discussions?discussions_q=author%3Akedhammar" title="Bug reports">🐛</a>
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Akedhammar" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+involves%3Akedhammar&type=discussions" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Akedhammar&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/aljazerzen">
@@ -660,7 +660,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/commits?author=aljazerzen" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aaljazerzen&type=commits" title="Code">💻</a>
        </td>
        <td align="center">
          <a href="https://github.com/akaihola">
@@ -671,11 +671,15 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=akaihola" title="Answering Questions">💬</a>
-         <a href="https://github.com/akaihola/graylint/commits?author=akaihola" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/commits?author=akaihola" title="Documentation">📖</a>
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+reviewed-by%3Aakaihola" title="Reviewed Pull Requests">👀</a>
-         <a href="https://github.com/akaihola/graylint/commits?author=akaihola" title="Maintenance">🚧</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+akaihola" title="Answering Questions">💬</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aakaihola&type=commits" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aakaihola&type=commits" title="Documentation">📖</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+reviewed-by%3Aakaihola&type=pullrequests" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aakaihola&type=commits" title="Maintenance">🚧</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aakaihola&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Aakaihola&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aakaihola&type=pullrequests" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Aakaihola&type=issues" title="Reviewed Pull Requests">👀</a>
        </td>
        <td align="center">
          <a href="https://github.com/Ashblaze">
@@ -686,7 +690,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/discussions?discussions_q=author%3AAshblaze" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+involves%3AAshblaze&type=discussions" title="Bug reports">🐛</a>
        </td>
      </tr>
      <tr>
@@ -699,8 +703,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Alevouh" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Alevouh" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Alevouh&type=pullrequests" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Alevouh&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/AckslD">
@@ -711,7 +715,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3AAckslD" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3AAckslD&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/baod-rate">
@@ -722,7 +726,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Abaod-rate" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Abaod-rate&type=pullrequests" title="Code">💻</a>
        </td>
        <td align="center">
          <a href="https://github.com/qubidt">
@@ -733,7 +737,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Aqubidt" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aqubidt&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/falkben">
@@ -744,8 +748,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Afalkben" title="Documentation">📖</a>
-         <a href="https://github.com/akaihola/graylint/discussions?discussions_q=author%3Afalkben" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Afalkben&type=pullrequests" title="Documentation">📖</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+involves%3Afalkben&type=discussions" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/brtknr">
@@ -756,7 +760,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+reviewed-by%3Abrtknr" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+reviewed-by%3Abrtknr&type=pullrequests" title="Reviewed Pull Requests">👀</a>
        </td>
      </tr>
      <tr>
@@ -769,7 +773,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Abdperkin" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Abdperkin&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/casio">
@@ -780,7 +784,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Acasio" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Acasio&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/mrfroggg">
@@ -791,7 +795,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=commenter%3Amrfroggg&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Amrfroggg&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/chmouel">
@@ -802,8 +806,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Achmouel" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Achmouel" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Achmouel&type=pullrequests" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Achmouel&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/cclauss">
@@ -814,7 +818,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Acclauss" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Acclauss&type=pullrequests" title="Code">💻</a>
        </td>
        <td align="center">
          <a href="https://github.com/chrisdecker1201">
@@ -825,8 +829,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Achrisdecker1201" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Achrisdecker1201" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Achrisdecker1201&type=pullrequests" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Achrisdecker1201&type=issues" title="Bug reports">🐛</a>
        </td>
      </tr>
      <tr>
@@ -839,7 +843,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3AKangOl" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3AKangOl&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/CorreyL">
@@ -850,9 +854,9 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/commits?author=CorreyL" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/commits?author=CorreyL" title="Documentation">📖</a>
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+reviewed-by%3ACorreyL" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3ACorreyL&type=commits" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3ACorreyL&type=commits" title="Documentation">📖</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+reviewed-by%3ACorreyL&type=pullrequests" title="Reviewed Pull Requests">👀</a>
        </td>
        <td align="center">
          <a href="https://github.com/dkeraudren">
@@ -863,7 +867,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=commenter%3Adkeraudren&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Adkeraudren&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/fizbin">
@@ -874,7 +878,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Afizbin" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Afizbin&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/DavidCDreher">
@@ -885,7 +889,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3ADavidCDreher" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3ADavidCDreher&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/shangxiao">
@@ -896,8 +900,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Ashangxiao" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Ashangxiao" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Ashangxiao&type=pullrequests" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Ashangxiao&type=issues" title="Bug reports">🐛</a>
        </td>
      </tr>
      <tr>
@@ -910,8 +914,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=commenter%3Adhrvjha&type=issues" title="Bug reports">🐛</a>
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Adhrvjha" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Adhrvjha&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Adhrvjha&type=pullrequests" title="Code">💻</a>
        </td>
        <td align="center">
          <a href="https://github.com/dshemetov">
@@ -922,7 +926,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Adshemetov" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Adshemetov&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/k-dominik">
@@ -933,7 +937,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=commenter%3Ak-dominik&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Ak-dominik&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/virtuald">
@@ -944,7 +948,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Avirtuald" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Avirtuald&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/DylanYoung">
@@ -955,7 +959,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3ADylanYoung" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3ADylanYoung&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/phitoduck">
@@ -966,7 +970,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Aphitoduck" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aphitoduck&type=issues" title="Bug reports">🐛</a>
        </td>
      </tr>
      <tr>
@@ -979,7 +983,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/discussions?discussions_q=author%3AEyobkibret15" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+involves%3AEyobkibret15&type=discussions" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/samoylovfp">
@@ -990,7 +994,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+reviewed-by%3Asamoylovfp" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+reviewed-by%3Asamoylovfp&type=pullrequests" title="Reviewed Pull Requests">👀</a>
        </td>
        <td align="center">
          <a href="https://github.com/philipgian">
@@ -1001,7 +1005,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Aphilipgian" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aphilipgian&type=pullrequests" title="Code">💻</a>
        </td>
        <td align="center">
          <a href="https://github.com/foxwhite25">
@@ -1012,7 +1016,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=foxwhite25" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+foxwhite25" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/gdiscry">
@@ -1023,7 +1027,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Agdiscry" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Agdiscry&type=pullrequests" title="Code">💻</a>
        </td>
        <td align="center">
          <a href="https://github.com/gergelypolonkai">
@@ -1034,7 +1038,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Agergelypolonkai" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Agergelypolonkai&type=issues" title="Bug reports">🐛</a>
        </td>
      </tr>
      <tr>
@@ -1047,7 +1051,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/commits?author=muggenhor" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Amuggenhor&type=commits" title="Code">💻</a>
        </td>
        <td align="center">
          <a href="https://github.com/jabesq">
@@ -1058,8 +1062,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Ajabesq" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Ajabesq" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Ajabesq&type=pullrequests" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Ajabesq&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/hugovk">
@@ -1070,7 +1074,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Ahugovk" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Ahugovk&type=pullrequests" title="Code">💻</a>
        </td>
        <td align="center">
          <a href="https://github.com/irynahryshanovich">
@@ -1081,7 +1085,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Airynahryshanovich" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Airynahryshanovich&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/yajo">
@@ -1092,8 +1096,24 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=commenter%3Ayajo&type=issues" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Ayajo&type=issues" title="Reviewed Pull Requests">👀</a>
        </td>
+       <td align="center">
+         <a href="https://github.com/ire4ever1190">
+           <img src="https://avatars.githubusercontent.com/u/19339842?v=3" width="100px;" alt="@ire4ever1190" />
+           <br />
+           <sub>
+             <b>Jake Leahy</b>
+           </sub>
+         </a>
+         <br />
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Aire4ever1190&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aire4ever1190&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Aire4ever1190&type=issues" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aire4ever1190&type=pullrequests" title="Code">💻</a>
+       </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/jasleen19">
            <img src="https://avatars.githubusercontent.com/u/30443449?v=3" width="100px;" alt="@jasleen19" />
@@ -1103,11 +1123,9 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Ajasleen19" title="Bug reports">🐛</a>
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+reviewed-by%3Ajasleen19" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Ajasleen19&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+reviewed-by%3Ajasleen19&type=pullrequests" title="Reviewed Pull Requests">👀</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/jedie">
            <img src="https://avatars.githubusercontent.com/u/71315?v=3" width="100px;" alt="@jedie" />
@@ -1117,7 +1135,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Ajedie" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Ajedie&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/jenshnielsen">
@@ -1128,7 +1146,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=jenshnielsen" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+jenshnielsen" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/leej3">
@@ -1139,7 +1157,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=commenter%3Aleej3&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Aleej3&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/wkentaro">
@@ -1150,7 +1168,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Awkentaro" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Awkentaro&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/Asuskf">
@@ -1161,8 +1179,10 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/discussions?discussions_q=author%3AAsuskf" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+involves%3AAsuskf&type=discussions" title="Bug reports">🐛</a>
        </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/Krischtopp">
            <img src="https://avatars.githubusercontent.com/u/56152637?v=3" width="100px;" alt="@Krischtopp" />
@@ -1172,10 +1192,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3AKrischtopp" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3AKrischtopp&type=issues" title="Bug reports">🐛</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/leotrs">
            <img src="https://avatars.githubusercontent.com/u/1096704?v=3" width="100px;" alt="@leotrs" />
@@ -1185,7 +1203,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Aleotrs" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aleotrs&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/Carreau">
@@ -1196,9 +1214,9 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/commits?author=Carreau" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/commits?author=Carreau" title="Documentation">📖</a>
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+reviewed-by%3ACarreau" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3ACarreau&type=commits" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3ACarreau&type=commits" title="Documentation">📖</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+reviewed-by%3ACarreau&type=pullrequests" title="Reviewed Pull Requests">👀</a>
        </td>
        <td align="center">
          <a href="https://github.com/magnunm">
@@ -1209,7 +1227,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Amagnunm" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Amagnunm&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/markddavidoff">
@@ -1220,7 +1238,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Amarkddavidoff" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Amarkddavidoff&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/dwt">
@@ -1231,8 +1249,10 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Adwt" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Adwt&type=issues" title="Bug reports">🐛</a>
        </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/matclayton">
            <img src="https://avatars.githubusercontent.com/u/126218?v=3" width="100px;" alt="@matclayton" />
@@ -1242,10 +1262,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Amatclayton" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Amatclayton&type=issues" title="Bug reports">🐛</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/MatthijsBurgh">
            <img src="https://avatars.githubusercontent.com/u/18014833?v=3" width="100px;" alt="@MatthijsBurgh" />
@@ -1255,7 +1273,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3AMatthijsBurgh" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3AMatthijsBurgh&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/minrk">
@@ -1266,7 +1284,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/conda-forge/graylint-feedstock/search?q=graylint+author%3Aminrk&type=issues" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aconda-forge%2Fgraylint-feedstock+involves%3Aminrk&type=issues" title="Code">💻</a>
        </td>
        <td align="center">
          <a href="https://github.com/my-tien">
@@ -1277,7 +1295,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Amy-tien" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Amy-tien&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/Mystic-Mirage">
@@ -1288,9 +1306,9 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/commits?author=Mystic-Mirage" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/commits?author=Mystic-Mirage" title="Documentation">📖</a>
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+reviewed-by%3AMystic-Mirage" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3AMystic-Mirage&type=commits" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3AMystic-Mirage&type=commits" title="Documentation">📖</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+reviewed-by%3AMystic-Mirage&type=pullrequests" title="Reviewed Pull Requests">👀</a>
        </td>
        <td align="center">
          <a href="https://github.com/njhuffman">
@@ -1301,9 +1319,11 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Anjhuffman" title="Bug reports">🐛</a>
-         <a href="https://github.com/akaihola/graylint/commits?author=njhuffman" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Anjhuffman&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Anjhuffman&type=commits" title="Code">💻</a>
        </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/wasdee">
            <img src="https://avatars.githubusercontent.com/u/8089231?v=3" width="100px;" alt="@wasdee" />
@@ -1313,10 +1333,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Awasdee" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Awasdee&type=issues" title="Bug reports">🐛</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/Pacu2">
            <img src="https://avatars.githubusercontent.com/u/21290461?v=3" width="100px;" alt="@Pacu2" />
@@ -1326,8 +1344,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3APacu2" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+reviewed-by%3APacu2" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3APacu2&type=pullrequests" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+reviewed-by%3APacu2&type=pullrequests" title="Reviewed Pull Requests">👀</a>
        </td>
        <td align="center">
          <a href="https://github.com/PatrickJordanCongenica">
@@ -1338,7 +1356,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/discussions?discussions_q=author%3APatrickJordanCongenica" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+involves%3APatrickJordanCongenica&type=discussions" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/ivanov">
@@ -1349,9 +1367,9 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/commits?author=ivanov" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Aivanov" title="Bug reports">🐛</a>
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+reviewed-by%3Aivanov" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aivanov&type=commits" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aivanov&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+reviewed-by%3Aivanov&type=pullrequests" title="Reviewed Pull Requests">👀</a>
        </td>
        <td align="center">
          <a href="https://github.com/gesslerpd">
@@ -1362,7 +1380,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Agesslerpd" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Agesslerpd&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/flying-sheep">
@@ -1373,8 +1391,10 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Aflying-sheep" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aflying-sheep&type=issues" title="Bug reports">🐛</a>
        </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/RishiKumarRay">
            <img src="https://avatars.githubusercontent.com/u/87641376?v=3" width="100px;" alt="@RishiKumarRay" />
@@ -1384,10 +1404,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=RishiKumarRay" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+RishiKumarRay" title="Bug reports">🐛</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/ioggstream">
            <img src="https://avatars.githubusercontent.com/u/1140844?v=3" width="100px;" alt="@ioggstream" />
@@ -1397,7 +1415,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=commenter%3Aioggstream&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Aioggstream&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/roniemartinez">
@@ -1408,7 +1426,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Aroniemartinez" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aroniemartinez&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/rossbar">
@@ -1419,7 +1437,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Arossbar" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Arossbar&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/sgaist">
@@ -1430,7 +1448,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Asgaist" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Asgaist&type=pullrequests" title="Code">💻</a>
        </td>
        <td align="center">
          <a href="https://github.com/seweissman">
@@ -1441,8 +1459,10 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Aseweissman" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aseweissman&type=issues" title="Bug reports">🐛</a>
        </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/sherbie">
            <img src="https://avatars.githubusercontent.com/u/15087653?v=3" width="100px;" alt="@sherbie" />
@@ -1452,10 +1472,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+reviewed-by%3Asherbie" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+reviewed-by%3Asherbie&type=pullrequests" title="Reviewed Pull Requests">👀</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/hauntsaninja">
            <img src="https://avatars.githubusercontent.com/u/12621235?v=3" width="100px;" alt="@hauntsaninja" />
@@ -1465,7 +1483,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Ahauntsaninja" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Ahauntsaninja&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/simgunz">
@@ -1476,7 +1494,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=commenter%3Asimgunz&type=issues" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Asimgunz&type=issues" title="Reviewed Pull Requests">👀</a>
        </td>
        <td align="center">
          <a href="https://github.com/soxofaan">
@@ -1487,7 +1505,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Asoxofaan" title="Documentation">📖</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Asoxofaan&type=pullrequests" title="Documentation">📖</a>
        </td>
        <td align="center">
          <a href="https://github.com/strzonnek">
@@ -1498,8 +1516,21 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Astrzonnek" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Astrzonnek&type=issues" title="Bug reports">🐛</a>
        </td>
+       <td align="center">
+         <a href="https://github.com/Svenito">
+           <img src="https://avatars.githubusercontent.com/u/31278?v=3" width="100px;" alt="@Svenito" />
+           <br />
+           <sub>
+             <b>Sven Steinbauer</b>
+           </sub>
+         </a>
+         <br />
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3ASvenito&type=pullrequests" title="Code">💻</a>
+       </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/tkolleh">
            <img src="https://avatars.githubusercontent.com/u/3095197?v=3" width="100px;" alt="@tkolleh" />
@@ -1509,7 +1540,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Atkolleh" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Atkolleh&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/talhajunaidd">
@@ -1520,10 +1551,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/commits?author=talhajunaidd" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Atalhajunaidd&type=commits" title="Code">💻</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/guettli">
            <img src="https://avatars.githubusercontent.com/u/414336?v=3" width="100px;" alt="@guettli" />
@@ -1533,7 +1562,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Aguettli" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aguettli&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/tobiasdiez">
@@ -1554,7 +1583,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Atapted" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Atapted&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/tgross35">
@@ -1565,8 +1594,10 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Atgross35" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Atgross35&type=issues" title="Bug reports">🐛</a>
        </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/victorcui96">
            <img src="https://avatars.githubusercontent.com/u/14048976?v=3" width="100px;" alt="@victorcui96" />
@@ -1576,7 +1607,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=commenter%3Avictorcui96&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Avictorcui96&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/yoursvivek">
@@ -1587,11 +1618,9 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Ayoursvivek" title="Bug reports">🐛</a>
-         <a href="https://github.com/akaihola/graylint/commits?author=yoursvivek" title="Documentation">📖</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Ayoursvivek&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Ayoursvivek&type=commits" title="Documentation">📖</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/Hainguyen1210">
            <img src="https://avatars.githubusercontent.com/u/15359217?v=3" width="100px;" alt="@Hainguyen1210" />
@@ -1601,7 +1630,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3AHainguyen1210" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3AHainguyen1210&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/wjdp">
@@ -1612,8 +1641,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Awjdp" title="Bug reports">🐛</a>
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Awjdp" title="Documentation">📖</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Awjdp&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Awjdp&type=pullrequests" title="Documentation">📖</a>
        </td>
        <td align="center">
          <a href="https://github.com/wpnbos">
@@ -1624,7 +1653,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Awpnbos" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Awpnbos&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/zachnorton4C">
@@ -1635,8 +1664,10 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Azachnorton4C" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Azachnorton4C&type=issues" title="Bug reports">🐛</a>
        </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/clintonsteiner">
            <img src="https://avatars.githubusercontent.com/u/47841949?v=3" width="100px;" alt="@clintonsteiner" />
@@ -1646,7 +1677,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Aclintonsteiner" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aclintonsteiner&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/deadkex">
@@ -1657,10 +1688,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/discussions?discussions_q=author%3Adeadkex" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+involves%3Adeadkex&type=discussions" title="Bug reports">🐛</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/dsmanl">
            <img src="https://avatars.githubusercontent.com/u/67360039?v=3" width="100px;" alt="@dsmanl" />
@@ -1670,7 +1699,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Adsmanl" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Adsmanl&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/jsuit">
@@ -1681,7 +1710,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/discussions?discussions_q=author%3Ajsuit" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+involves%3Ajsuit&type=discussions" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/martinRenou">
@@ -1692,8 +1721,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/conda-forge/staged-recipes/search?q=graylint&type=issues&author=martinRenou" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+reviewed-by%3AmartinRenou" title="Reviewed Pull Requests">👀</a>
+         <a href="https://github.com/search?q=repo%3Aconda-forge%2Fstaged-recipes+akaihola%2Fgraylint+involves%3AmartinRenou&type=pullrequests" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+reviewed-by%3AmartinRenou&type=pullrequests" title="Reviewed Pull Requests">👀</a>
        </td>
        <td align="center">
          <a href="https://github.com/mayk0gan">
@@ -1704,8 +1733,10 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Amayk0gan" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Amayk0gan&type=issues" title="Bug reports">🐛</a>
        </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/okuuva">
            <img src="https://avatars.githubusercontent.com/u/2804020?v=3" width="100px;" alt="@okuuva" />
@@ -1715,7 +1746,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=commenter%3Aokuuva&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Aokuuva&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/overratedpro">
@@ -1726,10 +1757,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Aoverratedpro" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aoverratedpro&type=issues" title="Bug reports">🐛</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/simonf-dev">
            <img src="https://avatars.githubusercontent.com/u/52134089?v=3" width="100px;" alt="@simonf-dev" />
@@ -1739,7 +1768,7 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/search?q=commenter%3Asimonf-dev&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Asimonf-dev&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/rogalski">
@@ -1750,8 +1779,8 @@ Thanks goes to these wonderful people (`emoji key`_):
            </sub>
          </a>
          <br />
-         <a href="https://github.com/akaihola/graylint/pulls?q=is%3Apr+author%3Arogalski" title="Code">💻</a>
-         <a href="https://github.com/akaihola/graylint/issues?q=author%3Arogalski" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Arogalski&type=pullrequests" title="Code">💻</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Arogalski&type=issues" title="Bug reports">🐛</a>
        </td>
      </tr>
    </table>   <!-- ALL-CONTRIBUTORS-LIST:END -->
