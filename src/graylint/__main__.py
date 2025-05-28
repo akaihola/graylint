@@ -16,7 +16,7 @@ from darkgraylib.git import RevisionRange
 from darkgraylib.highlighting import should_use_color
 from darkgraylib.log import setup_logging
 from darkgraylib.main import resolve_paths
-from graylint.command_line import make_argument_parser
+from graylint.command_line import make_argument_parser, shlex_split
 from graylint.config import GraylintConfig
 from graylint.linting import run_linters
 
@@ -55,7 +55,7 @@ def main(argv: list[str] = None) -> int:
         for output in args.output_format
     ]
     linter_failures_on_modified_lines = run_linters(
-        args.lint,
+        [shlex_split(one_linter) for one_linter in args.lint],
         root,
         # paths to lint are not limited to modified files or just Python files:
         {p.resolve().relative_to(root) for p in paths},
