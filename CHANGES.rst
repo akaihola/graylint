@@ -5,7 +5,6 @@ These features will be included in the next release:
 
 Added
 -----
-- Accept versions 2.0.0 through 2.2.x for the Darkgraylib_ dependency.
 - ``with:`` GitHub Action option to install extra Python packages, e.g. plugins.
 
 Removed
@@ -27,6 +26,8 @@ Internal
 - Validation in CI for installing package extras.
 - Migrate CI workflows (Flake8, Mypy, Pylint) to use the Graylint GitHub action.
 - Add ``ruff`` ignores for test files in ``action/tests/``.
+- Update to version 2.3.0 of the Darkgraylib_ dependency.
+- Only run the activity summary workflow weekly.
 
 
 2.0.0_ - 2024-07-31
