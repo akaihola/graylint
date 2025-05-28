@@ -384,14 +384,18 @@ Create a file named ``.github/workflows/graylint.yml`` inside your repository wi
        steps:
          - uses: actions/checkout@v4
            with:
-             fetch-depth: 0 
-         - uses: actions/setup-python@v5
+             fetch-depth: 0
          - uses: akaihola/graylint@2.0.0
            with:
              options: "-v"
              src: "./src"
              version: "~=2.0.0"
-             lint: "flake8,pylint==2.13.1"
+             lint: >-
+               flake8
+               pylint==2.13.1
+             with: >-
+               flake8-bugbear>=22.1.11,!=24.8.19
+               flake8-2020>=1.6.1
 
 There needs to be a working Python environment, set up using ``actions/setup-python``
 in the above example. Graylint will be installed in an isolated virtualenv to prevent
@@ -418,10 +422,22 @@ You can also configure other arguments passed to Graylint via ``"options:"``.
 It defaults to ``""``.
 You can e.g. add ``"--verbose"`` for debug logging.
 
-To run linters through Graylint, you can provide a comma separated list of linters using
-the ``lint:`` option. Only ``flake8``, ``pylint`` and ``mypy`` are supported. Other
-linters may or may not work with Graylint, depending on their message output format.
+To run linters through Graylint, you can provide
+a space or comma separated list of linters using the ``lint:`` option.
+Only ``flake8``, ``pylint`` and ``mypy`` are supported.
 Versions can be constrained using ``pip`` syntax, e.g. ``"flake8>=3.9.2"``.
+
+To install extra packages, e.g. flake8 plugins, use the ``with:`` option.
+
+Tip: To make long space separated lists of packages more readable,
+you can use the YAML folded style (``>``) to put them on multiple lines.
+The ``>-`` syntax also removes the trailing newline:
+
+.. code-block:: yaml
+
+   lint: >-
+     flake8
+     pylint==2.13.1
 
 
 .. _Using linters:
