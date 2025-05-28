@@ -309,6 +309,26 @@ def _check_linter_output(
         yield linter_process.stdout
 
 
+def _transform_linter_command(cmdline: list[str]) -> list[str]:
+    """Transform the linter command to ensure required options are in place.
+
+    This is done for ergonomics: The user can just specify ``--lint=ruff`` and have
+    ``ruff check --output-format=concise`` run.
+
+    :param cmdline: The command line to transform
+    :return: The transformed command line as a list of arguments
+
+    """
+    if cmdline[0] != "ruff":
+        return cmdline
+    transformed_cmdline = cmdline.copy()
+    if "check" not in transformed_cmdline:
+        transformed_cmdline.insert(1, "check")
+    if not any(arg.startswith("--output-format") for arg in transformed_cmdline):
+        transformed_cmdline.append("--output-format=concise")
+    return transformed_cmdline
+
+
 def run_linter(  # pylint: disable=too-many-locals
     cmdline: list[str],
     root: Path,
@@ -326,12 +346,13 @@ def run_linter(  # pylint: disable=too-many-locals
     """
     missing_files = set()
     result = {}
-    linter = cmdline[0]
-    cmdline_str = shlex.join(cmdline)
+    transformed_cmdline = _transform_linter_command(cmdline)
+    linter = transformed_cmdline[0]
+    cmdline_str = shlex.join(transformed_cmdline)
     # 10. run a linter subprocess for files mentioned on the command line which may be
     #     modified or unmodified, to get current linting status in the working tree
     #     (steps 10.-12. are optional)
-    with _check_linter_output(cmdline, root, paths, env) as linter_stdout:
+    with _check_linter_output(transformed_cmdline, root, paths, env) as linter_stdout:
         for line in linter_stdout:
             (location, message) = _parse_linter_line(linter, line, root)
             if location is NO_MESSAGE_LOCATION or location.path in missing_files:
