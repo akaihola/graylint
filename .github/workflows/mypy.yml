@@ -17,26 +17,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
-      - name: Install uv
-        uses: astral-sh/setup-uv@v6
+          fetch-depth: 0  # Fetch all history for all branches and tags
+      - name: Mypy using Graylint's own GitHub action straight from the repository
+        uses: ./
         with:
-          enable-cache: true
-          cache-dependency-glob: |
-            **/setup.cfg
-            **/pyproject.toml
-      - run: |
-          uv pip install --system --upgrade \
-            git+https://github.com/akaihola/darkgraylib.git@main \
-            mypy>=0.990 \
-            pytest \
-            types-requests \
-            types-toml
-      - uses: wearerequired/lint-action@v2.3.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          mypy: true
-          mypy_args: "src"
-          continue_on_error: false
+          version: "@${{ github.ref_name }}"
+          options: "--output-format=github"
+          src: "./src"
+          revision: "origin/main..."
+          lint: "mypy>=1.11.0"

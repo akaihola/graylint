@@ -6,6 +6,7 @@ These features will be included in the next release:
 Added
 -----
 - Accept versions 2.0.0 through 2.2.x for the Darkgraylib_ dependency.
+- ``with:`` GitHub Action option to install extra Python packages, e.g. plugins.
 
 Removed
 -------
@@ -24,6 +25,8 @@ Internal
 - Add minimum version constraints for development dependencies.
 - Update pyupgrade_ target to Python 3.9+.
 - Validation in CI for installing package extras.
+- Migrate CI workflows (Flake8, Mypy, Pylint) to use the Graylint GitHub action.
+- Add ``ruff`` ignores for test files in ``action/tests/``.
 
 
 2.0.0_ - 2024-07-31

@@ -138,6 +138,12 @@ ignore = [
     "S101",  # Use of `assert` detected
     "SLF001",  # Private member accessed
 ]
+"action/tests/*.py" = [
+    "ANN001",  # Missing type annotation for function argument
+    "ANN201",  # Missing return type annotation for public function
+    "ARG001",  # Unused function argument
+    "C408",  # Unnecessary `dict` call (rewrite as a literal)
+]
 
 [tool.ruff.lint.isort]
 known-first-party = ["darkgraylib", "graylint"]
