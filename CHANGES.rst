@@ -5,8 +5,9 @@ These features will be included in the next release:
 
 Added
 -----
-- Accept versions 2.0.0 through 2.2.x for the Darkgraylib_ dependency.
 - ``with:`` GitHub Action option to install extra Python packages, e.g. plugins.
+- For Ruff, always ensure the ``check`` command is run with the concise output format.
+- Support Ruff as a linter in the GitHub Action.
 
 Removed
 -------
@@ -18,6 +19,7 @@ Fixed
 
 Internal
 --------
+- Update Darkgraylib_ dependency to version 2.3.0.
 - Move setuptools_ configuration from ``setup.cfg`` to ``pyproject.toml``.
 - Avoid a buggy flake8-bugbear_ version in the CI build.
 - Fix for updating version strings in README using ``darkgray_bump_version``.
@@ -27,6 +29,7 @@ Internal
 - Validation in CI for installing package extras.
 - Migrate CI workflows (Flake8, Mypy, Pylint) to use the Graylint GitHub action.
 - Add ``ruff`` ignores for test files in ``action/tests/``.
+- Run ``ruff check`` against ``main`` as a baseline in the CI build.
 
 
 2.0.0_ - 2024-07-31

@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from pip_requirements_parser import RequirementParts
 
 
-LINTER_WHITELIST = {"flake8", "pylint", "mypy"}
+LINTER_WHITELIST = {"flake8", "pylint", "mypy", "ruff"}
 ACTION_PATH = Path(os.environ["GITHUB_ACTION_PATH"])
 ENV_PATH = ACTION_PATH / ".graylint-env"
 ENV_BIN = ENV_PATH / ("Scripts" if sys.platform == "win32" else "bin")
