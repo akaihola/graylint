@@ -585,3 +585,48 @@ def test_get_messages_from_linters_for_baseline_no_mypy_errors(git_repo):
             paths=[Path("__init__.py")],
             revision=initial,
         )
+
+
+@pytest.mark.kwparametrize(
+    dict(
+        cmdline=[],
+        expect=IndexError,
+    ),
+    dict(
+        cmdline=["mypy", "--show-error-codes"],
+        expect=["mypy", "--show-error-codes"],
+    ),
+    dict(
+        cmdline=["flake8", "--format=%(path)s:%(row)d:%(col)d: %(text)s"],
+        expect=["flake8", "--format=%(path)s:%(row)d:%(col)d: %(text)s"],
+    ),
+    dict(
+        cmdline=["ruff"],
+        expect=["ruff", "check", "--output-format=concise"],
+    ),
+    dict(
+        cmdline=["ruff", "check"],
+        expect=["ruff", "check", "--output-format=concise"],
+    ),
+    dict(
+        cmdline=["ruff", "--fix"],
+        expect=["ruff", "check", "--fix", "--output-format=concise"],
+    ),
+    dict(
+        cmdline=["ruff", "check", "--output-format=json"],
+        expect=["ruff", "check", "--output-format=json"],
+    ),
+    dict(
+        # nonsensical case, but we're not doing proper Ruff argument parsing
+        cmdline=["ruff", "format"],
+        expect=["ruff", "check", "format", "--output-format=concise"],
+    ),
+)
+def test_transform_linter_command(cmdline, expect):
+    """_transform_linter_command transforms ruff commands and passes through others."""
+    if expect is IndexError:
+        with pytest.raises(IndexError):
+            linting._transform_linter_command(cmdline)
+    else:
+        result = linting._transform_linter_command(cmdline)
+        assert result == expect
