@@ -2,7 +2,7 @@
 name: Recent Activity Summary
 on:  # yamllint disable-line rule:truthy
   schedule:
-    - cron: '12 0 * * *'  # Run every day at 00:12 UTC - change when caught up
+    - cron: '12 0 * * Mon'  # Run every Monday at 00:12 UTC
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate and Post Repository Summary
-        uses: akaihola/repo-summary-post@v0.0.6
+        uses: akaihola/repo-summary-post@v0.0.8
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
           repo-name: '${{ github.repository }}'
