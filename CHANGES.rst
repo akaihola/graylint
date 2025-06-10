@@ -26,7 +26,7 @@ Internal
 - Validation in CI for installing package extras.
 - Migrate CI workflows (Flake8, Mypy, Pylint) to use the Graylint GitHub action.
 - Add ``ruff`` ignores for test files in ``action/tests/``.
-- Update to version 2.3.0 of the Darkgraylib_ dependency.
+- Update to version 2.4.0 of the Darkgraylib_ dependency.
 - Only run the activity summary workflow weekly.
 
 
