@@ -11,9 +11,56 @@ import pytest
 
 from darkgraylib.command_line import parse_command_line
 from darkgraylib.testtools.helpers import raises_if_exception
-from graylint.command_line import OutputSpec, make_argument_parser
+from darkgraylib.utils import WINDOWS
+from graylint.command_line import OutputSpec, make_argument_parser, shlex_split
 from graylint.config import GraylintConfig
 from graylint.output.destination import OutputDestination
+
+
+@pytest.mark.kwparametrize(
+    dict(cmdline="echo", expect=["echo"]),
+    dict(cmdline="echo words separately", expect=["echo", "words", "separately"]),
+    dict(cmdline='echo "two  spaces"', expect=["echo", "two  spaces"]),
+    dict(cmdline="echo eat  spaces", expect=["echo", "eat", "spaces"]),
+    dict(cmdline="echo 'quoted words'", expect=["echo", "quoted words"]),
+    dict(cmdline='echo "quoted words"', expect=["echo", "quoted words"]),
+    dict(
+        cmdline='echo "quoted words" "and more"',
+        expect=["echo", "quoted words", "and more"],
+    ),
+    dict(
+        cmdline='echo "quoted words" and more',
+        expect=["echo", "quoted words", "and", "more"],
+    ),
+    dict(
+        cmdline='echo "quoted words" and "more"',
+        expect=["echo", "quoted words", "and", "more"],
+    ),
+    dict(
+        cmdline='echo "quoted words" "and" "more"',
+        expect=["echo", "quoted words", "and", "more"],
+    ),
+    dict(
+        cmdline='echo "quoted words" "and" more',
+        expect=["echo", "quoted words", "and", "more"],
+    ),
+    dict(
+        cmdline=r"echo C:\Program Files\Windows",
+        expect=(
+            ["echo", r"C:\Program", r"Files\Windows"]
+            if WINDOWS
+            else ["echo", "C:Program", "FilesWindows"]
+        ),
+    ),
+    dict(
+        cmdline=r'echo "C:\Program Files\Windows"',
+        expect=(["echo", r"C:\Program Files\Windows"]),
+    ),
+)
+def test_shlex_split(cmdline, expect):
+    """`linting.shlex_split` splits a command line correctly on different platforms."""
+    result = shlex_split(cmdline)
+    assert result == expect
 
 
 @pytest.mark.kwparametrize(
@@ -75,9 +122,12 @@ def test_parse_command_line(
     (tmp_path / "my.cfg").touch()
     (tmp_path / "subdir_with_config").mkdir()
     (tmp_path / "subdir_with_config" / "pyproject.toml").touch()
-    with patch.dict(os.environ, {}, clear=True), raises_if_exception(
-        expect_value,
-    ) as expect_exception:
+    with (
+        patch.dict(os.environ, {}, clear=True),
+        raises_if_exception(
+            expect_value,
+        ) as expect_exception,
+    ):
         args, effective_cfg, modified_cfg = parse_command_line(
             make_argument_parser,
             argv,

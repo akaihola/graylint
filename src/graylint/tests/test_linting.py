@@ -15,7 +15,7 @@ from darkgraylib.git import WORKTREE, RevisionRange
 from darkgraylib.testtools.helpers import raises_if_exception
 from darkgraylib.utils import WINDOWS
 from graylint import linting
-from graylint.command_line import OutputSpec
+from graylint.command_line import OutputSpec, shlex_split
 from graylint.linting import (
     DiffLineMapping,
     LinterMessage,
@@ -163,58 +163,7 @@ def test_parse_linter_line(git_repo, monkeypatch, line, expect):
 def test_require_rev2_worktree(rev2, expect):
     """``_require_rev2_worktree`` raises an exception if rev2 is not ``WORKTREE``"""
     with raises_if_exception(expect):
-
         linting._require_rev2_worktree(rev2)
-
-
-@pytest.mark.kwparametrize(
-    dict(cmdline="echo", expect=["echo"]),
-    dict(cmdline="echo words separately", expect=["echo", "words", "separately"]),
-    dict(cmdline='echo "two  spaces"', expect=["echo", "two  spaces"]),
-    dict(cmdline="echo eat  spaces", expect=["echo", "eat", "spaces"]),
-    dict(cmdline="echo 'quoted words'", expect=["echo", "quoted words"]),
-    dict(cmdline='echo "quoted words"', expect=["echo", "quoted words"]),
-    dict(
-        cmdline='echo "quoted words" "and more"',
-        expect=["echo", "quoted words", "and more"],
-    ),
-    dict(
-        cmdline='echo "quoted words" and more',
-        expect=["echo", "quoted words", "and", "more"],
-    ),
-    dict(
-        cmdline='echo "quoted words" and "more"',
-        expect=["echo", "quoted words", "and", "more"],
-    ),
-    dict(
-        cmdline='echo "quoted words" "and" "more"',
-        expect=["echo", "quoted words", "and", "more"],
-    ),
-    dict(
-        cmdline='echo "quoted words" "and" more',
-        expect=["echo", "quoted words", "and", "more"],
-    ),
-    dict(
-        cmdline=r"echo C:\Program Files\Windows",
-        expect=(
-            ["echo", r"C:\Program", r"Files\Windows"]
-            if WINDOWS
-            else ["echo", "C:Program", "FilesWindows"]
-        ),
-    ),
-    dict(
-        cmdline=r'echo "C:\Program Files\Windows"',
-        expect=(
-            ["echo", r"C:\Program Files\Windows"]
-            if WINDOWS
-            else ["echo", r"C:\Program Files\Windows"]
-        ),
-    ),
-)
-def test_shlex_split(cmdline, expect):
-    """`linting.shlex_split` splits a command line correctly on different platforms"""
-    result = linting.shlex_split(cmdline)
-    assert result == expect
 
 
 @pytest.mark.kwparametrize(
@@ -228,7 +177,7 @@ def test_check_linter_output(tmp_path, cmdline, expect):
     (tmp_path / "first.py").touch()
     (tmp_path / "the  2nd.py").touch()
     with linting._check_linter_output(
-        cmdline,
+        shlex_split(cmdline),
         tmp_path,
         {Path("first.py"), Path("the  2nd.py"), Path("missing.py")},
         make_linter_env(tmp_path, "WORKTREE"),
@@ -352,7 +301,7 @@ def test_run_linters(
         b"1 unmoved\n2 modified\n3 inserted\n3 to 4 moved\n"
     )
     src_paths["messages"].write_text("\n".join(messages_after))
-    cmdlines: List[Union[str, List[str]]] = ["cat messages"]
+    cmdlines: list[list[str]] = [["cat", "messages"]]
     revrange = RevisionRange("HEAD", ":WORKTREE:")
 
     linting.run_linters(
@@ -375,9 +324,8 @@ def test_run_linters(
 def test_run_linters_non_worktree():
     """``run_linters()`` doesn't support linting commits, only the worktree"""
     with pytest.raises(NotImplementedError):
-
         linting.run_linters(
-            ["dummy-linter"],
+            [["dummy-linter"]],
             Path("/dummy"),
             {Path("dummy.py")},
             RevisionRange.parse_with_common_ancestor(
@@ -399,7 +347,7 @@ def test_run_linters_return_value(git_repo, message, expect):
     """``run_linters()`` returns the number of linter errors on modified lines"""
     src_paths = git_repo.add({"test.py": "1\n2\n"}, commit="Initial commit")
     src_paths["test.py"].write_bytes(b"one\n2\n")
-    cmdline = f"echo {message}"
+    cmdline = ["echo", message]
 
     result = linting.run_linters(
         [cmdline],
@@ -423,7 +371,7 @@ def test_run_linters_on_new_file(git_repo, capsys):
     (git_repo.root / "file2.py").write_bytes(b"1\n2\n")
 
     linting.run_linters(
-        ["echo file2.py:1: message on a file not seen in Git history"],
+        [["echo", "file2.py:1: message on a file not seen in Git history"]],
         Path(git_repo.root),
         {Path("file2.py")},
         RevisionRange("initial", ":WORKTREE:"),
@@ -452,10 +400,10 @@ def test_run_linters_line_separation(git_repo, capsys):
             """
         )
     )
-    cat_command = "cmd /c type" if WINDOWS else "cat"
+    cat_command = ["cmd", "/c", "type"] if WINDOWS else ["cat"]
 
     linting.run_linters(
-        [f"{cat_command} {linter_output}"],
+        [[*cat_command, str(linter_output)]],
         git_repo.root,
         {Path(p) for p in paths},
         RevisionRange("HEAD", ":WORKTREE:"),
@@ -484,7 +432,7 @@ def test_run_linters_stdin():
         # end of test setup
 
         _ = linting.run_linters(
-            ["dummy-linter-command"],
+            [["dummy-linter-command"]],
             Path("/dummy-dir"),
             {Path("dummy.py")},
             RevisionRange("HEAD", ":STDIN:"),
@@ -632,8 +580,53 @@ def test_get_messages_from_linters_for_baseline_no_mypy_errors(git_repo):
         # end of test setup
 
         _ = linting._get_messages_from_linters_for_baseline(
-            linter_cmdlines=["mypy"],
+            linter_cmdlines=[["mypy"]],
             root=git_repo.root,
             paths=[Path("__init__.py")],
             revision=initial,
         )
+
+
+@pytest.mark.kwparametrize(
+    dict(
+        cmdline=[],
+        expect=[],
+    ),
+    dict(
+        cmdline=["mypy", "--show-error-codes"],
+        expect=["mypy", "--show-error-codes"],
+    ),
+    dict(
+        cmdline=["flake8", "--format=%(path)s:%(row)d:%(col)d: %(text)s"],
+        expect=["flake8", "--format=%(path)s:%(row)d:%(col)d: %(text)s"],
+    ),
+    dict(
+        cmdline=["ruff"],
+        expect=["ruff", "check", "--output-format=concise"],
+    ),
+    dict(
+        cmdline=["ruff", "check"],
+        expect=["ruff", "check", "--output-format=concise"],
+    ),
+    dict(
+        cmdline=["ruff", "--fix"],
+        expect=["ruff", "check", "--fix", "--output-format=concise"],
+    ),
+    dict(
+        cmdline=["ruff", "check", "--output-format=json"],
+        expect=["ruff", "check", "--output-format=json"],
+    ),
+    dict(
+        # nonsensical case, but we're not doing proper Ruff argument parsing
+        cmdline=["ruff", "format"],
+        expect=["ruff", "check", "format", "--output-format=concise"],
+    ),
+)
+def test_transform_linter_command(cmdline, expect):
+    """_transform_linter_command transforms ruff commands and passes through others."""
+    if expect is IndexError:
+        with pytest.raises(IndexError):
+            linting._transform_linter_command(cmdline)
+    else:
+        result = linting._transform_linter_command(cmdline)
+        assert result == expect

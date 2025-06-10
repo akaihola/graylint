@@ -1,0 +1,19 @@
+---
+name: ruff
+
+on: push  # yamllint disable-line rule:truthy
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run Graylint's own GitHub action straight from the repository
+        uses: ./
+        with:
+          version: "@${{ github.ref_name }}"
+          revision: origin/main...
+          lint: ruff
