@@ -400,10 +400,10 @@ def test_run_linters_line_separation(git_repo, capsys):
             """
         )
     )
-    cat_command = "cmd /c type" if WINDOWS else "cat"
+    cat_command = ["cmd", "/c", "type"] if WINDOWS else ["cat"]
 
     linting.run_linters(
-        [[cat_command, str(linter_output)]],
+        [[*cat_command, str(linter_output)]],
         git_repo.root,
         {Path(p) for p in paths},
         RevisionRange("HEAD", ":WORKTREE:"),
