@@ -319,7 +319,7 @@ def _transform_linter_command(cmdline: list[str]) -> list[str]:
     :return: The transformed command line as a list of arguments
 
     """
-    if cmdline[0] != "ruff":
+    if not cmdline or cmdline[0] != "ruff":
         return cmdline
     transformed_cmdline = cmdline.copy()
     if "check" not in transformed_cmdline:

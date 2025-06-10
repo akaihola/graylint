@@ -590,7 +590,7 @@ def test_get_messages_from_linters_for_baseline_no_mypy_errors(git_repo):
 @pytest.mark.kwparametrize(
     dict(
         cmdline=[],
-        expect=IndexError,
+        expect=[],
     ),
     dict(
         cmdline=["mypy", "--show-error-codes"],
