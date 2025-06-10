@@ -42,7 +42,7 @@ Graylint.
 To integrate Graylint with your IDE or with pre-commit_,
 see the relevant sections below in this document.
 
-.. _Pytest: https://docs.pytest.org/
+.. _Darker: https://github.com/akaihola/darker
 
 +------------------------------------------------+--------------------------------+
 | |you-can-help|                                 | |support|                      |
@@ -470,7 +470,7 @@ command or a full command line to pass to a linter. Some examples:
 - ``-L cov_to_lint.py``: read ``.coverage`` and list non-covered modified lines
 
 **Note:** Full command lines aren't fully tested on Windows. See issue `#456`_ for a
-possible bug (in Darker which is where Graylint code originates from).
+possible bug (in Darker_ which is where Graylint code originates from).
 
 Graylint also groups linter output into blocks of consecutive lines
 separated by blank lines.
@@ -597,11 +597,10 @@ Interesting code formatting and analysis projects to watch
 The following projects are related to Graylint in some way or another.
 Some of them we might want to integrate to be part of a Graylint run.
 
-- Darker__ – Reformat code only in modified blocks of code
+- Darker_ – Reformat code only in modified blocks of code
 - diff-cov-lint__ – Pylint and coverage reports for git diff only
 - xenon__ – Monitor code complexity
 
-__ https://github.com/akaihola/darker
 __ https://gitlab.com/sVerentsov/diff-cov-lint
 __ https://github.com/rubik/xenon
 
