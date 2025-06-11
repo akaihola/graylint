@@ -1,17 +1,22 @@
 """Unit tests for `graylint.linting`."""
 
-# pylint: disable=protected-access,too-many-arguments,use-dict-literal
+# pylint: disable=no-member,protected-access,redefined-outer-name,too-many-arguments
+# pylint: disable=use-dict-literal
+
+from __future__ import annotations
 
 import os
 from pathlib import Path
 from subprocess import PIPE, Popen  # nosec
 from textwrap import dedent
-from typing import Any, Dict, Iterable, List, Tuple, Union
+from types import SimpleNamespace
+from typing import TYPE_CHECKING, Any
 from unittest.mock import patch
 
 import pytest
 
 from darkgraylib.git import WORKTREE, RevisionRange
+from darkgraylib.testtools.git_repo_plugin import GitRepoFixture
 from darkgraylib.testtools.helpers import raises_if_exception
 from darkgraylib.utils import WINDOWS
 from graylint import linting
@@ -22,6 +27,9 @@ from graylint.linting import (
     MessageLocation,
     make_linter_env,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 SKIP_ON_WINDOWS = [pytest.mark.skip] if WINDOWS else []
 SKIP_ON_UNIX = [] if WINDOWS else [pytest.mark.skip]
@@ -88,6 +96,13 @@ def test_normalize_whitespace():
     )
 
 
+@pytest.fixture(scope="module")
+def parse_linter_line_repo(request, tmp_path_factory):
+    """Git repository fixture for `test_parse_linter_line`."""
+    with GitRepoFixture.context(request, tmp_path_factory) as repo:
+        yield repo
+
+
 @pytest.mark.kwparametrize(
     dict(
         line="module.py:42: Just a line number\n",
@@ -145,13 +160,14 @@ def test_normalize_whitespace():
     dict(line="plus:42:+5 before column\n", expect=(Path(), 0, 0, "")),
     dict(line="minus:42:-5 before column\n", expect=(Path(), 0, 0, "")),
 )
-def test_parse_linter_line(git_repo, monkeypatch, line, expect):
+def test_parse_linter_line(parse_linter_line_repo, monkeypatch, line, expect):
     """Linter output is parsed correctly"""
-    monkeypatch.chdir(git_repo.root)
-    root_abs = git_repo.root.absolute()
+    root = parse_linter_line_repo.root
+    monkeypatch.chdir(root)
+    root_abs = root.absolute()
     line_expanded = line.format(git_root_absolute=root_abs, sep=os.sep)
 
-    result = linting._parse_linter_line("linter", line_expanded, git_repo.root)
+    result = linting._parse_linter_line("linter", line_expanded, root)
 
     assert result == (MessageLocation(*expect[:3]), LinterMessage("linter", expect[3]))
 
@@ -185,6 +201,23 @@ def test_check_linter_output(tmp_path, cmdline, expect):
         lines = list(stdout)
 
     assert lines == expect
+
+
+@pytest.fixture(scope="module")
+def run_linters_repo(request, tmp_path_factory):
+    """Git repository fixture for `test_run_linters`."""
+    with GitRepoFixture.context(request, tmp_path_factory) as repo:
+        paths = repo.add(
+            {
+                "test.py": "1 unmoved\n2 modify\n3 to 4 moved\n",
+                "nonpython.txt": "hello\n",
+            },
+            commit="Initial commit",
+        )
+        paths["test.py"].write_bytes(
+            b"1 unmoved\n2 modified\n3 inserted\n3 to 4 moved\n"
+        )
+        yield repo
 
 
 @pytest.mark.kwparametrize(
@@ -267,7 +300,8 @@ def test_check_linter_output(tmp_path, cmdline, expect):
     expect_log=[],
 )
 def test_run_linters(
-    git_repo,
+    run_linters_repo,
+    make_temp_copy,
     capsys,
     caplog,
     _descr,
@@ -278,47 +312,43 @@ def test_run_linters(
 ):
     """Linter gets correct paths on command line and outputs just changed lines
 
-    We use ``echo`` as our "linter". It just adds the paths of each file to lint as an
-    "error" on a line of ``test.py``. What this test does is the equivalent of e.g.::
+    We use ``cat`` as our "linter". It just gets the content of the given file.
+    What this test does is the equivalent of e.g.::
 
-    - creating a ``test.py`` such that the first line is modified after the last commit
-    - creating and committing ``one.py`` and ``two.py``
+    - committing a ``test.py`` and a ``messages`` with mock linter output
+    - modifying ``test.py`` and ``messages`` in the working tree
     - running::
 
-          $ graylint -L 'echo test.py:1:' one.py two.py
-          test.py:1: git-repo-root/one.py git-repo-root/two.py
+          $ graylint -L 'cat messages' test.py
+          test.py:1: <here are some messages from the test case>
 
     """
-    src_paths = git_repo.add(
-        {
-            "test.py": "1 unmoved\n2 modify\n3 to 4 moved\n",
-            "nonpython.txt": "hello\n",
-            "messages": "\n".join(messages_before),
-        },
-        commit="Initial commit",
-    )
-    src_paths["test.py"].write_bytes(
-        b"1 unmoved\n2 modified\n3 inserted\n3 to 4 moved\n"
-    )
-    src_paths["messages"].write_text("\n".join(messages_after))
-    cmdlines: list[list[str]] = [["cat", "messages"]]
-    revrange = RevisionRange("HEAD", ":WORKTREE:")
+    with make_temp_copy(run_linters_repo.root) as root:
+        repo = GitRepoFixture(
+            root, {"HOME": str(root), "LC_ALL": "C", "PATH": os.environ["PATH"]}
+        )
+        paths = repo.add(
+            {"messages": "\n".join(messages_before)}, commit="Messages before"
+        )
+        paths["messages"].write_text("\n".join(messages_after))
+        cmdlines: list[list[str]] = [["cat", "messages"]]
+        revrange = RevisionRange("HEAD", ":WORKTREE:")
 
-    linting.run_linters(
-        cmdlines, git_repo.root, {Path("dummy path")}, revrange, [OutputSpec("gnu")]
-    )
+        linting.run_linters(
+            cmdlines, repo.root, {Path("dummy path")}, revrange, [OutputSpec("gnu")]
+        )
 
     # We can now verify that the linter received the correct paths on its command line
     # by checking standard output from the our `echo` "linter".
     # The test cases also verify that only linter reports on modified lines are output.
     result = capsys.readouterr().out.splitlines()
-    assert result == git_repo.expand_root(expect_output)
+    assert result == repo.expand_root(expect_output)
     logs = [
         f"{record.levelname} {record.message}"
         for record in caplog.records
         if record.levelname != "DEBUG"
     ]
-    assert logs == git_repo.expand_root(expect_log)
+    assert logs == repo.expand_root(expect_log)
 
 
 def test_run_linters_non_worktree():
@@ -335,23 +365,36 @@ def test_run_linters_non_worktree():
         )
 
 
+@pytest.fixture(scope="module")
+def simple_test_repo(request, tmp_path_factory):
+    """Git repository fixture for `test_run_linters`."""
+    with GitRepoFixture.context(request, tmp_path_factory) as repo:
+        paths = repo.add({"__init__.py": "1\n2\n3\n4\n5\n6\n"}, commit="Initial commit")
+        initial = repo.get_hash()
+        repo.create_tag("initial")
+        paths["__init__.py"].write_bytes(b"a\nb\nc\n4\ne\nf\n")
+        yield SimpleNamespace(
+            root=repo.root,
+            paths=paths,
+            hash_initial=initial,
+        )
+
+
 @pytest.mark.parametrize(
     "message, expect",
     [
         ("", 0),
-        ("test.py:1: message on modified line", 1),
-        ("test.py:2: message on unmodified line", 0),
+        ("__init__.py:1: message on modified line", 1),
+        ("__init__.py:4: message on unmodified line", 0),
     ],
 )
-def test_run_linters_return_value(git_repo, message, expect):
+def test_run_linters_return_value(simple_test_repo, message, expect):
     """``run_linters()`` returns the number of linter errors on modified lines"""
-    src_paths = git_repo.add({"test.py": "1\n2\n"}, commit="Initial commit")
-    src_paths["test.py"].write_bytes(b"one\n2\n")
     cmdline = ["echo", message]
 
     result = linting.run_linters(
         [cmdline],
-        git_repo.root,
+        simple_test_repo.root,
         {Path("test.py")},
         RevisionRange("HEAD", ":WORKTREE:"),
         [OutputSpec("gnu")],
@@ -360,65 +403,64 @@ def test_run_linters_return_value(git_repo, message, expect):
     assert result == expect
 
 
-def test_run_linters_on_new_file(git_repo, capsys):
+def test_run_linters_on_new_file(simple_test_repo, make_temp_copy, monkeypatch, capsys):
     """``run_linters()`` considers file missing from history as empty
 
     Passes through all linter errors as if the original file was empty.
 
     """
-    git_repo.add({"file1.py": "1\n"}, commit="Initial commit")
-    git_repo.create_tag("initial")
-    (git_repo.root / "file2.py").write_bytes(b"1\n2\n")
+    with make_temp_copy(simple_test_repo.root) as root:
+        monkeypatch.chdir(root)
+        (root / "new_file.py").write_bytes(b"1\n2\n")
 
-    linting.run_linters(
-        [["echo", "file2.py:1: message on a file not seen in Git history"]],
-        Path(git_repo.root),
-        {Path("file2.py")},
-        RevisionRange("initial", ":WORKTREE:"),
-        [OutputSpec("gnu")],
-    )
+        linting.run_linters(
+            [["echo", "new_file.py:1: message on a file not seen in Git history"]],
+            root,
+            {Path("new_file.py")},
+            RevisionRange(simple_test_repo.hash_initial, ":WORKTREE:"),
+            [OutputSpec("gnu")],
+        )
 
     output = capsys.readouterr().out.splitlines()
     assert output == [
         "",
-        "file2.py:1: message on a file not seen in Git history file2.py [echo]",
+        "new_file.py:1: message on a file not seen in Git history new_file.py [echo]",
     ]
 
 
-def test_run_linters_line_separation(git_repo, capsys):
+def test_run_linters_line_separation(simple_test_repo, make_temp_copy, capsys):
     """``run_linters`` separates contiguous blocks of linter output with empty lines"""
-    paths = git_repo.add({"a.py": "1\n2\n3\n4\n5\n6\n"}, commit="Initial commit")
-    paths["a.py"].write_bytes(b"a\nb\nc\nd\ne\nf\n")
-    linter_output = git_repo.root / "dummy-linter-output.txt"
-    linter_output.write_text(
-        dedent(
-            """
-            a.py:2: first block
-            a.py:3: of linter output
-            a.py:5: second block
-            a.py:6: of linter output
-            """
+    with make_temp_copy(simple_test_repo.root) as root:
+        linter_output = root / "dummy-linter-output.txt"
+        linter_output.write_text(
+            dedent(
+                """
+                __init__.py:2: first block
+                __init__.py:3: of linter output
+                __init__.py:5: second block
+                __init__.py:6: of linter output
+                """
+            )
         )
-    )
-    cat_command = ["cmd", "/c", "type"] if WINDOWS else ["cat"]
+        cat_command = ["cmd", "/c", "type"] if WINDOWS else ["cat"]
 
-    linting.run_linters(
-        [[*cat_command, str(linter_output)]],
-        git_repo.root,
-        {Path(p) for p in paths},
-        RevisionRange("HEAD", ":WORKTREE:"),
-        [OutputSpec("gnu")],
-    )
+        linting.run_linters(
+            [[*cat_command, str(linter_output)]],
+            root,
+            {Path("__init__.py")},
+            RevisionRange("HEAD", ":WORKTREE:"),
+            [OutputSpec("gnu")],
+        )
 
     result = capsys.readouterr().out
     cat_cmd = "cmd" if WINDOWS else "cat"
     assert result == dedent(
         f"""
-        a.py:2: first block [{cat_cmd}]
-        a.py:3: of linter output [{cat_cmd}]
+        __init__.py:2: first block [{cat_cmd}]
+        __init__.py:3: of linter output [{cat_cmd}]
 
-        a.py:5: second block [{cat_cmd}]
-        a.py:6: of linter output [{cat_cmd}]
+        __init__.py:5: second block [{cat_cmd}]
+        __init__.py:6: of linter output [{cat_cmd}]
         """
     )
 
@@ -441,8 +483,8 @@ def test_run_linters_stdin():
 
 
 def _build_messages(
-    lines_and_messages: Iterable[Union[Tuple[int, str], Tuple[int, str, str]]],
-) -> Dict[MessageLocation, List[LinterMessage]]:
+    lines_and_messages: Iterable[tuple[int, str] | tuple[int, str, str]],
+) -> dict[MessageLocation, list[LinterMessage]]:
     return {
         MessageLocation(Path("a.py"), line, 0): [
             LinterMessage(*msg.split(":")) for msg in msgs
@@ -562,28 +604,31 @@ def test_get_messages_from_linters_for_baseline(git_repo):
 class AssertEmptyStderrPopen(Popen[str]):  # pylint: disable=too-few-public-methods
     """A Popen to use for the following test; asserts that its stderr is empty"""
 
-    def __init__(self, args: List[str], **kwargs: Any):  # type: ignore[explicit-any]
+    def __init__(  # type: ignore[explicit-any]
+        self,
+        args: list[str],
+        **kwargs: Any,  # noqa: ANN401
+    ):
+        """Initialize the Popen object and assert that its stderr is empty."""
         super().__init__(args, stderr=PIPE, **kwargs)
         assert self.stderr is not None
         assert self.stderr.read() == ""
 
 
-def test_get_messages_from_linters_for_baseline_no_mypy_errors(git_repo):
+def test_get_messages_from_linters_for_baseline_no_mypy_errors(simple_test_repo):
     """Ensure Mypy does not fail early when ``__init__.py`` is at the repository root
 
     Regression test for #498
 
     """
-    git_repo.add({"__init__.py": ""}, commit="Initial commit")
-    initial = git_repo.get_hash()
     with patch.object(linting, "Popen", AssertEmptyStderrPopen):
         # end of test setup
 
         _ = linting._get_messages_from_linters_for_baseline(
             linter_cmdlines=[["mypy"]],
-            root=git_repo.root,
+            root=simple_test_repo.root,
             paths=[Path("__init__.py")],
-            revision=initial,
+            revision=simple_test_repo.hash_initial,
         )
 
 
