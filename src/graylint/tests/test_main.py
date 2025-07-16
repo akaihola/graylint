@@ -1,11 +1,14 @@
 """Tests for the `graylint.__main__` module."""
 
+# pylint: disable=no-member,redefined-outer-name
+
 import os
 from contextlib import nullcontext
 from unittest.mock import Mock, patch
 
 import pytest
 
+from darkgraylib.testtools.git_repo_plugin import GitRepoFixture
 from graylint.__main__ import main, main_with_error_handling
 
 
@@ -22,6 +25,15 @@ def test_main_retval(numfails, expect_retval):
         retval = main(["a.py"])
 
     assert retval == expect_retval
+
+
+@pytest.fixture(scope="module")
+def main_repo(request, tmp_path_factory):
+    """Git repository fixture for `test_main`."""
+    with GitRepoFixture.context(request, tmp_path_factory) as repo:
+        paths = repo.add({"subdir/a.py": "\n", "my.cfg": ""}, commit="Initial commit")
+        paths["subdir/a.py"].write_text("Foo\n")
+        yield repo
 
 
 @pytest.mark.kwparametrize(
@@ -42,7 +54,7 @@ def test_main_retval(numfails, expect_retval):
     expect_exit=nullcontext(),
 )
 def test_main(
-    git_repo,
+    main_repo,
     capsys,
     arguments,
     expect_retval,
@@ -50,10 +62,8 @@ def test_main(
     expect_exit,
 ):
     """Main function return value is 1 if there are linter errors."""
-    paths = git_repo.add({"subdir/a.py": "\n", "my.cfg": ""}, commit="Initial commit")
-    paths["subdir/a.py"].write_text("Foo\n")
     rendered_arguments = [
-        argument.format(repo_root=str(git_repo.root)) for argument in arguments
+        argument.format(repo_root=str(main_repo.root)) for argument in arguments
     ]
     with expect_exit:
 
