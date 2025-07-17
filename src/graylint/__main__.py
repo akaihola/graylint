@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 import sys
 from argparse import ArgumentError
+from typing import cast
 
 from darkgraylib.command_line import (
     EXIT_CODE_CMDLINE_ERROR,
@@ -18,6 +19,7 @@ from darkgraylib.log import setup_logging
 from darkgraylib.main import resolve_paths
 from graylint.command_line import make_argument_parser, shlex_split
 from graylint.config import GraylintConfig
+from graylint.copy_settings import CopySettingsStorage
 from graylint.linting import run_linters
 
 logger = logging.getLogger(__name__)
@@ -54,6 +56,10 @@ def main(argv: list[str] | None = None) -> int:
         output.with_color(use_color=should_use_color(config["color"]))
         for output in args.output_format
     ]
+    storage = CopySettingsStorage()
+    copy_settings = cast("list[str]", args.copy_settings)
+    if copy_settings:
+        storage.load_files(copy_settings)
     linter_failures_on_modified_lines = run_linters(
         [shlex_split(one_linter) for one_linter in args.lint],
         root,
@@ -61,6 +67,7 @@ def main(argv: list[str] | None = None) -> int:
         {p.resolve().relative_to(root) for p in paths},
         revrange,
         output_formats,
+        storage,
     )
     return 1 if linter_failures_on_modified_lines else 0
 
