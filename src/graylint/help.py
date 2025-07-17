@@ -19,3 +19,10 @@ FORMAT_TEMPLATE = (
     " e.g. 'gnu:-' for stdout or 'gnu:annotations.txt' for file output. Multiple "
     " formats can be specified with comma separation or by repeating the option."
 )
+
+COPY_SETTINGS = (
+    "Copy specified file(s) to the old revision's worktree before linting."
+    " This can be used to ensure both the old and new revisions are linted"
+    " using the same updated linter settings."
+    " Repeat the option multiple times to copy more than one file."
+)
