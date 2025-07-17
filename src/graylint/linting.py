@@ -377,7 +377,10 @@ def run_linter(  # pylint: disable=too-many-locals
     return result
 
 
-def run_linters(
+# pylint: disable=too-many-arguments,too-many-positional-arguments
+
+
+def run_linters(  # noqa: PLR0913
     linter_cmdlines: list[list[str]],
     root: Path,
     paths: set[Path],
@@ -574,6 +577,7 @@ def _get_messages_from_linters_for_baseline(
     :param storage: In-memory storage for settings files to be copied to the
                     temporary ``rev1`` worktree.
     :return: Linter messages
+
     """
     with TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir) / "baseline-revision" / root.name
