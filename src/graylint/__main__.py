@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import sys
+from pathlib import Path
 from argparse import ArgumentError
 from typing import cast
 
@@ -59,7 +60,10 @@ def main(argv: list[str] = None) -> int:
     storage = CopySettingsStorage()
     copy_settings = cast("list[str]", args.copy_settings)
     if copy_settings:
-        storage.load_files(copy_settings)
+        relative_paths = [
+            str(Path(p).resolve().relative_to(root)) for p in copy_settings
+        ]
+        storage.load_files(root, relative_paths)
     linter_failures_on_modified_lines = run_linters(
         [shlex_split(one_linter) for one_linter in args.lint],
         root,
