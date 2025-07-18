@@ -10,3 +10,4 @@ class GraylintConfig(BaseConfig):
 
     lint: list[str]
     output_format: dict[str, str]
+    copy_settings: list[str]
