@@ -140,7 +140,8 @@ def test_copy_settings_storage_load_files(tmp_path: Path) -> None:
     storage.load_files([str(file1), str(file2)])
 
     contents = storage.get_all_contents()
-    assert len(contents) == 2  # noqa: PLR2004
+    expected_file_count = 2
+    assert len(contents) == expected_file_count
     assert contents[str(file1.resolve())] == "content1"
     assert contents[str(file2.resolve())] == "content2"
 
