@@ -137,20 +137,20 @@ def test_copy_settings_storage_load_files(tmp_path: Path) -> None:
     file2 = tmp_path / "file2.txt"
     file2.write_text("content2")
 
-    storage.load_files([str(file1), str(file2)])
+    storage.load_files(tmp_path, ["file1.txt", "file2.txt"])
 
     contents = storage.get_all_contents()
     expected_file_count = 2
     assert len(contents) == expected_file_count
-    assert contents[str(file1.resolve())] == "content1"
-    assert contents[str(file2.resolve())] == "content2"
+    assert contents["file1.txt"] == "content1"
+    assert contents["file2.txt"] == "content2"
 
 
 def test_copy_settings_storage_missing_file(caplog: pytest.LogCaptureFixture) -> None:
     """Test that CopySettingsStorage handles missing files gracefully."""
     caplog.set_level(logging.WARNING)
     storage = CopySettingsStorage()
-    storage.load_files(["nonexistent.txt"])
+    storage.load_files(Path(), ["nonexistent.txt"])
     assert not storage.get_all_contents()
     assert "Settings file not found: nonexistent.txt" in caplog.text
 
@@ -200,7 +200,7 @@ def test_copy_settings_git_integration(
     git_repo.add({"a.py": "import os"}, commit="Second commit")
 
     storage = CopySettingsStorage()
-    storage.load_files([str(git_repo.root / "settings.cfg")])
+    storage.load_files(git_repo.root, ["settings.cfg"])
 
     with patch("graylint.linting._get_messages_from_linters") as mock_get_messages:
         mock_get_messages.return_value = {}

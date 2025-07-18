@@ -603,7 +603,7 @@ def _copy_settings_to_worktree(root: Path, storage: CopySettingsStorage) -> None
     """
     for file_path, content in storage.get_all_contents().items():
         original_path = Path(file_path)
-        target_path = root / original_path.relative_to(original_path.anchor)
+        target_path = root / original_path
 
         # Ensure parent directories exist
         target_path.parent.mkdir(parents=True, exist_ok=True)
