@@ -27,7 +27,6 @@ import re
 import shlex
 from collections import defaultdict
 from contextlib import contextmanager
-from dataclasses import dataclass
 from pathlib import Path
 from subprocess import PIPE, Popen  # nosec
 from tempfile import TemporaryDirectory
@@ -52,47 +51,15 @@ from darkgraylib.git import (
     git_rev_parse,
 )
 from darkgraylib.utils import WINDOWS
+from graylint.linter_parser.base import LinterParser, ParserError
+from graylint.linter_parser.message import INVALID_LINE, LinterMessage, MessageLocation
+from graylint.linter_parser.plugin_helpers import create_linter_parser_plugins
 from graylint.output.plugin_helpers import create_output_plugins
 
 if TYPE_CHECKING:
     from graylint.command_line import OutputSpec
 
 logger = logging.getLogger(__name__)
-
-
-@dataclass(eq=True, frozen=True, order=True)
-class MessageLocation:
-    """A file path, line number and column number for a linter message
-
-    Line and column numbers a 0-based, and zero is used for an unspecified column, and
-    for the non-specified location.
-
-    """
-
-    path: Path
-    line: int
-    column: int = 0
-
-    def __str__(self) -> str:
-        """Convert file path, line and column into a linter line prefix string
-
-        :return: Either ``"path:line:column"`` or ``"path:line"`` (if column is zero)
-
-        """
-        if self.column:
-            return f"{self.path}:{self.line}:{self.column}"
-        return f"{self.path}:{self.line}"
-
-
-NO_MESSAGE_LOCATION = MessageLocation(Path(""), 0, 0)
-
-
-@dataclass
-class LinterMessage:
-    """Information about a linter message"""
-
-    linter: str
-    description: str
 
 
 class DiffLineMapping:
@@ -132,7 +99,7 @@ class DiffLineMapping:
         if key in self._mapping:
             (old_path, old_line) = self._mapping[key]
             return MessageLocation(old_path, old_line, new_location.column)
-        return NO_MESSAGE_LOCATION
+        return INVALID_LINE
 
 
 def normalize_whitespace(message: LinterMessage) -> LinterMessage:
@@ -171,96 +138,6 @@ def make_linter_env(root: Path, revision: str) -> dict[str, str]:
         "GRAYLINT_ORIG_REPO": str(root),
         "GRAYLINT_REV_COMMIT": ("WORKTREE" if revision == "WORKTREE" else revision[:7]),
     }
-
-
-def _strict_nonneg_int(text: str) -> int:
-    """Strict parsing of strings to non-negative integers
-
-    Allow no leading or trailing whitespace, nor plus or minus signs.
-
-    :param text: The string to convert
-    :raises ValueError: Raises if the string has any non-numeric characters
-    :return: [description]
-    :rtype: [type]
-    """
-    if text.strip("+-\t ") != text:
-        raise ValueError(r"invalid literal for int() with base 10: {text}")
-    return int(text)
-
-
-def _parse_linter_line(
-    linter: str, line: str, cwd: Path
-) -> tuple[MessageLocation, LinterMessage]:
-    """Parse one line of linter output
-
-    Only parses lines with
-    - a relative or absolute file path (without leading-trailing whitespace),
-    - a non-negative line number (without leading/trailing whitespace),
-    - optionally a column number (without leading/trailing whitespace), and
-    - a description.
-
-    Examples of successfully parsed lines::
-
-        path/to/file.py:42: Description
-        /absolute/path/to/file.py:42:5: Description
-
-    Given ``cwd=Path("/absolute")``, these would be parsed into::
-
-        (Path("path/to/file.py"), 42, "path/to/file.py:42:", "Description")
-        (Path("path/to/file.py"), 42, "path/to/file.py:42:5:", "Description")
-
-    For all other lines, a dummy entry is returned: an empty path, zero as the line
-    number, an empty location string and an empty description. Such lines should be
-    simply ignored, since many linters display supplementary information insterspersed
-    with the actual linting notifications.
-
-    :param linter: The name of the linter
-    :param line: The linter output line to parse. May have a trailing newline.
-    :param cwd: The directory in which the linter was run, and relative to which paths
-                are returned
-    :return: A 2-tuple of
-             - the file path, line and column numbers of the linter message, and
-             - the linter name and message description.
-
-    """
-    try:
-        location, description = line.rstrip().split(": ", 1)
-        if location[1:3] == ":\\":
-            # Absolute Windows paths need special handling. Separate out the ``C:`` (or
-            # similar), then split by colons, and finally re-insert the ``C:``.
-            path_in_drive, linenum_str, *rest = location[2:].split(":")
-            path_str = f"{location[:2]}{path_in_drive}"
-        else:
-            path_str, linenum_str, *rest = location.split(":")
-        if path_str.strip() != path_str:
-            raise ValueError(r"Filename {path_str!r} has leading/trailing whitespace")
-        linenum = _strict_nonneg_int(linenum_str)
-        if len(rest) > 1:
-            raise ValueError("Too many colon-separated tokens in {location!r}")
-        if len(rest) == 1:
-            # Make sure the column looks like an int in "<path>:<linenum>:<column>"
-            column = _strict_nonneg_int(rest[0])  # noqa: F841
-        else:
-            column = 0
-    except ValueError:
-        # Encountered a non-parsable line which doesn't express a linting error.
-        # For example, on Mypy:
-        # "Found XX errors in YY files (checked ZZ source files)"
-        # "Success: no issues found in 1 source file"
-        logger.debug("Unparsable linter output: %s", line[:-1])
-        return (NO_MESSAGE_LOCATION, LinterMessage(linter, ""))
-    path = Path(path_str)
-    if path.is_absolute():
-        try:
-            path = path.relative_to(cwd)
-        except ValueError:
-            logger.warning(
-                "Linter message for a file %s outside root directory %s",
-                path_str,
-                cwd,
-            )
-            return (NO_MESSAGE_LOCATION, LinterMessage(linter, ""))
-    return (MessageLocation(path, linenum, column), LinterMessage(linter, description))
 
 
 def _require_rev2_worktree(rev2: str) -> None:
@@ -333,12 +210,58 @@ def _transform_linter_command(cmdline: list[str]) -> list[str]:
     return transformed_cmdline
 
 
+def drop_messages_for_missing_files(
+    linter: str,
+    messages: dict[MessageLocation, list[LinterMessage]],
+    root: Path,
+    missing_files: set[Path],
+) -> dict[MessageLocation, list[LinterMessage]]:
+    """Drop messages for files which are not in the given set of paths.
+
+    :param messages: The linter messages to filter
+    :param root: The common root of all files to lint
+    :param missing_files: A set to which paths of missing files are added
+    :return: The filtered linter messages
+
+    """
+    result: dict[MessageLocation, list[LinterMessage]] = defaultdict(list)
+    flattened = ((loc, msg) for loc, msgs in messages.items() for msg in msgs)
+    for location, message in flattened:
+        if location is INVALID_LINE or location.path in missing_files:
+            continue
+        if location.path.is_absolute():
+            try:
+                path = location.path.relative_to(root)
+            except ValueError:
+                logger.warning(
+                    "Linter message for a file %s outside root directory %s",
+                    location.path,
+                    root,
+                )
+                continue
+        else:
+            path = location.path
+        if location.path.suffix != ".py":
+            logger.warning(
+                "Linter message for a non-Python file: %s: %s",
+                location,
+                message.description,
+            )
+            continue
+        if not location.path.is_file() and not location.path.is_symlink():
+            logger.warning("Missing file %s from %s messages", path, linter)
+            missing_files.add(location.path)
+            continue
+        result[location].append(message)
+    return result
+
+
 def run_linter(  # pylint: disable=too-many-locals
     cmdline: list[str],
     root: Path,
     paths: Collection[Path],
     env: dict[str, str],
-) -> dict[MessageLocation, LinterMessage]:
+) -> tuple[dict[MessageLocation, list[LinterMessage]], LinterParser]:
     """Run the given linter and return linting errors falling on changed lines
 
     :param cmdline: The command line for running the linter
@@ -348,32 +271,39 @@ def run_linter(  # pylint: disable=too-many-locals
     :return: The number of modified lines with linting errors from this linter
 
     """
-    missing_files = set()
-    result = {}
+    missing_files: set[Path] = set()
     transformed_cmdline = _transform_linter_command(cmdline)
-    linter = transformed_cmdline[0]
-    cmdline_str = shlex.join(transformed_cmdline)
     # 10. run a linter subprocess for files mentioned on the command line which may be
     #     modified or unmodified, to get current linting status in the working tree
     #     (steps 10.-12. are optional)
     with _check_linter_output(transformed_cmdline, root, paths, env) as linter_stdout:
-        for line in linter_stdout:
-            (location, message) = _parse_linter_line(linter, line, root)
-            if location is NO_MESSAGE_LOCATION or location.path in missing_files:
-                continue
-            if location.path.suffix != ".py":
-                logger.warning(
-                    "Linter message for a non-Python file: %s: %s",
-                    location,
-                    message.description,
-                )
-                continue
-            if not location.path.is_file() and not location.path.is_symlink():
-                logger.warning("Missing file %s from %s", location.path, cmdline_str)
-                missing_files.add(location.path)
-                continue
-            result[location] = message
-    return result
+        output = linter_stdout.read()
+        return parse_linter_output(transformed_cmdline, output, root, missing_files)
+
+
+def parse_linter_output(
+    cmdline: list[str], output: str, root: Path, missing_files: set[Path]
+) -> tuple[dict[MessageLocation, list[LinterMessage]], LinterParser]:
+    """Parse linter output and return a dictionary of messages and their locations."""
+    linter = cmdline[0]
+    messages: dict[MessageLocation, list[LinterMessage]] | None = None
+    chosen_parser: LinterParser | None = None
+    linter_plugins = create_linter_parser_plugins()
+    for parser_plugin in linter_plugins:
+        try:
+            messages_from_this_linter = parser_plugin.parse(linter, output, root)
+        except ParserError:
+            continue
+        if messages is None or len(messages_from_this_linter) > len(messages.keys()):
+            messages = messages_from_this_linter
+            chosen_parser = parser_plugin
+    if messages is None or chosen_parser is None:
+        msg = f"No linter parser could parse the output of {shlex.join(cmdline)}"
+        raise ValueError(msg)
+    messages_for_existing_files = drop_messages_for_missing_files(
+        linter, messages, root, missing_files
+    )
+    return (messages_for_existing_files, chosen_parser)
 
 
 def run_linters(
@@ -481,8 +411,10 @@ def _get_messages_from_linters(
     """
     result = defaultdict(list)
     for cmdline in linter_cmdlines:
-        for message_location, message in run_linter(cmdline, root, paths, env).items():
-            result[message_location].append(line_processor(message))
+        (messages, _) = run_linter(cmdline, root, paths, env)
+        for message_location, msgs in messages.items():
+            for message in msgs:
+                result[message_location].append(line_processor(message))
     return result
 
 
@@ -527,11 +459,11 @@ def _print_new_linter_messages(
     if logger.getEffectiveLevel() <= logging.DEBUG:
         _log_messages(baseline, new_messages)
     error_count = 0
-    prev_location = NO_MESSAGE_LOCATION
+    prev_location = INVALID_LINE
     with create_output_plugins(output_spec) as outputs:
         for message_location, messages in sorted(new_messages.items()):
             old_location = diff_line_mapping.get(message_location)
-            is_modified_line = old_location == NO_MESSAGE_LOCATION
+            is_modified_line = old_location == INVALID_LINE
             old_messages: list[LinterMessage] = baseline.get(old_location, [])
             for message in messages:
                 if (

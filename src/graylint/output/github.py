@@ -1,6 +1,6 @@
 """GitHub output plugin for Graylint."""
 
-from graylint.linting import LinterMessage, MessageLocation
+from graylint.linter_parser.message import LinterMessage, MessageLocation
 from graylint.output.base import OutputPlugin
 
 

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from graylint.linting import LinterMessage, MessageLocation
+from graylint.linter_parser.message import LinterMessage, MessageLocation
 from graylint.output.destination import OutputDestination
 from graylint.output.github import GitHubOutputPlugin
 
