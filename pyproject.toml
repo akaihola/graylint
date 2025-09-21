@@ -26,9 +26,7 @@ dynamic = ["readme", "version"]
 version = {attr = "graylint.version.__version__"}
 
 [project.optional-dependencies]
-color = [
-    "Pygments>=2.4.0",
-]
+color = ["Pygments>=2.15.0"]
 release = ["darkgray-dev-tools~=0.3.0"]
 test = [
     "click>=8.0.0",
@@ -38,7 +36,7 @@ test = [
     "pathspec>=0.2.2",  # to test `gen_python_files` in `test_black_diff.py`
     "pip-requirements-parser>=32.0.0",
     "pydocstyle>=1.0.0",
-    "Pygments>=2.4.0",
+    "Pygments>=2.15.0",
     "pylint>=3.0.0",
     "pylint-per-file-ignores>=2.0.0",
     "pytest>=6.2.4",
