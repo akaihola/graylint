@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 from subprocess import PIPE, Popen  # nosec
@@ -654,6 +655,44 @@ def test_transform_linter_command(cmdline, expect):
                     linter="pylint",
                     description="R0801: Similar lines in 2 files",
                 )
+            ],
+        },
+    ),
+    dict(
+        output=json.dumps(
+            {
+                "generalDiagnostics": [
+                    {
+                        "file": "subdir/first.py",
+                        "severity": "error",
+                        "message": "Wrong implementation.",
+                        "range": {"start": {"line": 29, "character": 0}},
+                        "rule": "reportStupidity",
+                    },
+                    {
+                        "file": "subdir/second.py",
+                        "severity": "warning",
+                        "message": "'x' is assigned a value but never used.",
+                        "range": {"start": {"line": 14, "character": 4}},
+                        "rule": "reportUnusedVariable",
+                    },
+                ],
+            }
+        ),
+        expect_parser="pyright-json",
+        expect_messages={
+            MessageLocation(Path("subdir/first.py"), 29, 0): [
+                LinterMessage(
+                    linter="pylint",
+                    description="error: Wrong implementation. (reportStupidity)",
+                ),
+            ],
+            MessageLocation(Path("subdir/second.py"), 14, 4): [
+                LinterMessage(
+                    linter="pylint",
+                    description="warning: 'x' is assigned a value but never used. "
+                    "(reportUnusedVariable)",
+                ),
             ],
         },
     ),
