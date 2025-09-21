@@ -35,7 +35,7 @@ def main_with_error_handling(argv: list[str] | None = None) -> int:
         return EXIT_CODE_UNKNOWN
 
 
-def main(argv: list[str] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """Parse the command line and lint each source file
 
     :return: Total number of linting errors found on modified lines
