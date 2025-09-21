@@ -69,6 +69,7 @@ github = "graylint.output.github:GitHubOutputPlugin"
 # linter error parsing plugin entry points:
 [project.entry-points."graylint.linter_parser"]
 gnu = "graylint.linter_parser.gnu:GnuErrorFormatParserPlugin"
+pylint = "graylint.linter_parser.pylint:PylintParserPlugin"
 
 [tool.setuptools]
 packages = [
