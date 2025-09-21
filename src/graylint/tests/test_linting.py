@@ -617,18 +617,42 @@ def test_transform_linter_command(cmdline, expect):
             """
             ************* Module src.graylint.linter_parser.gnu
             subdir/first.py:30:0: C0301: Line too long (104/100) (line-too-long)
+            ************* Module action.tests.test_action_main
+            main.py:1:0: R0801: Similar lines in 2 files
+            ==subdir.first:[45:47]
+            ==subdir.second:[45:47]
+            if not line.startswith("  "):
+                return (NO_MESSAGE_LOCATION, LinterMessage(linter, ""))
+
+             (duplicate-code)
 
             ------------------------------------------------------------------
             Your code has been rated at 4.67/10 (previous run: 4.67/10, +0.00)
 
             """
         ),
-        expect_parser="gnu",
+        expect_parser="pylint",
         expect_messages={
+            MessageLocation(Path("subdir/first.py"), 46, 0): [
+                LinterMessage(
+                    linter="pylint",
+                    description="R0801: Similar lines in 2 files",
+                )
+            ],
             MessageLocation(Path("subdir/first.py"), 30, 0): [
                 LinterMessage(
                     linter="pylint",
                     description="C0301: Line too long (104/100) (line-too-long)",
+                )
+            ],
+            MessageLocation(
+                Path("subdir/second.py"),
+                46,
+                0,
+            ): [
+                LinterMessage(
+                    linter="pylint",
+                    description="R0801: Similar lines in 2 files",
                 )
             ],
         },
