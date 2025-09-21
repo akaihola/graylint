@@ -70,6 +70,8 @@ github = "graylint.output.github:GitHubOutputPlugin"
 [project.entry-points."graylint.linter_parser"]
 gnu = "graylint.linter_parser.gnu:GnuErrorFormatParserPlugin"
 pylint = "graylint.linter_parser.pylint:PylintParserPlugin"
+pyright = "graylint.linter_parser.pyright:PyrightParserPlugin"
+pyright-json = "graylint.linter_parser.pyright_json:PyrightJsonParserPlugin"
 
 [tool.setuptools]
 packages = [
