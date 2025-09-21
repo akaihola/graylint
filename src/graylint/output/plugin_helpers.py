@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from contextlib import ExitStack, contextmanager
-from typing import TYPE_CHECKING, Generator, Sequence, cast
+from typing import TYPE_CHECKING, cast
 
 from darkgraylib.plugins import create_plugin
 
 if TYPE_CHECKING:
+    from collections.abc import Generator, Sequence
+
     from graylint.command_line import OutputSpec
     from graylint.output.base import OutputPlugin
 
