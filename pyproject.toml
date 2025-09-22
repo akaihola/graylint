@@ -29,9 +29,7 @@ version = {attr = "graylint.version.__version__"}
 color = [
     "Pygments>=2.4.0",
 ]
-release = [
-    "darkgray-dev-tools~=0.2.0",
-]
+release = ["darkgray-dev-tools~=0.3.0"]
 test = [
     "click>=8.0.0",
     "cryptography>=3.3.2",  # through twine, fixes CVE-2020-36242
