@@ -26,4 +26,5 @@ jobs:
           options: "--output-format=github"
           src: "./src"
           revision: "origin/main..."
+          with: "pytest>=6.2.4"
           lint: "mypy>=1.11.0"
