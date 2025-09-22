@@ -89,14 +89,11 @@ known_first_party = ["darkgraylib", "graylint"]
 known_third_party = ["pytest"]
 
 [tool.darker]
-src = [
-    "action",
-    "release_tools",
-    "src",
-    "setup.py",
-]
+# Only minimal options for Darker by default, so it's easier to test while developing.
+# To check Graylint's code base with the full set of reformatters, use:
+#   $ darker --config=check-graylint.toml
+src = ["action", "release_tools", "src", "setup.py"]
 revision = "origin/main..."
-isort = true
 
 [tool.pylint.MASTER]
 load-plugins = [
