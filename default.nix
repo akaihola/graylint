@@ -1,10 +1,8 @@
 { pkgs ? import <nixpkgs> { } }:
-(
-  pkgs.stdenv.mkDerivation {
-    name = "graylint-test";
-    buildInputs = [ pkgs.python311 pkgs.git ];
-    shellHook = ''
-      export PY_IGNORE_IMPORTMISMATCH=1
-    '';
-  }
-)
+(pkgs.stdenv.mkDerivation {
+  name = "graylint-test";
+  buildInputs = [ pkgs.python311 pkgs.git pkgs.uv ];
+  shellHook = ''
+    export PY_IGNORE_IMPORTMISMATCH=1
+  '';
+})
