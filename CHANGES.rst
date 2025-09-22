@@ -33,6 +33,7 @@ Internal
 - Only run the activity summary workflow weekly.
 - Run ``ruff check`` against ``main`` as a baseline in the CI build.
 - Switch from old defunct Bandit action to ``brunohaf/action-bandit``.
+- Update Nix action to v31 – fixes the build error.
 
 
 2.0.0_ - 2024-07-31
