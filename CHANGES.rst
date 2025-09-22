@@ -32,6 +32,7 @@ Internal
 - Update to version 2.4.0 of the Darkgraylib_ dependency.
 - Only run the activity summary workflow weekly.
 - Run ``ruff check`` against ``main`` as a baseline in the CI build.
+- Switch from old defunct Bandit action to ``brunohaf/action-bandit``.
 
 
 2.0.0_ - 2024-07-31
