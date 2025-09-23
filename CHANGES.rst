@@ -34,6 +34,7 @@ Internal
 - Run ``ruff check`` against ``main`` as a baseline in the CI build.
 - Switch from old defunct Bandit action to ``brunohaf/action-bandit``.
 - Update Nix action to v31 – fixes the build error.
+- Update to ``pylint-per-file-ignores>=2.0.0`` and fix its configuration syntax.
 
 
 2.0.0_ - 2024-07-31
