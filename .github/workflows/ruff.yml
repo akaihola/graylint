@@ -16,4 +16,4 @@ jobs:
         with:
           version: "@${{ github.ref_name }}"
           revision: origin/main...
-          lint: ruff
+          lint: ruff>=0.8.0
