@@ -48,7 +48,7 @@ see the relevant sections below in this document.
 | |you-can-help|                                 | |support|                      |
 +================================================+================================+
 | We're asking the community kindly for help to  | We have a                      |
-| review pull requests for |next-milestone|_ .   | `community support channel`_   |
+| review pull requests for |next-milestone|.     | `community support channel`_   |
 | If you have a moment to spare, please take a   | on GitHub Discussions. Welcome |
 | look at one of them and shoot us a comment!    | to ask for help and advice!    |
 +------------------------------------------------+--------------------------------+
