@@ -223,27 +223,27 @@ def run_linters_repo(request, tmp_path_factory):
 
 @pytest.mark.kwparametrize(
     dict(
-        _descr="New message for test.py",
+        # New message for test.py
         messages_after=["test.py:1: new message"],
         expect_output=["", "test.py:1: new message [cat]"],
     ),
     dict(
-        _descr="New message for test.py, including column number",
+        # New message for test.py, including column number
         messages_after=["test.py:1:42: new message with column number"],
         expect_output=["", "test.py:1:42: new message with column number [cat]"],
     ),
     dict(
-        _descr="Identical message on an unmodified unmoved line in test.py",
+        # Identical message on an unmodified unmoved line in test.py
         messages_before=["test.py:1:42: same message on same line"],
         messages_after=["test.py:1:42: same message on same line"],
     ),
     dict(
-        _descr="Identical message on an unmodified moved line in test.py",
+        # Identical message on an unmodified moved line in test.py
         messages_before=["test.py:3:42: same message on a moved line"],
         messages_after=["test.py:4:42: same message on a moved line"],
     ),
     dict(
-        _descr="Additional message on an unmodified moved line in test.py",
+        # Additional message on an unmodified moved line in test.py
         messages_before=["test.py:3:42: same message"],
         messages_after=[
             "test.py:4:42: same message",
@@ -252,13 +252,13 @@ def run_linters_repo(request, tmp_path_factory):
         expect_output=["", "test.py:4:42: additional message [cat]"],
     ),
     dict(
-        _descr="Changed message on an unmodified moved line in test.py",
+        # Changed message on an unmodified moved line in test.py
         messages_before=["test.py:4:42: old message"],
         messages_after=["test.py:4:42: new message"],
         expect_output=["", "test.py:4:42: new message [cat]"],
     ),
     dict(
-        _descr="Identical message but on an inserted line in test.py",
+        # Identical message but on an inserted line in test.py
         messages_before=["test.py:1:42: same message also on an inserted line"],
         messages_after=[
             "test.py:1:42: same message also on an inserted line",
@@ -267,19 +267,19 @@ def run_linters_repo(request, tmp_path_factory):
         expect_output=["", "test.py:2:42: same message also on an inserted line [cat]"],
     ),
     dict(
-        _descr="Warning for a file missing from the working tree",
+        # Warning for a file missing from the working tree
         messages_after=["missing.py:1: a missing Python file"],
         expect_log=["WARNING Missing file missing.py from cat messages"],
     ),
     dict(
-        _descr="Linter message for a non-Python file is ignored with a warning",
+        # Linter message for a non-Python file is ignored with a warning
         messages_after=["nonpython.txt:1: non-py"],
         expect_log=[
             "WARNING Linter message for a non-Python file: nonpython.txt:1: non-py"
         ],
     ),
     dict(
-        _descr="Message for file outside common root is ignored with a warning (Unix)",
+        # Message for file outside common root is ignored with a warning (Unix)
         messages_after=["/elsewhere/mod.py:1: elsewhere"],
         expect_log=[
             "WARNING Linter message for a file /elsewhere/mod.py outside root"
@@ -288,7 +288,7 @@ def run_linters_repo(request, tmp_path_factory):
         marks=SKIP_ON_WINDOWS,
     ),
     dict(
-        _descr="Message for file outside common root is ignored with a warning (Win)",
+        # Message for file outside common root is ignored with a warning (Win)
         messages_after=["C:\\elsewhere\\mod.py:1: elsewhere"],
         expect_log=[
             "WARNING Linter message for a file C:\\elsewhere\\mod.py outside root"
@@ -301,15 +301,14 @@ def run_linters_repo(request, tmp_path_factory):
     expect_log=[],
 )
 def test_run_linters(
-    run_linters_repo,
-    make_temp_copy,
-    capsys,
-    caplog,
-    _descr,
-    messages_before,
-    messages_after,
-    expect_output,
-    expect_log,
+    run_linters_repo: GitRepoFixture,
+    make_temp_copy: Callable[[Path], AbstractContextManager[Path]],
+    capsys: pytest.CaptureFixture[str],
+    caplog: pytest.LogCaptureFixture,
+    messages_before: list[str],
+    messages_after: list[str],
+    expect_output: list[str],
+    expect_log: list[str],
 ):
     """Linter gets correct paths on command line and outputs just changed lines
 
