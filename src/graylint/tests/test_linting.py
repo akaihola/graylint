@@ -21,6 +21,7 @@ from darkgraylib.testtools.helpers import raises_if_exception
 from darkgraylib.utils import WINDOWS
 from graylint import linting
 from graylint.command_line import OutputSpec, shlex_split
+from graylint.copy_settings import CopySettingsStorage
 from graylint.linting import (
     DiffLineMapping,
     LinterMessage,
@@ -336,7 +337,12 @@ def test_run_linters(
         revrange = RevisionRange("HEAD", ":WORKTREE:")
 
         linting.run_linters(
-            cmdlines, repo.root, {Path("dummy path")}, revrange, [OutputSpec("gnu")]
+            cmdlines,
+            repo.root,
+            {Path("dummy path")},
+            revrange,
+            [OutputSpec("gnu")],
+            CopySettingsStorage(),
         )
 
     # We can now verify that the linter received the correct paths on its command line
@@ -363,6 +369,7 @@ def test_run_linters_non_worktree():
                 "..HEAD", Path("dummy cwd"), stdin_mode=False
             ),
             [OutputSpec("gnu")],
+            CopySettingsStorage(),
         )
 
 
@@ -400,6 +407,7 @@ def test_run_linters_return_value(simple_test_repo, message, expect):
         {Path("test.py")},
         RevisionRange("HEAD", ":WORKTREE:"),
         [OutputSpec("gnu")],
+        CopySettingsStorage(),
     )
 
     assert result == expect
@@ -421,6 +429,7 @@ def test_run_linters_on_new_file(simple_test_repo, make_temp_copy, monkeypatch, 
             {Path("new_file.py")},
             RevisionRange(simple_test_repo.hash_initial, ":WORKTREE:"),
             [OutputSpec("gnu")],
+            CopySettingsStorage(),
         )
 
     output = capsys.readouterr().out.splitlines()
@@ -452,6 +461,7 @@ def test_run_linters_line_separation(simple_test_repo, make_temp_copy, capsys):
             {Path("__init__.py")},
             RevisionRange("HEAD", ":WORKTREE:"),
             [OutputSpec("gnu")],
+            CopySettingsStorage(),
         )
 
     result = capsys.readouterr().out
@@ -481,6 +491,7 @@ def test_run_linters_stdin():
             {Path("dummy.py")},
             RevisionRange("HEAD", ":STDIN:"),
             [OutputSpec("gnu")],
+            CopySettingsStorage(),
         )
 
 
@@ -592,6 +603,7 @@ def test_get_messages_from_linters_for_baseline(git_repo):
         root=git_repo.root,
         paths=[Path("a.py"), Path("subdir/b.py")],
         revision="baseline",
+        storage=CopySettingsStorage(),
     )
 
     a_py = Path("a.py")
@@ -631,6 +643,7 @@ def test_get_messages_from_linters_for_baseline_no_mypy_errors(simple_test_repo)
             root=simple_test_repo.root,
             paths=[Path("__init__.py")],
             revision=simple_test_repo.hash_initial,
+            storage=CopySettingsStorage(),
         )
 
 

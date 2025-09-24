@@ -107,6 +107,14 @@ def make_argument_parser(require_src: bool) -> ArgumentParser:
     parser.add_argument(
         "-L", "--lint", action="append", metavar="CMD", default=[], help=hlp.LINT
     )
+    parser.add_argument(
+        "-S",
+        "--copy-settings",
+        action="append",
+        metavar="FILE",
+        default=[],
+        help=hlp.COPY_SETTINGS,
+    )
     output_formats = get_entry_point_names(OUTPUT_FORMAT_GROUP)
     default_output_format = output_formats[0]
     output_format_names = ", ".join(

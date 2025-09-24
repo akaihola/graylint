@@ -56,6 +56,7 @@ from graylint.output.plugin_helpers import create_output_plugins
 
 if TYPE_CHECKING:
     from graylint.command_line import OutputSpec
+    from graylint.copy_settings import CopySettingsStorage
 
 logger = logging.getLogger(__name__)
 
@@ -376,12 +377,16 @@ def run_linter(  # pylint: disable=too-many-locals
     return result
 
 
-def run_linters(
+# pylint: disable=too-many-arguments,too-many-positional-arguments
+
+
+def run_linters(  # noqa: PLR0913
     linter_cmdlines: list[list[str]],
     root: Path,
     paths: set[Path],
     revrange: RevisionRange,
     output_spec: Sequence[OutputSpec],
+    storage: CopySettingsStorage,
 ) -> int:
     """Run the given linters on a set of files in the repository, filter messages
 
@@ -434,6 +439,7 @@ def run_linters(
         git_root,
         git_paths,
         revrange.rev1,
+        storage,
     )
     messages = _get_messages_from_linters(
         linter_cmdlines,
@@ -560,6 +566,7 @@ def _get_messages_from_linters_for_baseline(
     root: Path,
     paths: Collection[Path],
     revision: str,
+    storage: CopySettingsStorage,
 ) -> dict[MessageLocation, list[LinterMessage]]:
     """Clone the Git repository at a given revision and run linters against it
 
@@ -567,12 +574,16 @@ def _get_messages_from_linters_for_baseline(
     :param root: The root of the Git repository
     :param paths: The files and directories to check, relative to ``root``
     :param revision: The revision to check out
+    :param storage: In-memory storage for settings files to be copied to the
+                    temporary ``rev1`` worktree.
     :return: Linter messages
 
     """
     with TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir) / "baseline-revision" / root.name
         with git_clone_local(root, revision, tmp_path) as clone_root:
+            _copy_settings_to_worktree(clone_root, storage)
+
             rev1_commit = git_rev_parse(revision, root)
             result = _get_messages_from_linters(
                 linter_cmdlines,
@@ -582,6 +593,26 @@ def _get_messages_from_linters_for_baseline(
                 normalize_whitespace,
             )
     return result
+
+
+def _copy_settings_to_worktree(root: Path, storage: CopySettingsStorage) -> None:
+    """Copy settings files from storage to the given worktree.
+
+    :param root: The root directory of the worktree to copy settings to.
+    :param storage: The storage instance containing settings files.
+    """
+    for file_path, content in storage.get_all_contents().items():
+        original_path = Path(file_path)
+        target_path = root / original_path
+
+        # Ensure parent directories exist
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+
+        try:
+            target_path.write_text(content, encoding="utf-8")
+            logger.debug("Copied settings file to worktree: %s", target_path)
+        except OSError as e:
+            logger.warning("Failed to copy settings file %s: %s", target_path, e)
 
 
 def _create_line_mapping(
