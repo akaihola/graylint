@@ -2,9 +2,11 @@
 
 """Unit tests for :mod:`graylint.command_line`."""
 
+from __future__ import annotations
+
 import os
 from pathlib import Path
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 from unittest.mock import patch
 
 import pytest
@@ -15,6 +17,14 @@ from darkgraylib.utils import WINDOWS
 from graylint.command_line import OutputSpec, make_argument_parser, shlex_split
 from graylint.config import GraylintConfig
 from graylint.output.destination import OutputDestination
+
+if TYPE_CHECKING:
+    import sys
+
+    if sys.version_info >= (3, 10):
+        from types import EllipsisType
+    else:
+        EllipsisType = type(Ellipsis)  # Python 3.9
 
 
 @pytest.mark.kwparametrize(
@@ -109,13 +119,15 @@ def test_make_argument_parser(require_src, expect):
     ),
 )
 def test_parse_command_line(
-    tmp_path,
-    monkeypatch,
-    argv,
-    expect_value,
-    expect_config,
-    expect_modified,
-):
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    argv: list[str],
+    expect_value: tuple[str, list[str] | list[OutputSpec]],
+    expect_config: tuple[Literal["lint"], list[str] | list[OutputSpec] | EllipsisType],
+    expect_modified: tuple[
+        Literal["lint"], list[str] | list[OutputSpec] | EllipsisType
+    ],
+) -> None:
     """``parse_command_line()`` parses options correctly."""
     monkeypatch.chdir(tmp_path)
     (tmp_path / "dummy.py").touch()
@@ -139,14 +151,14 @@ def test_parse_command_line(
         arg_name, expect_arg_value = expect_value
         assert getattr(args, arg_name) == expect_arg_value
 
-        option: Literal["lint"]
+        option: Literal["lint", "output_format"]
         option, expect_config_value = expect_config
         if expect_config_value is ...:
             assert option not in effective_cfg
         else:
             assert effective_cfg[option] == expect_config_value
 
-        modified_option: Literal["lint"]
+        modified_option: Literal["lint", "output_format"]
         modified_option, expect_modified_value = expect_modified
         if expect_modified_value is ...:
             assert modified_option not in modified_cfg
