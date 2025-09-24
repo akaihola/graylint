@@ -7,7 +7,13 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from typing import Literal, Self, TextIO
+    import sys
+    from typing import Literal, TextIO
+
+    if sys.version_info >= (3, 10):
+        from typing import Self
+    else:
+        from typing_extensions import Self
 
     from graylint.linting import LinterMessage, MessageLocation
     from graylint.output.destination import OutputDestination
