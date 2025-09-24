@@ -43,7 +43,7 @@ test = [
     "pytest-kwparametrize>=0.0.3",
     "requests_cache>=0.7",
     "ruamel.yaml>=0.17.21",
-    "ruff>=0.2.0",
+    "ruff>=0.8.0",
     "twine>=2.0.0,!=6.1.0",  # see https://github.com/pypa/twine/issues/1216
     "types-requests>=2.27.9",
     "types-toml>=0.10.4",
@@ -113,10 +113,10 @@ output-format = "concise"
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "COM812",  # Trailing comma missing
-    "D203",  # One blank line required before class docstring
-    "D213",  # Multi-line docstring summary should start at the second line
-    "D400",  # First line should end with a period (duplicates D415)
+    "COM812", # Trailing comma missing
+    "D203",   # One blank line required before class docstring
+    "D213",   # Multi-line docstring summary should start at the second line
+    "D400",   # First line should end with a period (duplicates D415)
 ]
 
 [tool.ruff.lint.per-file-ignores]

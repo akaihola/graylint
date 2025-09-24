@@ -40,6 +40,7 @@ Internal
 - Install Pytest_ in Graylint-based CI workflows.
 - Avoid a buggy ``flake8-bugbear`` version in the CI build.
 - Automation for updating version strings in README using ``darkgray_bump_version``.
+- Update to Ruff 0.8.0 for CI checks.
 
 
 2.0.0_ - 2024-07-31
