@@ -206,6 +206,7 @@ def test_check_linter_output(tmp_path, cmdline, expect):
 @pytest.fixture(scope="module")
 def run_linters_repo(request, tmp_path_factory):
     """Git repository fixture for `test_run_linters`."""
+    # pylint: disable=no-member  # pylint bug?
     with GitRepoFixture.context(request, tmp_path_factory) as repo:
         paths = repo.add(
             {
@@ -369,6 +370,7 @@ def test_run_linters_non_worktree():
 def simple_test_repo(request, tmp_path_factory):
     """Git repository fixture for `test_run_linters`."""
     with GitRepoFixture.context(request, tmp_path_factory) as repo:
+        # pylint: disable=no-member  # pylint bug?
         paths = repo.add({"__init__.py": "1\n2\n3\n4\n5\n6\n"}, commit="Initial commit")
         initial = repo.get_hash()
         repo.create_tag("initial")
