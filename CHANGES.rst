@@ -140,7 +140,7 @@ Fixed
   PEP 561 compliant package with typing annotations.
 
 
-Darker 0.1.0 to 1.7.3
+Darker 0.1.0 to 1.7.0
 =====================
 
 For changes before the migration of code from Darker to Graylint, see
@@ -151,7 +151,7 @@ __ https://github.com/akaihola/darker/blob/master/CHANGES.rst
 .. _Unreleased: https://github.com/akaihola/graylint/compare/1.1.0...HEAD
 .. _1.1.0: https://github.com/akaihola/graylint/compare/v1.0.1...v1.1.0
 .. _1.0.1: https://github.com/akaihola/graylint/compare/v1.0.0...v1.0.1
-.. _1.0.0: https://github.com/akaihola/graylint/compare/1.7.3...v1.0.0
+.. _1.0.0: https://github.com/akaihola/graylint/compare/1.7.0...v1.0.0
 
 .. _Darkgraylib: https://github.com/akaihola/darkgraylib
 .. _Flake8: https://flake8.pycqa.org/

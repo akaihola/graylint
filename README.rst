@@ -35,16 +35,20 @@ However, when run in a Git repository, it runs the linters both in an old and a 
 revision of the source tree. It then only reports those linting messages which appeared
 after the modifications to the source code files between those revisions.
 
+Originally this functionality lived in the Darker_ package, but since version 2.0.0
+Darker only focuses on reformatting code while the linting capability continues in
+Graylint.
+
 To integrate Graylint with your IDE or with pre-commit_,
 see the relevant sections below in this document.
 
-.. _Pytest: https://docs.pytest.org/
+.. _Darker: https://github.com/akaihola/darker
 
 +------------------------------------------------+--------------------------------+
 | |you-can-help|                                 | |support|                      |
 +================================================+================================+
 | We're asking the community kindly for help to  | We have a                      |
-| review pull requests for |next-milestone|_ .   | `community support channel`_   |
+| review pull requests for |next-milestone|.     | `community support channel`_   |
 | If you have a moment to spare, please take a   | on GitHub Discussions. Welcome |
 | look at one of them and shoot us a comment!    | to ask for help and advice!    |
 +------------------------------------------------+--------------------------------+
@@ -466,7 +470,7 @@ command or a full command line to pass to a linter. Some examples:
 - ``-L cov_to_lint.py``: read ``.coverage`` and list non-covered modified lines
 
 **Note:** Full command lines aren't fully tested on Windows. See issue `#456`_ for a
-possible bug (in Darker which is where Graylint code originates from).
+possible bug (in Darker_ which is where Graylint code originates from).
 
 Graylint also groups linter output into blocks of consecutive lines
 separated by blank lines.
@@ -593,11 +597,10 @@ Interesting code formatting and analysis projects to watch
 The following projects are related to Graylint in some way or another.
 Some of them we might want to integrate to be part of a Graylint run.
 
-- Darker__ – Reformat code only in modified blocks of code
+- Darker_ – Reformat code only in modified blocks of code
 - diff-cov-lint__ – Pylint and coverage reports for git diff only
 - xenon__ – Monitor code complexity
 
-__ https://github.com/akaihola/darker
 __ https://gitlab.com/sVerentsov/diff-cov-lint
 __ https://github.com/rubik/xenon
 
