@@ -1,4 +1,3 @@
----
 AckslD:
   - {link_type: issues, type: Bug reports}
 Ashblaze:
@@ -38,6 +37,8 @@ PatrickJordanCongenica:
   - {link_type: search-discussions, type: Bug reports}
 RishiKumarRay:
   - {link_type: search, type: Bug reports}
+Svenito:
+  - {link_type: pulls-author, type: Code}
 agandra:
   - {link_type: issues, type: Bug reports}
 akaihola:
@@ -46,6 +47,10 @@ akaihola:
   - {link_type: commits, type: Documentation}
   - {link_type: pulls-reviewed, type: Reviewed Pull Requests}
   - {link_type: commits, type: Maintenance}
+  - {link_type: issues, type: Bug reports}
+  - {link_type: search-comments, type: Bug reports}
+  - {link_type: pulls-author, type: Code}
+  - {link_type: search-comments, type: Reviewed Pull Requests}
 aljazerzen:
   - {link_type: commits, type: Code}
 baod-rate:
@@ -102,6 +107,11 @@ hugovk:
   - {link_type: pulls-author, type: Code}
 ioggstream:
   - {link_type: search-comments, type: Bug reports}
+ire4ever1190:
+  - {link_type: search-comments, type: Bug reports}
+  - {link_type: issues, type: Bug reports}
+  - {link_type: search-comments, type: Reviewed Pull Requests}
+  - {link_type: pulls-author, type: Code}
 irynahryshanovich:
   - {link_type: issues, type: Bug reports}
 ivanov:
@@ -199,6 +209,8 @@ tgross35:
 tkolleh:
   - {link_type: issues, type: Bug reports}
 tobiasdiez: []
+tohaad:
+  - {link_type: search-discussions, type: Bug reports}
 victorcui96:
   - {link_type: search-comments, type: Bug reports}
 virtuald:
