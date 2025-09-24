@@ -103,6 +103,7 @@ load-plugins = [
 # party packages. We want to consider "darkgraylib" and "graylint" as first party.
 disable = ["wrong-import-order"]
 per-file-ignores = ["""src/graylint/tests/*.py:
+     redefined-outer-name,\
      use-dict-literal,\
      too-many-arguments,\
      too-many-positional-arguments"""]
