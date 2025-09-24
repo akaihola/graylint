@@ -738,17 +738,7 @@ Thanks goes to these wonderful people (`emoji key`_):
          </a>
          <br />
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Abaod-rate&type=pullrequests" title="Code">💻</a>
-       </td>
-       <td align="center">
-         <a href="https://github.com/qubidt">
-           <img src="https://avatars.githubusercontent.com/u/6306455?v=3" width="100px;" alt="@qubidt" />
-           <br />
-           <sub>
-             <b>Bao</b>
-           </sub>
-         </a>
-         <br />
-         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aqubidt&type=issues" title="Bug reports">🐛</a>
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Abaod-rate&type=issues" title="Bug reports">🐛</a>
        </td>
        <td align="center">
          <a href="https://github.com/falkben">

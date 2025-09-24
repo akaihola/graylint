@@ -18,7 +18,6 @@
 - August Masquelier (@levouh)
 - Axel Dahlberg (@AckslD)
 - Bao (@baod-rate)
-- Bao (@qubidt)
 - Ben Falk (@falkben)
 - Bharat (@brtknr)
 - Brandon Perkins (@bdperkin)
