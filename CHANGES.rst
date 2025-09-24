@@ -17,6 +17,7 @@ Fixed
 -----
 - Version tag in pre-commit instructions.
 - Enforce UTF-8 encoding when calling linter subprocesses on Windows.
+- Require Pygments_ 2.15+ to fix a CVE.
 
 Internal
 --------
@@ -82,7 +83,7 @@ Fixed
 Added
 -----
 - Support for Python 3.12 in the package metadata and the CI build.
-- In the future test, upgrade ``Pygments`` to repository ``master``.
+- In the future test, upgrade Pygments_ to repository ``master``.
 - Messages from future test are now generic, not Black-specific.
 - Require ``click`` when running tests.
 - Linter failures now result in an exit value of 1. This makes Graylint compatible with
@@ -163,6 +164,7 @@ __ https://github.com/akaihola/darker/blob/master/CHANGES.rst
 .. _Mypy: https://www.mypy-lang.org/
 .. _pip: https://pip.pypa.io/
 .. _pydocstyle: http://www.pydocstyle.org/
+.. _Pygments: https://pygments.org/
 .. _Pylint: https://pypi.org/project/pylint
 .. _Pytest: https://docs.pytest.org/en/stable/
 .. _pytest-darker: https://github.com/akaihola/pytest-darker
