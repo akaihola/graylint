@@ -35,6 +35,7 @@ Internal
 - Switch from old defunct Bandit action to ``brunohaf/action-bandit``.
 - Update Nix action to v31 – fixes the build error.
 - Update to ``pylint-per-file-ignores>=2.0.0`` and fix its configuration syntax.
+- Install Pytest_ in Graylint-based CI workflows.
 
 
 2.0.0_ - 2024-07-31
@@ -160,6 +161,7 @@ __ https://github.com/akaihola/darker/blob/master/CHANGES.rst
 .. _pip: https://pip.pypa.io/
 .. _pydocstyle: http://www.pydocstyle.org/
 .. _Pylint: https://pypi.org/project/pylint
+.. _Pytest: https://docs.pytest.org/en/stable/
 .. _pytest-darker: https://github.com/akaihola/pytest-darker
 .. _pyupgrade: https://github.com/asottile/pyupgrade
 .. _Ruff: https://astral.sh/ruff

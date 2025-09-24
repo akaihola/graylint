@@ -26,5 +26,5 @@ jobs:
           options: "--output-format=github"
           src: "./src"
           revision: "origin/main..."
-          with: "pylint-per-file-ignores>=2.0.0"
+          with: "pylint-per-file-ignores>=2.0.0 pytest>=6.2.4"
           lint: "pylint>=3.0.0"
