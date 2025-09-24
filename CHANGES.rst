@@ -16,6 +16,7 @@ Removed
 Fixed
 -----
 - Version tag in pre-commit instructions.
+- Enforce UTF-8 encoding when calling linter subprocesses on Windows.
 
 Internal
 --------
@@ -36,6 +37,8 @@ Internal
 - Update Nix action to v31 – fixes the build error.
 - Update to ``pylint-per-file-ignores>=2.0.0`` and fix its configuration syntax.
 - Install Pytest_ in Graylint-based CI workflows.
+- Avoid a buggy ``flake8-bugbear`` version in the CI build.
+- Automation for updating version strings in README using ``darkgray_bump_version``.
 
 
 2.0.0_ - 2024-07-31

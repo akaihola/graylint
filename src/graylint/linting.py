@@ -51,6 +51,7 @@ from darkgraylib.git import (
     git_get_root,
     git_rev_parse,
 )
+from darkgraylib.utils import WINDOWS
 from graylint.output.plugin_helpers import create_output_plugins
 
 if TYPE_CHECKING:
@@ -296,12 +297,15 @@ def _check_linter_output(
     existing_path_strs = sorted(str(path) for path in paths if (root / path).exists())
     cmdline_and_paths = cmdline + existing_path_strs
     logger.debug("[%s]$ %s", root, shlex.join(cmdline_and_paths))
+    effective_env = env.copy()
+    if WINDOWS:
+        effective_env["PYTHONIOENCODING"] = "utf-8"
     with Popen(  # nosec
         cmdline_and_paths,
         stdout=PIPE,
         encoding="utf-8",
         cwd=root,
-        env=env,
+        env=effective_env,
     ) as linter_process:
         # condition needed for MyPy (see https://stackoverflow.com/q/57350490/15770)
         if linter_process.stdout is None:
