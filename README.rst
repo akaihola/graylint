@@ -663,6 +663,17 @@ Thanks goes to these wonderful people (`emoji key`_):
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aaljazerzen&type=commits" title="Code">💻</a>
        </td>
        <td align="center">
+         <a href="https://github.com/tohaad">
+           <img src="https://avatars.githubusercontent.com/u/39924281?v=3" width="100px;" alt="@tohaad" />
+           <br />
+           <sub>
+             <b>Anton Adamovych</b>
+           </sub>
+         </a>
+         <br />
+         <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+involves%3Atohaad&type=discussions" title="Bug reports">🐛</a>
+       </td>
+       <td align="center">
          <a href="https://github.com/akaihola">
            <img src="https://avatars.githubusercontent.com/u/13725?v=3" width="100px;" alt="@akaihola" />
            <br />
@@ -681,6 +692,8 @@ Thanks goes to these wonderful people (`emoji key`_):
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+author%3Aakaihola&type=pullrequests" title="Code">💻</a>
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+commenter%3Aakaihola&type=issues" title="Reviewed Pull Requests">👀</a>
        </td>
+     </tr>
+     <tr>
        <td align="center">
          <a href="https://github.com/Ashblaze">
            <img src="https://avatars.githubusercontent.com/u/25725925?v=3" width="100px;" alt="@Ashblaze" />
@@ -692,8 +705,6 @@ Thanks goes to these wonderful people (`emoji key`_):
          <br />
          <a href="https://github.com/search?q=repo%3Aakaihola%2Fgraylint+involves%3AAshblaze&type=discussions" title="Bug reports">🐛</a>
        </td>
-     </tr>
-     <tr>
        <td align="center">
          <a href="https://github.com/levouh">
            <img src="https://avatars.githubusercontent.com/u/31262046?v=3" width="100px;" alt="@levouh" />

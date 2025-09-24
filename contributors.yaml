@@ -209,6 +209,8 @@ tgross35:
 tkolleh:
   - {link_type: issues, type: Bug reports}
 tobiasdiez: []
+tohaad:
+  - {link_type: search-discussions, type: Bug reports}
 victorcui96:
   - {link_type: search-comments, type: Bug reports}
 virtuald:

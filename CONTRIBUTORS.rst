@@ -12,6 +12,7 @@
 - Aditya Gandra (@agandra)
 - Alfred Kedhammar (@kedhammar)
 - Aljaž Mur Eržen (@aljazerzen)
+- Anton Adamovych (@tohaad)
 - Antti Kaihola (@akaihola)
 - Ashblaze (@Ashblaze)
 - August Masquelier (@levouh)
