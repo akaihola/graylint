@@ -10,10 +10,11 @@ from pathlib import Path
 from subprocess import PIPE, Popen  # nosec
 from textwrap import dedent
 from types import SimpleNamespace
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Callable
 from unittest.mock import patch
 
 import pytest
+from _pytest.fixtures import SubRequest
 
 from darkgraylib.git import WORKTREE, RevisionRange
 from darkgraylib.testtools.git_repo_plugin import GitRepoFixture
@@ -21,18 +22,16 @@ from darkgraylib.testtools.helpers import raises_if_exception
 from darkgraylib.utils import WINDOWS
 from graylint import linting
 from graylint.command_line import OutputSpec, shlex_split
+from graylint.linter_parser.message import INVALID_LINE, LinterMessage, MessageLocation
 from graylint.linting import (
     DiffLineMapping,
-    LinterMessage,
-    MessageLocation,
     make_linter_env,
 )
+from graylint.tests.testhelpers import SKIP_ON_UNIX, SKIP_ON_WINDOWS
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
-
-SKIP_ON_WINDOWS = [pytest.mark.skip] if WINDOWS else []
-SKIP_ON_UNIX = [] if WINDOWS else [pytest.mark.skip]
+    from collections.abc import Iterable, Iterator
+    from contextlib import AbstractContextManager
 
 
 @pytest.mark.kwparametrize(
@@ -53,19 +52,19 @@ def test_message_location_str(column, expect):
         new_location=("/path/to/new_file.py", 43, 8),
         old_location=("/path/to/old_file.py", 42, 13),
         get_location=("/path/to/new_file.py", 43, 21),
-        expect_location=("/path/to/old_file.py", 42, 21),
+        expect_location=MessageLocation(Path("/path/to/old_file.py"), 42, 21),
     ),
     dict(
         new_location=("/path/to/new_file.py", 43, 8),
         old_location=("/path/to/old_file.py", 42, 13),
         get_location=("/path/to/a_different_file.py", 43, 21),
-        expect_location=("", 0, 0),
+        expect_location=INVALID_LINE,
     ),
     dict(
         new_location=("/path/to/file.py", 43, 8),
         old_location=("/path/to/file.py", 42, 13),
         get_location=("/path/to/file.py", 42, 21),
-        expect_location=("", 0, 0),
+        expect_location=INVALID_LINE,
     ),
 )
 def test_diff_line_mapping_ignores_column(
@@ -76,12 +75,11 @@ def test_diff_line_mapping_ignores_column(
     new_location_ = MessageLocation(Path(new_location[0]), *new_location[1:])
     old_location = MessageLocation(Path(old_location[0]), *old_location[1:])
     get_location = MessageLocation(Path(get_location[0]), *get_location[1:])
-    expect = MessageLocation(Path(expect_location[0]), *expect_location[1:])
 
     mapping[new_location_] = old_location
     result = mapping.get(get_location)
 
-    assert result == expect
+    assert result == expect_location
 
 
 def test_normalize_whitespace():
@@ -94,82 +92,6 @@ def test_normalize_whitespace():
     assert result == LinterMessage(
         "mylinter", "module.py:42: indented message, trailing spaces and tabs"
     )
-
-
-@pytest.fixture(scope="module")
-def parse_linter_line_repo(request, tmp_path_factory):
-    """Git repository fixture for `test_parse_linter_line`."""
-    with GitRepoFixture.context(request, tmp_path_factory) as repo:
-        yield repo
-
-
-@pytest.mark.kwparametrize(
-    dict(
-        line="module.py:42: Just a line number\n",
-        expect=(Path("module.py"), 42, 0, "Just a line number"),
-    ),
-    dict(
-        line="module.py:42:5: With column  \n",
-        expect=(Path("module.py"), 42, 5, "With column"),
-    ),
-    dict(
-        line="{git_root_absolute}{sep}mod.py:42: Full path\n",
-        expect=(Path("mod.py"), 42, 0, "Full path"),
-    ),
-    dict(
-        line="{git_root_absolute}{sep}mod.py:42:5: Full path with column\n",
-        expect=(Path("mod.py"), 42, 5, "Full path with column"),
-    ),
-    dict(
-        line="mod.py:42: 123 digits start the description\n",
-        expect=(Path("mod.py"), 42, 0, "123 digits start the description"),
-    ),
-    dict(
-        line="mod.py:42:    indented description\n",
-        expect=(Path("mod.py"), 42, 0, "   indented description"),
-    ),
-    dict(
-        line="mod.py:42:5:    indented description\n",
-        expect=(Path("mod.py"), 42, 5, "   indented description"),
-    ),
-    dict(
-        line="nonpython.txt:5: Non-Python file\n",
-        expect=(Path("nonpython.txt"), 5, 0, "Non-Python file"),
-    ),
-    dict(line="mod.py: No line number\n", expect=(Path(), 0, 0, "")),
-    dict(line="mod.py:foo:5: Invalid line number\n", expect=(Path(), 0, 0, "")),
-    dict(line="mod.py:42:bar: Invalid column\n", expect=(Path(), 0, 0, "")),
-    dict(
-        line="/outside/mod.py:5: Outside the repo\n",
-        expect=(Path(), 0, 0, ""),
-        marks=SKIP_ON_WINDOWS,
-    ),
-    dict(
-        line="C:\\outside\\mod.py:5: Outside the repo\n",
-        expect=(Path(), 0, 0, ""),
-        marks=SKIP_ON_UNIX,
-    ),
-    dict(line="invalid linter output\n", expect=(Path(), 0, 0, "")),
-    dict(line=" leading:42: whitespace\n", expect=(Path(), 0, 0, "")),
-    dict(line=" leading:42:5 whitespace and column\n", expect=(Path(), 0, 0, "")),
-    dict(line="trailing :42: filepath whitespace\n", expect=(Path(), 0, 0, "")),
-    dict(line="leading: 42: linenum whitespace\n", expect=(Path(), 0, 0, "")),
-    dict(line="trailing:42 : linenum whitespace\n", expect=(Path(), 0, 0, "")),
-    dict(line="plus:+42: before linenum\n", expect=(Path(), 0, 0, "")),
-    dict(line="minus:-42: before linenum\n", expect=(Path(), 0, 0, "")),
-    dict(line="plus:42:+5 before column\n", expect=(Path(), 0, 0, "")),
-    dict(line="minus:42:-5 before column\n", expect=(Path(), 0, 0, "")),
-)
-def test_parse_linter_line(parse_linter_line_repo, monkeypatch, line, expect):
-    """Linter output is parsed correctly"""
-    root = parse_linter_line_repo.root
-    monkeypatch.chdir(root)
-    root_abs = root.absolute()
-    line_expanded = line.format(git_root_absolute=root_abs, sep=os.sep)
-
-    result = linting._parse_linter_line("linter", line_expanded, root)
-
-    assert result == (MessageLocation(*expect[:3]), LinterMessage("linter", expect[3]))
 
 
 @pytest.mark.kwparametrize(
@@ -204,7 +126,9 @@ def test_check_linter_output(tmp_path, cmdline, expect):
 
 
 @pytest.fixture(scope="module")
-def run_linters_repo(request, tmp_path_factory):
+def run_linters_repo(
+    request: SubRequest, tmp_path_factory: pytest.TempPathFactory
+) -> Iterator[GitRepoFixture]:
     """Git repository fixture for `test_run_linters`."""
     # pylint: disable=no-member  # pylint bug?
     with GitRepoFixture.context(request, tmp_path_factory) as repo:
@@ -223,27 +147,27 @@ def run_linters_repo(request, tmp_path_factory):
 
 @pytest.mark.kwparametrize(
     dict(
-        _descr="New message for test.py",
+        # New message for test.py
         messages_after=["test.py:1: new message"],
         expect_output=["", "test.py:1: new message [cat]"],
     ),
     dict(
-        _descr="New message for test.py, including column number",
+        # New message for test.py, including column number
         messages_after=["test.py:1:42: new message with column number"],
         expect_output=["", "test.py:1:42: new message with column number [cat]"],
     ),
     dict(
-        _descr="Identical message on an unmodified unmoved line in test.py",
+        # Identical message on an unmodified unmoved line in test.py
         messages_before=["test.py:1:42: same message on same line"],
         messages_after=["test.py:1:42: same message on same line"],
     ),
     dict(
-        _descr="Identical message on an unmodified moved line in test.py",
+        # Identical message on an unmodified moved line in test.py
         messages_before=["test.py:3:42: same message on a moved line"],
         messages_after=["test.py:4:42: same message on a moved line"],
     ),
     dict(
-        _descr="Additional message on an unmodified moved line in test.py",
+        # Additional message on an unmodified moved line in test.py
         messages_before=["test.py:3:42: same message"],
         messages_after=[
             "test.py:4:42: same message",
@@ -252,13 +176,13 @@ def run_linters_repo(request, tmp_path_factory):
         expect_output=["", "test.py:4:42: additional message [cat]"],
     ),
     dict(
-        _descr="Changed message on an unmodified moved line in test.py",
+        # Changed message on an unmodified moved line in test.py
         messages_before=["test.py:4:42: old message"],
         messages_after=["test.py:4:42: new message"],
         expect_output=["", "test.py:4:42: new message [cat]"],
     ),
     dict(
-        _descr="Identical message but on an inserted line in test.py",
+        # Identical message but on an inserted line in test.py
         messages_before=["test.py:1:42: same message also on an inserted line"],
         messages_after=[
             "test.py:1:42: same message also on an inserted line",
@@ -267,19 +191,19 @@ def run_linters_repo(request, tmp_path_factory):
         expect_output=["", "test.py:2:42: same message also on an inserted line [cat]"],
     ),
     dict(
-        _descr="Warning for a file missing from the working tree",
+        # Warning for a file missing from the working tree
         messages_after=["missing.py:1: a missing Python file"],
         expect_log=["WARNING Missing file missing.py from cat messages"],
     ),
     dict(
-        _descr="Linter message for a non-Python file is ignored with a warning",
+        # Linter message for a non-Python file is ignored with a warning
         messages_after=["nonpython.txt:1: non-py"],
         expect_log=[
             "WARNING Linter message for a non-Python file: nonpython.txt:1: non-py"
         ],
     ),
     dict(
-        _descr="Message for file outside common root is ignored with a warning (Unix)",
+        # Message for file outside common root is ignored with a warning (Unix)
         messages_after=["/elsewhere/mod.py:1: elsewhere"],
         expect_log=[
             "WARNING Linter message for a file /elsewhere/mod.py outside root"
@@ -288,7 +212,7 @@ def run_linters_repo(request, tmp_path_factory):
         marks=SKIP_ON_WINDOWS,
     ),
     dict(
-        _descr="Message for file outside common root is ignored with a warning (Win)",
+        # Message for file outside common root is ignored with a warning (Win)
         messages_after=["C:\\elsewhere\\mod.py:1: elsewhere"],
         expect_log=[
             "WARNING Linter message for a file C:\\elsewhere\\mod.py outside root"
@@ -301,16 +225,15 @@ def run_linters_repo(request, tmp_path_factory):
     expect_log=[],
 )
 def test_run_linters(
-    run_linters_repo,
-    make_temp_copy,
-    capsys,
-    caplog,
-    _descr,
-    messages_before,
-    messages_after,
-    expect_output,
-    expect_log,
-):
+    run_linters_repo: GitRepoFixture,
+    make_temp_copy: Callable[[Path], AbstractContextManager[Path]],
+    capsys: pytest.CaptureFixture[str],
+    caplog: pytest.LogCaptureFixture,
+    messages_before: list[str],
+    messages_after: list[str],
+    expect_output: list[str],
+    expect_log: list[str],
+) -> None:
     """Linter gets correct paths on command line and outputs just changed lines
 
     We use ``cat`` as our "linter". It just gets the content of the given file.
@@ -405,7 +328,12 @@ def test_run_linters_return_value(simple_test_repo, message, expect):
     assert result == expect
 
 
-def test_run_linters_on_new_file(simple_test_repo, make_temp_copy, monkeypatch, capsys):
+def test_run_linters_on_new_file(
+    simple_test_repo: SimpleNamespace,
+    make_temp_copy: Callable[[Path], AbstractContextManager[Path]],
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
     """``run_linters()`` considers file missing from history as empty
 
     Passes through all linter errors as if the original file was empty.
@@ -430,7 +358,11 @@ def test_run_linters_on_new_file(simple_test_repo, make_temp_copy, monkeypatch, 
     ]
 
 
-def test_run_linters_line_separation(simple_test_repo, make_temp_copy, capsys):
+def test_run_linters_line_separation(
+    simple_test_repo: SimpleNamespace,
+    make_temp_copy: Callable[[Path], AbstractContextManager[Path]],
+    capsys: pytest.CaptureFixture[str],
+) -> None:
     """``run_linters`` separates contiguous blocks of linter output with empty lines"""
     with make_temp_copy(simple_test_repo.root) as root:
         linter_output = root / "dummy-linter-output.txt"
@@ -677,3 +609,44 @@ def test_transform_linter_command(cmdline, expect):
     else:
         result = linting._transform_linter_command(cmdline)
         assert result == expect
+
+
+@pytest.mark.kwparametrize(
+    dict(
+        output=dedent(
+            """
+            ************* Module src.graylint.linter_parser.gnu
+            subdir/first.py:30:0: C0301: Line too long (104/100) (line-too-long)
+
+            ------------------------------------------------------------------
+            Your code has been rated at 4.67/10 (previous run: 4.67/10, +0.00)
+
+            """
+        ),
+        expect_parser="gnu",
+        expect_messages={
+            MessageLocation(Path("subdir/first.py"), 30, 0): [
+                LinterMessage(
+                    linter="pylint",
+                    description="C0301: Line too long (104/100) (line-too-long)",
+                )
+            ],
+        },
+    ),
+)
+def test_parse_linter_output(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    output: str,
+    expect_parser: str,
+    expect_messages: dict[MessageLocation, list[LinterMessage]],
+) -> None:
+    """Test that the correct plugin is used and parses messages correctly."""
+    monkeypatch.chdir(tmp_path)
+    Path("subdir").mkdir()
+    Path("subdir/first.py").touch()
+    Path("subdir/second.py").touch()
+    (result, parser) = linting.parse_linter_output(["pylint"], output, Path(), set())
+
+    assert parser.name == expect_parser
+    assert result == expect_messages

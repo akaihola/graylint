@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     else:
         from typing_extensions import Self
 
-    from graylint.linting import LinterMessage, MessageLocation
+    from graylint.linter_parser.message import LinterMessage, MessageLocation
     from graylint.output.destination import OutputDestination
 
 
@@ -28,9 +28,9 @@ class OutputPlugin:
 
     def __init__(self, destination: OutputDestination, *, use_color: bool) -> None:
         """Initialize the output plugin."""
-        self._destination = destination
-        self._use_color = use_color
-        self._stream = NULL_STREAM
+        self._destination: OutputDestination = destination
+        self._use_color: bool = use_color
+        self._stream: TextIO = NULL_STREAM
 
     def __enter__(self) -> Self:
         """Open the output stream to enter the context manager."""
