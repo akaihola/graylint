@@ -1,7 +1,7 @@
 """Output plugin for GNU error format."""
 
 from darkgraylib.highlighting import colorize
-from graylint.linting import LinterMessage, MessageLocation
+from graylint.linter_parser.message import LinterMessage, MessageLocation
 from graylint.output.base import OutputPlugin
 
 

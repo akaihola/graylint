@@ -17,6 +17,7 @@ classifiers = [
 requires-python = ">=3.9"
 dependencies = [
     "darkgraylib>=2.4.0,<3.0.dev0",
+    "typing-extensions>=3.6.2 ; python_version < '3.12'",
 ]
 # NOTE: remember to keep `.github/workflows/python-package.yml` in sync
 #       with the minimum required Python version
@@ -60,13 +61,25 @@ News = "https://github.com/akaihola/graylint/discussions/categories/announcement
 [project.scripts]
 graylint = "graylint.__main__:main_with_error_handling"
 
-# plugin entry points:
+# output plugin entry points:
 [project.entry-points."graylint.output_format"]
 gnu = "graylint.output.gnu:GnuErrorFormatOutputPlugin"
 github = "graylint.output.github:GitHubOutputPlugin"
 
+# linter error parsing plugin entry points:
+[project.entry-points."graylint.linter_parser"]
+gnu = "graylint.linter_parser.gnu:GnuErrorFormatParserPlugin"
+pylint = "graylint.linter_parser.pylint:PylintParserPlugin"
+pyright = "graylint.linter_parser.pyright:PyrightParserPlugin"
+pyright-json = "graylint.linter_parser.pyright_json:PyrightJsonParserPlugin"
+
 [tool.setuptools]
-packages = ["graylint", "graylint.output", "graylint.tests"]
+packages = [
+    "graylint",
+    "graylint.linter_parser",
+    "graylint.output",
+    "graylint.tests",
+]
 package-dir = {"" = "src"}
 py-modules = []
 license-files = ["LICENSE.rst"]
@@ -125,9 +138,10 @@ ignore = [
     "ANN201",  # Missing return type annotation for public function
     "ANN204",  # Missing return type annotation for special method `__init__`
     "INP001",  # File is part of an implicit namespace package
-    "C408",  # Unnecessary `dict` call (rewrite as a literal)
-    "PLR0913",  # Too many arguments in function definition
-    "S101",  # Use of `assert` detected
+    "C408",    # Unnecessary `dict` call (rewrite as a literal)
+    "D103",    # Missing docstring in public function
+    "PLR0913", # Too many arguments in function definition
+    "S101",    # Use of `assert` detected
     "SLF001",  # Private member accessed
 ]
 "action/tests/*.py" = [
