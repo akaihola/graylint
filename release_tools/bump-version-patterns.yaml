@@ -60,9 +60,6 @@
       ^    default: "~={old_version->new_version}"
 
   - |-
-    ^      uses: akaihola/graylint/.github/actions/commit-range@{old_version->new_version}
-
-  - |-
     ^    description: \'Version of Graylint to use, e\.g\. "~={old_version->new_version}"
 
 "src/graylint/version.py":
