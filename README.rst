@@ -247,6 +247,10 @@ The following command line arguments can also be used to modify the defaults:
        their configuration as normally, and aren't affected by ``-c`` / ``--config``.
        Linter output is syntax highlighted when the ``pygments`` package is available if
        run on a terminal and or enabled by explicitly (see ``--color``).
+-S FILE, --copy-settings FILE
+       Copy specified file(s) to the old revision's worktree before linting. This can be
+       used to ensure both the old and new revisions are linted using the same updated
+       linter settings. Repeat the option multiple times to copy more than one file.
 -o <FORMAT[:PATH]>, --output-format <FORMAT[:PATH]>
        Specify output format and destination. Format can be one of: github (default),
        gnu. Optional destination path can be specified after colon, e.g. 'gnu:-' for
@@ -517,6 +521,30 @@ In the above lists, latter configuration methods override earlier ones, so the c
 line options always take highest precedence.
 
 .. _Pygments: https://pypi.org/project/Pygments/
+
+
+Copying settings for linters
+============================
+
+The ``--copy-settings`` option ensures that Graylint uses the same linter
+configuration for both the old and new versions of your code.
+
+**Why is this useful?**
+
+When you change linter rules, Graylint might report new errors that are just due
+to the configuration change, not actual code quality issues. This creates noise
+and hides the real problems.
+
+By using ``--copy-settings``, you tell Graylint to apply your *current*
+configuration to both revisions. This makes the comparison fair and ensures that
+you only see genuine new linting errors introduced by your code changes.
+
+For example, to make sure your latest ``.pylintrc`` is used for both the
+baseline and your current code, run:
+
+.. code-block:: shell
+
+   graylint --lint pylint --copy-settings .pylintrc .
 
 
 Guarding against linter compatibility breakage
