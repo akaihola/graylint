@@ -52,7 +52,12 @@ from darkgraylib.git import (
 )
 from darkgraylib.utils import WINDOWS
 from graylint.linter_parser.base import LinterParser, ParserError
-from graylint.linter_parser.message import INVALID_LINE, LinterMessage, MessageLocation
+from graylint.linter_parser.message import (
+    DISCARDED_LINE,
+    INVALID_LINE,
+    LinterMessage,
+    MessageLocation,
+)
 from graylint.linter_parser.plugin_helpers import create_linter_parser_plugins
 from graylint.output.plugin_helpers import create_output_plugins
 
@@ -228,7 +233,11 @@ def drop_messages_for_missing_files(
     result: dict[MessageLocation, list[LinterMessage]] = defaultdict(list)
     flattened = ((loc, msg) for loc, msgs in messages.items() for msg in msgs)
     for location, message in flattened:
-        if location is INVALID_LINE or location.path in missing_files:
+        if (
+            location is INVALID_LINE
+            or location is DISCARDED_LINE
+            or location.path in missing_files
+        ):
             continue
         if location.path.is_absolute():
             try:
