@@ -278,7 +278,8 @@ def run_linter(  # pylint: disable=too-many-locals
     :param root: The common root of all files to lint
     :param paths: Paths of files to check, relative to ``root``
     :param env: Environment variables to pass to the linter
-    :return: The number of modified lines with linting errors from this linter
+    :return: A 2-tuple with a dictionary of messages by location, and the linter parser.
+             The ``path`` in each ``MessageLocation`` must be relative to ``root``.
 
     """
     missing_files: set[Path] = set()
@@ -294,7 +295,16 @@ def run_linter(  # pylint: disable=too-many-locals
 def parse_linter_output(
     cmdline: list[str], output: str, root: Path, missing_files: set[Path]
 ) -> tuple[dict[MessageLocation, list[LinterMessage]], LinterParser]:
-    """Parse linter output and return a dictionary of messages and their locations."""
+    """Parse linter output and return messages, locations and the linter parser.
+
+    :param cmdline: The command line used to run the linter.
+    :param output: The output of the linter.
+    :param root: The root directory of the project.
+    :param missing_files: The set of missing files.
+    :return: A tuple containing messages by location and the linter parser. The ``path``
+             in each ``MessageLocation`` must be relative to ``root``.
+
+    """
     linter = cmdline[0]
     messages: dict[MessageLocation, list[LinterMessage]] | None = None
     chosen_parser: LinterParser | None = None
@@ -386,6 +396,7 @@ def run_linters(  # noqa: PLR0913
         git_paths,
         make_linter_env(git_root, "WORKTREE"),
     )
+    # `location.path` must be a relative path
     files_with_messages = {location.path for location in messages}
     # 11. create a mapping from line numbers of unmodified lines in the current versions
     #     to corresponding line numbers in ``rev1``
@@ -421,7 +432,8 @@ def _get_messages_from_linters(
     :param paths: Paths of files to check, relative to ``root``
     :param env: The environment variables to pass to the linter
     :param line_processor: Pre-processing callback for linter output lines
-    :return: Linter messages
+    :return: Linter messages by location. The ``path`` in each ``MessageLocation`` must
+             be relative to ``root``.
 
     """
     result = defaultdict(list)
@@ -562,7 +574,7 @@ def _create_line_mapping(
     """Create a mapping from unmodified lines in new files to same lines in old versions
 
     :param root: The root of the repository
-    :param files_with_messages: Paths to files which have linter messages
+    :param files_with_messages: Relative paths to files which have linter messages
     :param revrange: The revisions to compare
     :return: A dict which maps the line number of each unmodified line in the new
              versions of files to corresponding line numbers in old versions of the same

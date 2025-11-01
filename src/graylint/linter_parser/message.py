@@ -12,7 +12,9 @@ else:
 
 @dataclass(eq=True, frozen=True, order=True)
 class MessageLocation:
-    """A file path, line number and column number for a linter message.
+    """A relative file path, line number and column number for a linter message.
+
+    The file path is relative to the root of the project.
 
     Line and column numbers a 0-based, and zero is used for an unspecified column, and
     for the non-specified location.

@@ -62,14 +62,15 @@ class PyrightParserPlugin(LinterParser):
         :param cwd: The directory in which the linter was run, and relative to which
                     paths are returned
         :return: A 2-tuple of
-                - the file path, line and column numbers of the linter message, and
+                - the file path relative to ``cwd``, line and column numbers of the
+                  linter message, and
                 - the linter name and message description.
 
         """
         match = MESSAGE_LINE_RE.match(line)
         if not match:
             return (INVALID_LINE, LinterMessage(linter, ""))
-        path = Path(match.group(1))
+        path = Path(match.group(1)).relative_to(cwd)
         linenum = 0 if match.group(2) is None else _strict_nonneg_int(match.group(2))
         column = 0 if match.group(3) is None else _strict_nonneg_int(match.group(3))
         severity = match.group(4)
@@ -85,7 +86,8 @@ class PyrightParserPlugin(LinterParser):
         """Parse the output of Pyright or Basedpyright
 
         :param linter_output: The complete output of the linter
-        :return: A mapping of linter message locations to linter messages
+        :return: A mapping of linter message locations to linter messages. The ``path``
+                 in each ``MessageLocation`` is relative to the ``cwd``.
 
         """
         messages: dict[MessageLocation, list[LinterMessage]] = defaultdict(list)
@@ -93,8 +95,9 @@ class PyrightParserPlugin(LinterParser):
         path = Path()
         for line in linter_output.splitlines(keepends=True):
             if not line.startswith("  "):
-                path = Path(line[:-1])
-                if path.exists():
+                absolute_path = Path(line[:-1])
+                if absolute_path.is_file():
+                    path = absolute_path.relative_to(cwd)
                     messages[DISCARDED_LINE].append(LinterMessage(linter, str(path)))
                 continue
             if line.startswith(("  \u00a0\u00a0", "    ")):
