@@ -13,8 +13,9 @@ from graylint.linter_parser.message import (
 logger = logging.getLogger(__name__)
 
 
-NEED_KEYS = {"file": str, "severity": str, "message": str, "range": dict, "rule": str}
+NEED_KEYS = {"file": str, "severity": str, "message": str, "rule": str}
 NEED_START_KEYS = {"line", "character"}
+WHOLE_FILE = {"start": {"line": 0, "character": 0}}
 
 
 class PyrightJsonParserPlugin(LinterParser):
@@ -54,17 +55,13 @@ class PyrightJsonParserPlugin(LinterParser):
                     linter,
                 )
                 continue
-            if not (
-                set(NEED_KEYS).issubset(diag)
-                and "start" in diag["range"]
-                and NEED_START_KEYS.issubset(diag["range"]["start"])
-            ):
+            if not set(NEED_KEYS).issubset(diag):
                 logger.warning(
                     "Missing keys in a 'generalDiagnostics' entry in %s output",
                     linter,
                 )
                 continue
-            start = diag["range"]["start"]
+            start = diag.get("range", WHOLE_FILE)["start"]
             if not (
                 all(isinstance(diag[key], typ) for key, typ in NEED_KEYS.items())
                 and all(isinstance(start[key], int) for key in NEED_START_KEYS)
