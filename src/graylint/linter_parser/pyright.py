@@ -103,7 +103,13 @@ class PyrightParserPlugin(LinterParser):
             if line.startswith(("  \u00a0\u00a0", "    ")):
                 # continuation of a message
                 # (First variant ends with two non-breaking spaces)
-                messages[location].append(LinterMessage(linter, line[4:-1]))
+                if messages[location]:
+                    messages[location][-1].description += f"\n{line[4:-1]}"
+                else:
+                    logger.warning(
+                        "Continuation to non-existent message at %s", location
+                    )
+                    messages[location].append(LinterMessage(linter, line[4:-1]))
                 continue
             location, message = self._parse_pyright_line(linter, line, cwd)
             if location.path != path:
