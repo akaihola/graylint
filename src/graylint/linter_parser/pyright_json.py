@@ -74,7 +74,7 @@ class PyrightJsonParserPlugin(LinterParser):
                     linter,
                 )
                 continue
-            path = Path(diag["file"])
+            path = Path(diag["file"]).relative_to(cwd)
             location = MessageLocation(path, start["line"], start["character"])
             severity = diag["severity"]
             message_text = diag["message"]

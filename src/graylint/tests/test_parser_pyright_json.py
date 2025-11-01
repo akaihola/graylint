@@ -11,19 +11,19 @@ from graylint.linter_parser.message import (
 from graylint.linter_parser.pyright_json import PyrightJsonParserPlugin
 
 
-def test_parse() -> None:
+def test_parse(tmp_path) -> None:
     output = json.dumps(
         {
             "generalDiagnostics": [
                 {
-                    "file": "subdir/first.py",
+                    "file": f"{tmp_path}/subdir/first.py",
                     "severity": "error",
                     "message": "Everything's wrong.",
                     "range": {"start": {"line": 29, "character": 0}},
                     "rule": "reportDisaster",
                 },
                 {
-                    "file": "subdir/second.py",
+                    "file": f"{tmp_path}/subdir/second.py",
                     "severity": "warning",
                     "message": "Not advisable.",
                     "range": {"start": {"line": 14, "character": 4}},
@@ -34,18 +34,18 @@ def test_parse() -> None:
     )
     expect = {
         DISCARDED_LINE: [LinterMessage("pyright", "generalDiagnostics")],
-        MessageLocation(Path("subdir/first.py"), 29, 0): [
+        MessageLocation(Path("./subdir/first.py"), 29, 0): [
             LinterMessage(
                 linter="pyright",
                 description="error: Everything's wrong. (reportDisaster)",
             ),
         ],
-        MessageLocation(Path("subdir/second.py"), 14, 4): [
+        MessageLocation(Path("./subdir/second.py"), 14, 4): [
             LinterMessage(
                 linter="pyright",
                 description="warning: Not advisable. (reportRisks)",
             ),
         ],
     }
-    result = PyrightJsonParserPlugin().parse("pyright", output, Path("/absolute"))
+    result = PyrightJsonParserPlugin().parse("pyright", output, tmp_path)
     assert result == expect
