@@ -8,6 +8,7 @@ Added
 - ``with:`` GitHub Action option to install extra Python packages, e.g. plugins.
 - For Ruff_, always ensure the ``check`` command is run with the concise output format.
 - Support Ruff as a linter in the GitHub Action.
+- Support for Python versions 3.13 and 3.14.
 
 Removed
 -------
