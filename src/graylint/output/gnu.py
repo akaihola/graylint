@@ -1,8 +1,12 @@
 """Output plugin for GNU error format."""
 
+import re
+
 from darkgraylib.highlighting import colorize
 from graylint.linting import LinterMessage, MessageLocation
 from graylint.output.base import OutputPlugin
+
+JOIN_LINES_RE = re.compile(r"\s*\n+\s*")
 
 
 class GnuErrorFormatOutputPlugin(OutputPlugin):
@@ -19,7 +23,11 @@ class GnuErrorFormatOutputPlugin(OutputPlugin):
             colorize(loc, "lint_location", self._use_color), end=" ", file=self._stream
         )
         print(
-            colorize(message.description, "lint_description", self._use_color),
+            colorize(
+                JOIN_LINES_RE.sub(" / ", message.description),
+                "lint_description",
+                self._use_color,
+            ),
             end=" ",
             file=self._stream,
         )
