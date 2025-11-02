@@ -20,12 +20,7 @@ from graylint.config import GraylintConfig
 from graylint.output.destination import OutputDestination
 
 if TYPE_CHECKING:
-    import sys
-
-    if sys.version_info >= (3, 10):
-        from types import EllipsisType
-    else:
-        EllipsisType = type(Ellipsis)  # Python 3.9
+    from types import EllipsisType
 
 
 @pytest.mark.kwparametrize(

@@ -31,15 +31,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from subprocess import PIPE, Popen  # nosec
 from tempfile import TemporaryDirectory
-from typing import (
-    IO,
-    TYPE_CHECKING,
-    Callable,
-    Collection,
-    Generator,
-    Iterable,
-    Sequence,
-)
+from typing import IO, TYPE_CHECKING
 
 from darkgraylib.diff import map_unmodified_lines
 from darkgraylib.git import (
@@ -55,6 +47,8 @@ from darkgraylib.utils import WINDOWS
 from graylint.output.plugin_helpers import create_output_plugins
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Collection, Generator, Iterable, Sequence
+
     from graylint.command_line import OutputSpec
     from graylint.copy_settings import CopySettingsStorage
 
