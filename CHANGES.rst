@@ -21,7 +21,7 @@ Fixed
 
 Internal
 --------
-- Update Darkgraylib_ dependency to version 2.3.0.
+- Update to version 2.4.0 of the Darkgraylib_ dependency.
 - Move setuptools_ configuration from ``setup.cfg`` to ``pyproject.toml``.
 - Avoid a buggy flake8-bugbear_ version in the CI build.
 - Fix for updating version strings in README using ``darkgray_bump_version``.
@@ -31,7 +31,6 @@ Internal
 - Validation in CI for installing package extras.
 - Migrate CI workflows (Flake8_, Mypy_, Pylint_) to use the Graylint GitHub action.
 - Add Ruff_ ignores for test files in ``action/tests/``.
-- Update to version 2.4.0 of the Darkgraylib_ dependency.
 - Only run the activity summary workflow weekly.
 - Run ``ruff check`` against ``main`` as a baseline in the CI build.
 - Switch from old defunct Bandit action to ``brunohaf/action-bandit``.
