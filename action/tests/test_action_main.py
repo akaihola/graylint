@@ -9,7 +9,7 @@ from pathlib import Path
 from runpy import run_module
 from subprocess import PIPE, STDOUT, CompletedProcess  # nosec
 from types import SimpleNamespace
-from typing import Dict, Generator
+from typing import Generator
 from unittest.mock import ANY, Mock, call, patch
 
 import pytest
@@ -25,7 +25,7 @@ class SysExitCalled(Exception):
 
 
 @pytest.fixture
-def run_main_env() -> Dict[str, str]:
+def run_main_env() -> dict[str, str]:
     """By default, call `main.py` with just `GITHUB_ACTION_PATH` in the environment"""
     return {}
 
@@ -33,7 +33,7 @@ def run_main_env() -> Dict[str, str]:
 @contextmanager
 def patch_main(
     tmp_path: Path,
-    run_main_env: Dict[str, str],
+    run_main_env: dict[str, str],
     pip_returncode: int = 0,
 ) -> Generator[SimpleNamespace, None, None]:
     """Patch `subprocess.run`, `sys.exit` and environment variables
@@ -61,7 +61,7 @@ def patch_main(
 
 @pytest.fixture
 def main_patch(
-    tmp_path: Path, run_main_env: Dict[str, str]
+    tmp_path: Path, run_main_env: dict[str, str]
 ) -> Generator[SimpleNamespace, None, None]:
     """`subprocess.run, `sys.exit` and environment variables patching as Pytest fixture
 
