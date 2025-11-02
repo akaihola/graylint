@@ -4,12 +4,12 @@
 
 import re
 import sys
+from collections.abc import Generator
 from contextlib import contextmanager
 from pathlib import Path
 from runpy import run_module
 from subprocess import PIPE, STDOUT, CompletedProcess  # nosec
 from types import SimpleNamespace
-from typing import Generator
 from unittest.mock import ANY, Mock, call, patch
 
 import pytest
