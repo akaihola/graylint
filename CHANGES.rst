@@ -11,7 +11,7 @@ Added
 
 Removed
 -------
-- Drop support for Python 3.8.
+- Drop support for Python 3.8 and Python 3.9.
 
 Fixed
 -----
